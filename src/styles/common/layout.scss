@@ -1,0 +1,66 @@
+.fb {
+  overflow: hidden;
+  width: 100%;
+
+  &__app {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__layout {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__header {
+    width: 100%;
+    background: $white;
+  }
+ 
+  &__document {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  &__contents {
+    padding-bottom: rem(80px);
+  }
+
+  &__dockbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: rem(52px);
+    background: $white;
+    border-top: 1px solid $greye8;
+  }
+
+  &__footer {
+    background: $greyf8;
+    padding-bottom: rem(52px);
+
+    &.bottomFloating {
+      padding-bottom: rem(56px);
+    }
+  }
+
+  &__floating {
+    display: flex;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+  }
+}

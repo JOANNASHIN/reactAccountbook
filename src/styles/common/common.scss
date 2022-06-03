@@ -1,0 +1,66 @@
+.fb {
+  //IR 기법
+  .blind {
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip: rect(1px, 1px, 1px, 1px);
+  }
+
+  //국문 폰트
+  &__noto {
+    font-family: $noto;
+  }
+
+  //숫자 폰트
+  &__number {
+    font-family: $font_n;
+  }
+
+  //영문 폰트
+  &__english {
+    font-family: $font_e;
+  }
+
+  //flex 기본
+  &__flex {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  //가이드 텍스트
+  &__guidetext {
+    display: block;
+    margin-top: rem(8px);
+    @include fontcss($grey888, 400, rem(12px), rem(18px));
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+
+    //여러개인 경우 앞에 · 추가
+    &.multiType {
+      position: relative;
+      padding-left: rem(6px);
+
+      &:not(:first-of-type) {
+        margin-top: rem(4px);
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        top: rem(7px);
+        left: 0;
+        width: rem(2px);
+        height: rem(2px);
+        background: $grey666;
+        border-radius: 50%;
+      }
+    }
+  }
+}
+

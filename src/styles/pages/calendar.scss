@@ -1,0 +1,21 @@
+.fb {
+  &__calendar {
+    &__summary {
+      display: flex;
+      justify-content: space-around;
+      padding: rem(10px 0);
+      border: 1px solid;
+
+      .summary {
+        &__list {
+        }
+
+        &__title {
+        }
+
+        &__amount {
+        }
+      }
+    }
+  }
+}
