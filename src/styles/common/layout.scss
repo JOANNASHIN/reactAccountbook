@@ -46,7 +46,7 @@
     height: rem(52px);
     border-top-left-radius: rem(20px);
     border-top-right-radius: rem(20px);
-    box-shadow: rem(0 -3px 4px) $white;
+    box-shadow: rem(0 -3px 4px) rgba(255, 255, 255, 0.8);
 
     &__menu {
       display: flex;
