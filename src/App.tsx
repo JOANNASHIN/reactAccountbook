@@ -1,15 +1,16 @@
 /* eslint-disable no-undef */
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
+
 import Header from './layouts/Header';
 import Router from './routes/index';
+import Dockbar from './layouts/Dockbar';
 
 function App() {
   const settingRem = () => {
     const htmlDoc = document.documentElement;
     let enSizing = false;
-
     function setFontSize() {
-      if (window.innerWidth > window.innerHeight) return;
+      // if (window.innerWidth > window.innerHeight) return;
 
       const remBaseFont = (htmlDoc.offsetWidth / 360) * 62.5; // 10px 기준
       htmlDoc.style.fontSize = `${remBaseFont > 62.5 ? remBaseFont : 62.5}%`;
@@ -33,9 +34,10 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <div className="account__layout">
       <Header />
       <Router />
+      <Dockbar />
     </div>
   );
 }
