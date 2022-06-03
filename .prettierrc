@@ -7,7 +7,7 @@
   "tabWidth": 2,
   "endOfLine": "auto",
   "eslintIntegration": true,
-  "bracketSpacing": false,
-  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "bracketSameLine": true,
   "proseWrap": "never"
 }
