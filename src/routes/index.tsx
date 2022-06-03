@@ -1,9 +1,9 @@
 import React from 'react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Calendar from '../pages/Calendar';
 import Property from '../pages/Property';
 
-function Router() {
+export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
@@ -13,5 +13,3 @@ function Router() {
     </BrowserRouter>
   );
 }
-
-export default Router;
