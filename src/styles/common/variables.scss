@@ -1,17 +1,14 @@
-
 :root {
-  --point: #ff5907; //orange
+  //basic
+  --white: #fff;
   --black: #111;
 
-  //secondary
-  --mint: #00bdb6;
-  --darkmint: #006363;
-  --lightmint: #e7fcfc;
-  --lightorange: #fff1eb;
-  --lightblue: #e6f3ff;
+  //primary
+  --background: #f0f0f0;
+  --point: #fec815;
+  --point2: #307bc0;
 
   //support
-  --blue: #33a3ff;
   --red: #ff2d21;
   --green: #00c751;
 
@@ -26,64 +23,33 @@
   --grey600: #888;
   --grey800: #666;
 
-  //FONTS
-  --noto : "Notosans", sans-serif; //국문
-  --font_n: "Montserrat", var(--noto); //숫자
-  --font_e: "Montserrat", var(--noto); //영문
+  //fonts
+  --noto: 'Notosans', sans-serif; //국문
+  --font_n: 'Montserrat', var(--noto); //숫자
+  --font_e: 'Montserrat', var(--noto); //영문
 
-
-  //커스텀 타입 1 (현재는 임시)
-  .customType1 {
-    --point: #ff5907; //orange
-    --black: #111;
-
-    //secondary
-    --mint: #00bdb6;
-    --lightmint: #e7fcfc;
-    --lightorange: #fff1eb;
-
-    //support
-    --blue: #33a3ff;
-    --red: #ff2d21;
-    --green: #00c751;
-
-    //neutrals
-    --white: #fff;
-    --grey50: #f8f8f8;
-    --grey80: #f2f2f2;
-    --grey100: #e8e8e8;
-    --grey200: #ddd;
-    --grey400: #ccc;
-    --grey500: #aaa;
-    --grey600: #888;
-    --grey800: #666;
-
-    //FONTS
-    --noto : "Notosans", sans-serif; //국문
-    --font_n: "Montserrat", var(--noto); //숫자
-    --font_e: "Montserrat", var(--noto); //영문
+  .peachType {
+    --point: #ff9271;
+    --point2: #f4d1bd;
+    --background: #fff;
   }
 }
 
 /* #region Colors */
-//primary
-$point: var(--point);
+//basic
+$white: var(--white);
 $black: var(--black);
 
-//secondary
-$mint: var(--mint);
-$darkmint: var(--darkmint);
-$lightmint: var(--lightmint);
-$lightorange: var(--lightorange);
-$lightblue: var(--lightblue);
+//primary
+$bg: var(--background);
+$point: var(--point);
+$point2: var(--point2);
 
 //support
-$blue: var(--blue);
 $red: var(--red);
 $green: var(--green);
 
-//neutrals- 고민필요
-$white: var(--white);
+//neutrals
 $greyf8: var(--grey50);
 $greyf2: var(--grey80);
 $greye8: var(--grey100);
@@ -93,19 +59,8 @@ $greyaaa: var(--grey500);
 $grey888: var(--grey600);
 $grey666: var(--grey800);
 
-//neutrals- 고민필요
-$grey50: var(--grey50);
-$grey80: var(--grey80);
-$grey100: var(--grey100);
-$grey200: var(--grey200);
-$grey400: var(--grey400);
-$grey500: var(--grey500);
-$grey600: var(--grey600);
-$grey800: var(--grey800);
-/* #endregion */
-
 /* #region Fonts */
-$noto : var(--noto );
+$noto: var(--noto);
 $font_n: var(--font_n);
 $font_e: var(--font_e);
 /* #endregion */

@@ -1,6 +1,7 @@
-.fb {
+.account {
   overflow: hidden;
   width: 100%;
+  background: $bg;
 
   &__app {
     overflow: hidden;
@@ -20,7 +21,7 @@
     width: 100%;
     background: $white;
   }
- 
+
   &__document {
     display: flex;
     flex-direction: column;
@@ -35,14 +36,30 @@
   }
 
   &__dockbar {
+    display: flex;
+    justify-content: center;
     position: fixed;
     bottom: 0;
     left: 0;
     z-index: 1;
     width: 100%;
     height: rem(52px);
-    background: $white;
-    border-top: 1px solid $greye8;
+    border-top-left-radius: rem(20px);
+    border-top-right-radius: rem(20px);
+    box-shadow: rem(0 -3px 4px) $white;
+
+    &__menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 20%;
+      color: $greyccc;
+      font-size: rem(26px);
+
+      &.active {
+        color: $point;
+      }
+    }
   }
 
   &__footer {

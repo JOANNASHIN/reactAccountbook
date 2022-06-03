@@ -3,10 +3,10 @@ import '../styles/pages/calendar.scss';
 
 export default function index() {
   return (
-    <section className="fb__calendar">
+    <section className="account__calendar">
       <h2 className="blind">캘린더</h2>
 
-      <header className="fb__calendar__summary">
+      <header className="account__calendar__summary">
         <dl className="summary__list">
           <dt className="summary__title">수입</dt>
           <dd className="summary__amount">0</dd>
