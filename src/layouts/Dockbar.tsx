@@ -16,7 +16,7 @@ export default function Dockbar() {
           <Icon icon={solid('wallet')} />
         </Link>
       </BrowserRouter> */}
-      <a href="/" className="account__dockbar__menu">
+      <a href="/" className="account__dockbar__menu active">
         <Icon icon={solid('calendar-day')} />
       </a>
 
