@@ -44,8 +44,8 @@ function App() {
   return (
     <div className="account__layout">
       <Header />
-      <Dockbar currentPath={currentPath} />
       <Routes />
+      <Dockbar currentPath={currentPath} />
     </div>
   );
 }

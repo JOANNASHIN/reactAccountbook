@@ -10,56 +10,87 @@
   }
 
   &__layout {
-    display: flex;
-    flex-direction: column;
+    display: block;
     position: relative;
     width: 100%;
     height: 100%;
+    padding: rem(30px 0 80px);
+    padding: rem(30px 0 calc(constant(safe-area-inset-bottom) + #{rem(80px)}));
+    padding: rem(30px 0 calc(env(safe-area-inset-bottom) + #{rem(80px)}));
   }
 
   &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    background: $white;
+    height: rem(30px);
+    background: $point;
+    box-shadow: inset rem(0 0 0 2px) rgba(252, 252, 252, 0.7),
+      rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
   }
 
-  &__document {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1 1 auto;
-    overflow-y: auto;
-    height: 100%;
+  &__logo {
+    display: inline-block;
+    font-size: 0;
+
+    svg {
+      color: $white;
+      font-size: rem(14px);
+    }
+
+    span {
+      margin-left: rem(8px);
+      color: $white;
+      font-size: rem(12px);
+    }
   }
 
   &__contents {
-    padding-bottom: rem(80px);
+    overflow: auto;
+    width: 100%;
+    height: 100%;
   }
 
   &__dockbar {
     display: flex;
     justify-content: center;
     position: fixed;
-    bottom: 0;
     left: 0;
+    right: 0;
+    bottom: calc(constant(safe-area-inset-bottom) + #{rem(10px)});
+    bottom: calc(env(safe-area-inset-bottom) + #{rem(10px)});
     z-index: 1;
-    width: 100%;
-    height: rem(52px);
-    border-top-left-radius: rem(20px);
-    border-top-right-radius: rem(20px);
-    padding: 0 0 calc(constant(safe-area-inset-bottom));
-    padding: 0 0 calc(env(safe-area-inset-bottom));
-    box-shadow: rem(0 -3px 4px) rgba(255, 255, 255, 0.8);
+    width: calc(100% - #{rem(80px)});
+    // width: rem(200px);
+    margin: 0 auto;
+    padding: rem(4px 0);
+    border-radius: rem(20px);
+    @include shadow();
 
     &__menu {
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 0 0 20%;
+      width: rem(60px);
+      margin: rem(0 6px);
       color: $greyccc;
-      font-size: rem(26px);
+      font-size: rem(28px);
+
+      &:after {
+        content: '';
+        display: block;
+        padding-bottom: 90%;
+      }
 
       &.active {
         color: $point;
+        border-radius: rem(20px);
+        border-top-left-radius: rem(20px);
+        border-top-right-radius: rem(20px);
       }
     }
   }

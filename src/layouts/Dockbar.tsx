@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 interface Props {
   currentPath: string;
 }
+
 function Dockbar(props: Props) {
   const { currentPath } = props;
 

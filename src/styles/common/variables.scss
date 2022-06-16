@@ -6,7 +6,7 @@
   //primary
   --background: #f0f0f0;
   --point: #fec815;
-  --point2: #307bc0;
+  --blue: #307bc0;
 
   //support
   --red: #ff2d21;
@@ -30,7 +30,7 @@
 
   .peachType {
     --point: #ff9271;
-    --point2: #f4d1bd;
+    --blue: #f4d1bd;
     --background: #fff;
   }
 }
@@ -43,7 +43,7 @@ $black: var(--black);
 //primary
 $bg: var(--background);
 $point: var(--point);
-$point2: var(--point2);
+$blue: var(--blue);
 
 //support
 $red: var(--red);
