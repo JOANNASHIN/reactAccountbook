@@ -5,9 +5,11 @@ import Property from '../pages/Property';
 
 export default function Router() {
   return (
-    <Routes>
-      <Route path="/" element={<Calendar />} />
-      <Route path="/property" element={<Property />} />
-    </Routes>
+    <div className="account__contents">
+      <Routes>
+        <Route path="/" element={<Calendar />} />
+        <Route path="/property" element={<Property />} />
+      </Routes>
+    </div>
   );
 }

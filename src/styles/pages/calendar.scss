@@ -5,7 +5,7 @@
     &__summary {
       display: flex;
       justify-content: space-around;
-      margin-bottom: rem(16px);
+      margin-bottom: rem(32px);
       padding: rem(8px 0);
       border-radius: rem(20px);
       text-align: center;
@@ -20,8 +20,28 @@
         }
 
         &__amount {
+          @include fontcss($black, 600, rem(12px));
+
+          &--income {
+            color: $blue;
+          }
+
+          &--spending {
+            color: $red;
+          }
+
+          &--balance {
+          }
         }
       }
+    }
+
+    &__box {
+      display: inline-block;
+      width: 100%;
+      height: rem(500px);
+      max-height: 60vh;
+      // @include shadow(inset);
     }
   }
 }
