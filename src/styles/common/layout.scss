@@ -15,11 +15,29 @@
     position: relative;
     width: 100%;
     height: 100%;
+    padding-bottom: calc(constant(safe-area-inset-bottom) + #{rem(4px)});
+    padding-bottom: calc(env(safe-area-inset-bottom) + #{rem(4px)});
   }
 
   &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    background: $white;
+    padding: rem(4px 0);
+    background: $point;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    color: $white;
+    font-size: rem(14px);
+
+    span {
+      margin-left: rem(8px);
+      font-size: rem(12px);
+    }
   }
 
   &__document {
@@ -39,27 +57,37 @@
     display: flex;
     justify-content: center;
     position: fixed;
-    bottom: 0;
+    bottom: calc(constant(safe-area-inset-bottom) + #{rem(10px)});
+    bottom: calc(env(safe-area-inset-bottom) + #{rem(10px)});
     left: 0;
+    right: 0;
     z-index: 1;
-    width: 100%;
-    height: rem(52px);
-    border-top-left-radius: rem(20px);
-    border-top-right-radius: rem(20px);
-    padding: 0 0 calc(constant(safe-area-inset-bottom));
-    padding: 0 0 calc(env(safe-area-inset-bottom));
-    box-shadow: rem(0 -3px 4px) rgba(255, 255, 255, 0.8);
+    width: calc(100% - #{rem(20px)});
+    margin: 0 auto;
+    border-radius: rem(20px);
+    padding: rem(4px 0);
+    @include shadow();
 
     &__menu {
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 0 0 20%;
+      width: rem(60px);
+      margin: rem(0 12px);
       color: $greyccc;
-      font-size: rem(26px);
+      font-size: rem(28px);
+
+      &:after {
+        content: '';
+        display: block;
+        padding-bottom: 90%;
+      }
 
       &.active {
         color: $point;
+        border-radius: rem(20px);
+        border-top-left-radius: rem(20px);
+        border-top-right-radius: rem(20px);
       }
     }
   }

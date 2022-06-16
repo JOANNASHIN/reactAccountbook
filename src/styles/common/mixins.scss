@@ -20,18 +20,16 @@
     margin: auto;
 
     @if ($type == 'width') {
-        width: 100%;
-        height: auto;
-    }
-    @else if ($type == 'height') {
-        width: auto;
-        height: 100%;
-    }
-    @else if ($type == 'auto') {
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 100%;
+      width: 100%;
+      height: auto;
+    } @else if ($type == 'height') {
+      width: auto;
+      height: 100%;
+    } @else if ($type == 'auto') {
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
     }
   }
 }
@@ -40,25 +38,23 @@
 @mixin line($lineCount: 1) {
   /* 사용법 : @include line(라인수) */
   @if ($lineCount == 1) {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }
-  @else if($lineCount == 'auto') {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else if($lineCount == 'auto') {
     display: block;
     overflow: visible;
-  }
-  @else {
-      /* autoprefixer: off */
-      -webkit-box-orient: vertical;
+  } @else {
+    /* autoprefixer: off */
+    -webkit-box-orient: vertical;
 
-      /* autoprefixer: on */
-      display: block;
-      display: -webkit-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-all;
-      -webkit-line-clamp: $lineCount;
+    /* autoprefixer: on */
+    display: block;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: $lineCount;
   }
 }
 
@@ -76,11 +72,16 @@ $lineheights: (
   1.5rem: rem(24px),
   1.6rem: rem(24px),
   1.8rem: rem(27px),
-  2.0rem: rem(30px),
+  2rem: rem(30px),
   2.8rem: rem(42px),
 );
 
-@mixin fontcss($color: $black, $weight: 200, $size: rem(13px), $lineheight: none) {
+@mixin fontcss(
+  $color: $black,
+  $weight: 200,
+  $size: rem(13px),
+  $lineheight: none
+) {
   @if ($color) {
     color: $color;
   }
@@ -103,17 +104,17 @@ $lineheights: (
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
- 
+
   &::-webkit-scrollbar {
+    display: none;
+
+    &-thumb {
       display: none;
+    }
 
-      &-thumb {
-          display: none;
-      }
-
-      &-button {
-          display: none;
-      }
+    &-button {
+      display: none;
+    }
   }
 
   @if ($type == 'mobile') {
@@ -132,7 +133,15 @@ $lineheights: (
 }
 
 // image
-@mixin mobileImage($width: rem(12px), $height: rem(12px), $group: 'guide', $src: '', $repeat: no-repeat, $position: center center, $size: 100% auto) {
+@mixin mobileImage(
+  $width: rem(12px),
+  $height: rem(12px),
+  $group: 'guide',
+  $src: '',
+  $repeat: no-repeat,
+  $position: center center,
+  $size: 100% auto
+) {
   display: inline-block;
   width: $width;
   height: $height;
@@ -140,4 +149,9 @@ $lineheights: (
   background-repeat: $repeat;
   background-position: $position;
   background-size: $size;
+}
+
+@mixin shadow($inset: '') {
+  box-shadow: #{$inset} rem(-2px -2px 4px 2px) rgba(255, 255, 255, 0.8),
+    #{$inset} rem(2px 2px 2px 2px) rgba(76, 76, 76, 0.2);
 }

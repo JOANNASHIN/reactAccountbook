@@ -1,16 +1,22 @@
 .account {
   &__calendar {
+    padding: rem(24px 16px);
+
     &__summary {
       display: flex;
       justify-content: space-around;
-      padding: rem(10px 0);
-      border: 1px solid;
+      margin-bottom: rem(16px);
+      padding: rem(8px 0);
+      border-radius: rem(20px);
+      text-align: center;
+      @include shadow();
 
       .summary {
         &__list {
         }
 
         &__title {
+          @include fontcss($black, 400, rem(12px));
         }
 
         &__amount {
