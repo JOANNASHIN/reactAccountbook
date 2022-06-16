@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { Link, Route, Routes } from 'react-router-dom';
-import Calendar from '../pages/Calendar';
-import Property from '../pages/Property';
+import { Link } from 'react-router-dom';
 
 interface Props {
   currentPath: string;
