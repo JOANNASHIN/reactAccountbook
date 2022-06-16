@@ -1,21 +1,47 @@
 .account {
   &__calendar {
+    padding: rem(24px 16px);
+
     &__summary {
       display: flex;
       justify-content: space-around;
-      padding: rem(10px 0);
-      border: 1px solid;
+      margin-bottom: rem(32px);
+      padding: rem(8px 0);
+      border-radius: rem(20px);
+      text-align: center;
+      @include shadow();
 
       .summary {
         &__list {
         }
 
         &__title {
+          @include fontcss($black, 400, rem(12px));
         }
 
         &__amount {
+          @include fontcss($black, 600, rem(12px));
+
+          &--income {
+            color: $blue;
+          }
+
+          &--spending {
+            color: $red;
+          }
+
+          &--balance {
+          }
         }
       }
+    }
+
+    &__box {
+      display: inline-block;
+      width: 100%;
+      height: rem(500px);
+      max-height: 60vh;
+      // @include shadow(inset);
     }
   }
 }
