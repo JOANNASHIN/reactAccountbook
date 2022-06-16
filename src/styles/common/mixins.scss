@@ -6,65 +6,28 @@
   }
 }
 
-//이미지 Resizing
-@mixin imageResize($type: 'width') {
-  overflow: hidden;
-  position: relative;
-
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-
-    @if ($type == 'width') {
-        width: 100%;
-        height: auto;
-    }
-    @else if ($type == 'height') {
-        width: auto;
-        height: 100%;
-    }
-    @else if ($type == 'auto') {
-        width: auto;
-        height: auto;
-        max-width: 100%;
-        max-height: 100%;
-    }
-  }
-}
-
 //말줄임 후략
 @mixin line($lineCount: 1) {
   /* 사용법 : @include line(라인수) */
   @if ($lineCount == 1) {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }
-  @else if($lineCount == 'auto') {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  } @else if($lineCount == 'auto') {
     display: block;
     overflow: visible;
-  }
-  @else {
-      /* autoprefixer: off */
-      -webkit-box-orient: vertical;
+  } @else {
+    /* autoprefixer: off */
+    -webkit-box-orient: vertical;
 
-      /* autoprefixer: on */
-      display: block;
-      display: -webkit-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-all;
-      -webkit-line-clamp: $lineCount;
+    /* autoprefixer: on */
+    display: block;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: $lineCount;
   }
-}
-
-//image url
-@function src($deviceType: 'mobile', $folder: 'guide', $filename: '') {
-  @return '/src/assets/images/#{$deviceType}/#{$folder}/#{$filename}';
 }
 
 //font guide
@@ -76,11 +39,16 @@ $lineheights: (
   1.5rem: rem(24px),
   1.6rem: rem(24px),
   1.8rem: rem(27px),
-  2.0rem: rem(30px),
+  2rem: rem(30px),
   2.8rem: rem(42px),
 );
 
-@mixin fontcss($color: $black, $weight: 200, $size: rem(13px), $lineheight: none) {
+@mixin fontcss(
+  $color: $black,
+  $weight: 200,
+  $size: rem(13px),
+  $lineheight: none
+) {
   @if ($color) {
     color: $color;
   }
@@ -97,47 +65,19 @@ $lineheights: (
   }
 }
 
-@mixin scrollX($type: 'mobile') {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
- 
-  &::-webkit-scrollbar {
-      display: none;
+@mixin shadow($inset: '') {
+  box-shadow: #{$inset} rem(-3px -3px 6px 0) rgba(255, 255, 255, 0.8),
+    #{$inset} rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
 
-      &-thumb {
-          display: none;
-      }
+  // box-shadow: rem(-2px -2px 4px 2px) rgba(255, 255, 255, 0.8),
+  //   rem(2px 2px 2px 2px) rgba(76, 76, 76, 0.2),
+  //   #{$inset} rem(-2px -2px 4px 2px) rgba(76, 76, 76, 0.2),
+  //   #{$inset} rem(2px 2px 2px 2px) rgba(#f1f1f1, 0.8);
 
-      &-button {
-          display: none;
-      }
-  }
+  // $white1: rgb(246 246 246);
+  // $white2: rgb(246 246 246 / 50%);
+  // $black1: rgb(60 60 60 / 30%);
 
-  @if ($type == 'mobile') {
-    // margin: rem(0 0 -20px 0);
-    padding: rem(0 16px);
-  } @else {
-    // @TODO: PC 고쳐야함
-    // margin: 0 -20px 0;
-    padding: 0 20px 20px 16px;
-  }
-}
-
-//#111 기준
-@function dim($opacity: 0.5) {
-  @return rgba(17, 17, 17, $opacity);
-}
-
-// image
-@mixin mobileImage($width: rem(12px), $height: rem(12px), $group: 'guide', $src: '', $repeat: no-repeat, $position: center center, $size: 100% auto) {
-  display: inline-block;
-  width: $width;
-  height: $height;
-  background-image: url(src('mobile', $group, $src));
-  background-repeat: $repeat;
-  background-position: $position;
-  background-size: $size;
+  // box-shadow: inset $white1 3px 3px 2px 0px, inset $black1 -3px -3px 2px 0px,
+  //   $white2 -3px -3px 2px 0px, $black1 2px 2px 4px 0px;
 }
