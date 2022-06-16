@@ -1,11 +1,14 @@
+$headerHeight: 100px;
+$headerNav: 64px;
+
 .account {
   &__calendar {
-    padding: rem(24px 16px);
+    padding: rem($headerHeight 16px 0);
 
     &__summary {
       display: flex;
       justify-content: space-around;
-      margin-bottom: rem(32px);
+      margin: rem(16px 0);
       padding: rem(8px 0);
       border-radius: rem(20px);
       text-align: center;
@@ -20,7 +23,7 @@
         }
 
         &__amount {
-          @include fontcss($black, 600, rem(12px));
+          @include fontcss($black, 600, rem(13px));
 
           &--income {
             color: $blue;
@@ -36,12 +39,105 @@
       }
     }
 
+    //캘린더
     &__box {
       display: inline-block;
       width: 100%;
-      height: rem(500px);
-      max-height: 60vh;
-      // @include shadow(inset);
+      height: 100%;
+      height: rem(400px);
+      max-height: 45vh;
+
+      .fc {
+        height: 100%;
+      }
+
+      //헤더 툴바
+      .fc-header-toolbar {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding-top: 0;
+        padding-top: constant(safe-area-inset-top);
+        padding-top: env(safe-area-inset-top);
+        width: 100%;
+        height: rem($headerHeight);
+        height: calc(constant(safe-area-inset-top) + #{rem($headerHeight)});
+        height: calc(env(safe-area-inset-top) + #{rem($headerHeight)});
+        margin-bottom: 0 !important;
+        background: $point;
+      }
+
+      .fc-toolbar-chunk {
+        flex: 0 0 100%;
+
+        //네비게이션 << 2022.06 >>
+        &:first-child {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 rem($headerNav);
+          width: 100%;
+          margin-bottom: 0 !important;
+
+          button {
+            background: none;
+            border: none;
+            border-radius: none !important;
+            color: $black;
+          }
+        }
+
+        &:nth-child(2) {
+          display: none;
+        }
+
+        &:nth-child(3) {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          flex: 1 1 auto;
+          overflow: hidden;
+          width: 100%;
+        }
+      }
+
+      //제목 2022.06
+      .fc-toolbar-title {
+        @include fontcss($black, 600, rem(13px));
+      }
+
+      //탭 메뉴
+      .fc-button-group {
+        display: flex;
+        width: calc(100% - #{rem(32px)});
+        height: 85%;
+        margin: 0 auto;
+
+        button {
+          background: none;
+          border: none;
+          border-radius: 0 !important;
+          color: $black !important;
+          @include fontcss($black, 600, rem(13px));
+
+          &:focus {
+            box-shadow: none !important;
+          }
+        }
+
+        .fc-button-active {
+          overflow: hidden;
+          background: $bg !important;
+          border-top-left-radius: rem(10px) !important;
+          border-top-right-radius: rem(10px) !important;
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+          border-bottom: 1px solid $bg !important;
+          box-shadow: rem(3px -3px 6px 0) rgba(76, 76, 76, 0.2);
+        }
+      }
     }
   }
 }

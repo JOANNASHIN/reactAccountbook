@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
 import FullCalendar, { formatDate } from '@fullcalendar/react';
+import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -10,6 +11,21 @@ type weekendsVisible = boolean;
 
 function Calendar(props: CalendarProps) {
   const [weekendsVisible, setWeekendsVisible] = useState<weekendsVisible>(true);
+  const events = [
+    {
+      title: 'Meeting',
+      start: '2022-06-12T14:30:00',
+      extendedProps: {
+        status: 'done',
+      },
+    },
+    {
+      title: 'Birthday Party',
+      start: '2022-06-13T07:00:00',
+      backgroundColor: 'green',
+      borderColor: 'green',
+    },
+  ];
 
   return (
     <section className="account__calendar">
@@ -31,20 +47,29 @@ function Calendar(props: CalendarProps) {
       </header>
 
       <div className="account__calendar__box">
-        {/* <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        <FullCalendar
+          plugins={[
+            listPlugin,
+            dayGridPlugin,
+            timeGridPlugin,
+            interactionPlugin,
+          ]}
           headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            left: 'prevYear prev title next nextYear',
+            center: 'today',
+            // right: 'next nextYear',
+            right: 'listWeek,dayGridMonth,timeGridWeek,timeGridDay',
           }}
-          initialView="dayGridMonth"
+          // right: 'listWeek, dayGridMonth,timeGridWeek,timeGridDay',
+          initialView="listWeek"
+          locale="kr"
           editable
           selectable
           selectMirror
           dayMaxEvents
+          events={events}
           weekends={weekendsVisible}
-        /> */}
+        />
       </div>
     </section>
   );
