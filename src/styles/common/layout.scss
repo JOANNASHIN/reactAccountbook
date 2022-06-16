@@ -61,11 +61,11 @@
     position: fixed;
     left: 0;
     right: 0;
+    bottom: rem(10px);
     bottom: calc(constant(safe-area-inset-bottom) + #{rem(10px)});
     bottom: calc(env(safe-area-inset-bottom) + #{rem(10px)});
     z-index: 1;
     width: calc(100% - #{rem(80px)});
-    // width: rem(200px);
     margin: 0 auto;
     padding: rem(4px 0);
     border-radius: rem(20px);
