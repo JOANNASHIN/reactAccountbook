@@ -1,28 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import Router from '../routes';
+import { Link, Route, Routes } from 'react-router-dom';
+import Calendar from '../pages/Calendar';
+import Property from '../pages/Property';
 
-export default function Dockbar() {
+interface Props {
+  currentPath: string;
+}
+function Dockbar(props: Props) {
+  const { currentPath } = props;
+
+  const dockbarMenus = [
+    {
+      id: '000',
+      title: '홈',
+      path: '/',
+      icon: solid('calendar-day'),
+    },
+    {
+      id: '001',
+      title: '자산',
+      path: '/property',
+      icon: solid('wallet'),
+    },
+  ];
+
   return (
     <nav className="account__dockbar">
-      {/* <BrowserRouter>
-        <Link to="/" className="account__dockbar__menu">
-          <Icon icon={solid('calendar-day')} />
-        </Link>
-
-        <Link to="/property" className="account__dockbar__menu">
-          <Icon icon={solid('wallet')} />
-        </Link>
-      </BrowserRouter> */}
-      <a href="/" className="account__dockbar__menu active">
-        <Icon icon={solid('calendar-day')} />
-      </a>
-
-      <a href="/property" className="account__dockbar__menu">
-        <Icon icon={solid('wallet')} />
-      </a>
+      {dockbarMenus.map((menu) => {
+        return (
+          <Link
+            to={menu.path}
+            className={
+              currentPath === menu.path
+                ? 'account__dockbar__menu active'
+                : 'account__dockbar__menu'
+            }
+            key={menu.id}>
+            <Icon icon={menu.icon} />
+            <span className="blind">{menu.title}</span>
+          </Link>
+        );
+      })}
     </nav>
   );
 }
+
+export default Dockbar;
