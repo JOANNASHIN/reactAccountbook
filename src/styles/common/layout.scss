@@ -30,8 +30,6 @@
     text-align: center;
     height: rem(96px);
     background: $point;
-    // box-shadow: inset rem(0 0 0 2px) rgba(252, 252, 252, 0.7),
-    //   rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
   }
 
   &__logo {
@@ -70,7 +68,7 @@
     bottom: calc(constant(safe-area-inset-bottom) + #{rem(4px)});
     bottom: calc(env(safe-area-inset-bottom) + #{rem(4px)});
     z-index: 1;
-    width: calc(100% - #{rem(80px)});
+    width: calc(100% - #{rem(120px)});
     margin: 0 auto;
     padding: rem(4px 0);
     border-radius: rem(20px);
@@ -80,7 +78,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: rem(60px);
+      width: rem(58px);
       margin: rem(0 6px);
       color: $greyccc;
       font-size: rem(28px);

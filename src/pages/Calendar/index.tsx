@@ -31,18 +31,18 @@ function Calendar(props: CalendarProps) {
     <section className="ac__calendar">
       <h2 className="blind">캘린더</h2>
 
-      <nav className="ac__calendar__nav">
-        <div className="nav__inner">
-          <button type="button" className="nav__menu ">
+      <nav className="ac__calendar__tab">
+        <div className="tab__inner">
+          <button type="button" className="tab__menu ">
             달력
           </button>
-          <button type="button" className="nav__menu active">
+          <button type="button" className="tab__menu active">
             일별
           </button>
-          <button type="button" className="nav__menu">
+          <button type="button" className="tab__menu">
             주별
           </button>
-          <button type="button" className="nav__menu">
+          <button type="button" className="tab__menu">
             월별
           </button>
         </div>
@@ -75,7 +75,7 @@ function Calendar(props: CalendarProps) {
               interactionPlugin,
             ]}
             headerToolbar={{
-              left: 'prevYear prev title next nextYear',
+              left: 'prev title next',
               center: 'today',
             }}
             // timeGridDay,listWeek, timeGridWeek
@@ -84,7 +84,7 @@ function Calendar(props: CalendarProps) {
             selectable
             selectMirror
             dayMaxEvents
-            events={list}
+            // events={list}
             weekends={weekendsVisible}
           />
         </div>
