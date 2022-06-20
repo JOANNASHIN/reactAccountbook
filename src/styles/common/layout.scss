@@ -14,11 +14,10 @@
     position: relative;
     width: 100%;
     height: 100%;
-    padding: rem(0 0 80px);
+    padding: rem(0 0 70px);
     padding: rem(constant(safe-area-inset-top) 0)
-      calc(constant(safe-area-inset-bottom) + #{rem(80px)});
-    padding: rem(env(safe-area-inset-top) 0)
-      calc(env(safe-area-inset-bottom) + #{rem(80px)});
+      calc(constant(safe-area-inset-bottom) + #{rem(70px)});
+    padding: rem(env(safe-area-inset-top) 0) calc(env(safe-area-inset-bottom) + #{rem(70px)});
   }
 
   &__header {
@@ -52,7 +51,6 @@
   }
 
   &__contents {
-    // overflow: auto;
     overflow: hidden;
     width: 100%;
     height: 100%;
@@ -61,16 +59,59 @@
   &__dockbar {
     display: flex;
     justify-content: center;
+    align-items: center;
     position: fixed;
     left: 0;
     right: 0;
-    bottom: rem(4px);
-    bottom: calc(constant(safe-area-inset-bottom) + #{rem(4px)});
-    bottom: calc(env(safe-area-inset-bottom) + #{rem(4px)});
+    bottom: rem(0);
+    bottom: calc(constant(safe-area-inset-bottom) + #{rem(0)});
+    bottom: calc(env(safe-area-inset-bottom) + #{rem(0)});
     z-index: 1;
-    width: calc(100% - #{rem(120px)});
-    margin: 0 auto;
-    padding: rem(4px 0);
+    width: 100%;
+    height: rem(70px);
+    padding: rem(0 70px);
+
+    &__inner {
+      display: flex;
+      justify-content: center;
+      border-radius: rem(20px);
+      width: 100%;
+      padding: rem(8px 0);
+      @include shadow();
+    }
+
+    &__menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem(32px);
+      height: rem(32px);
+      margin: rem(0 20px);
+      color: $greyccc;
+      font-size: rem(28px);
+
+      &.active {
+        color: $point;
+        border-radius: rem(20px);
+        border-top-left-radius: rem(20px);
+        border-top-right-radius: rem(20px);
+      }
+    }
+  }
+  &__dockbar2 {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: rem(0);
+    bottom: calc(constant(safe-area-inset-bottom) + #{rem(0)});
+    bottom: calc(env(safe-area-inset-bottom) + #{rem(0)});
+    z-index: 1;
+    width: calc(100% - #{rem(140px)});
+    height: rem(60px);
+    // margin: rem(16px auto 0);
+    // padding: rem(9px 0);
     border-radius: rem(20px);
     @include shadow();
 
@@ -78,16 +119,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: rem(58px);
-      margin: rem(0 6px);
+      width: rem(32px);
+      height: rem(32px);
+      margin: rem(0 20px);
       color: $greyccc;
       font-size: rem(28px);
 
-      &:after {
-        content: '';
-        display: block;
-        padding-bottom: 90%;
-      }
+      // &:after {
+      //   content: '';
+      //   display: block;
+      //   padding-bottom: 77%;
+      // }
 
       &.active {
         color: $point;

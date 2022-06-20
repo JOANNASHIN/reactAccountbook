@@ -1,14 +1,14 @@
-$headerHeight: 60px;
+$headerHeight: 62px;
 $buttonHeight: 40px;
+$menuHeight: 38px;
 $radius: rem(20px);
+
 .ac {
   &__calendar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     padding: rem($headerHeight 0 0);
-
-    &__wrapper {
-      @include shadow(inset);
-      padding: rem(16px 12px 0);
-    }
 
     //탭
     &__tab {
@@ -32,7 +32,7 @@ $radius: rem(20px);
         &__menu {
           display: inline-block;
           width: 100%;
-          @include fontcss($black, 400, rem(12px), rem($buttonHeight));
+          @include fontcss($black, 400, rem(12px), rem($menuHeight));
 
           &.active {
             position: relative;
@@ -42,18 +42,27 @@ $radius: rem(20px);
             color: $white;
             font-weight: 600;
             box-shadow: rem(-3px -3px 3px 0) rgba(#bec1f8, 0.6),
-              inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6),
-              rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
+              inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6), rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
           }
         }
       }
     }
 
+    //하단 콘텐츠 wrapper
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      flex: 1 1 auto;
+      @include shadow(inset);
+      padding: rem(12px 12px 0);
+    }
+
     &__summary {
       display: flex;
       justify-content: space-around;
-      margin: rem(0 0 16px);
-      padding: rem(8px 0);
+      margin: rem(0 0 12px);
+      padding: rem(6px 0);
       border-radius: rem(20px);
       text-align: center;
       @include shadow();
@@ -77,13 +86,11 @@ $radius: rem(20px);
       }
     }
 
-    //캘린더
+    //캘린더 커스텀
     &__box {
-      display: inline-block;
+      flex: 1 1 auto;
       width: 100%;
       height: 100%;
-      height: rem(350px);
-      max-height: 47vh;
 
       .fc {
         height: calc(100% - #{rem(24px)});
@@ -96,9 +103,9 @@ $radius: rem(20px);
         position: absolute;
         top: 0;
         left: 0;
-        padding-top: rem(12px);
-        padding-top: calc(constant(safe-area-inset-top) + rem(12px));
-        padding-top: calc(env(safe-area-inset-top) + rem(12px));
+        padding-top: rem(16px);
+        padding-top: calc(constant(safe-area-inset-top) + rem(16px));
+        padding-top: calc(env(safe-area-inset-top) + rem(16px));
         width: 100%;
         height: rem($headerHeight);
         height: calc(constant(safe-area-inset-top) + #{rem($headerHeight)});
@@ -117,12 +124,11 @@ $radius: rem(20px);
           justify-content: center;
           flex: 0 0 rem($buttonHeight);
           margin-bottom: 0 !important;
-          padding: rem(0 10px);
+          padding: rem(0 8px);
           background: #a3a7e4;
           border-radius: $radius;
           box-shadow: rem(-3px -3px 3px 0) rgba(#bec1f8, 0.6),
-            inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6),
-            rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
+            inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6), rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
 
           .fc-toolbar-title {
             width: rem(140px);
@@ -173,13 +179,45 @@ $radius: rem(20px);
       //요일
       .fc-col-header-cell-cushion {
         font-family: $font_e, $noto;
-        @include fontcss($grey888, 600, rem(12px), 1.2);
+        @include fontcss($grey888, 600, rem(10px), 1.2);
       }
 
       //날짜
       .fc-daygrid-day-number {
+        padding-bottom: 0;
         font-family: $font_e, $noto;
-        @include fontcss($grey888, 400, rem(11px), 1.2);
+        @include fontcss($grey888, 400, rem(10px), 1.2);
+      }
+
+      //이벤트 각각 색상 제거
+      .fc-h-event {
+        background: none !important;
+        border: none !important;
+      }
+
+      //달력 한칸 height 조정
+      .fc-daygrid-day-frame {
+        min-height: rem(60px);
+      }
+
+      //이벤트 각각
+      .fc-daygrid-day-events {
+        // bottom: rem(2px);
+      }
+    }
+
+    //이벤트 각각
+    &__price {
+      display: block;
+      text-align: right;
+      @include fontcss($grey666, 600, rem(9px), 1.2);
+
+      &.plus {
+        color: $blue;
+      }
+
+      &.minus {
+        color: $red;
       }
     }
   }

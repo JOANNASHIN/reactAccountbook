@@ -27,21 +27,21 @@ function Dockbar(props: Props) {
 
   return (
     <nav className="ac__dockbar">
-      {dockbarMenus.map((menu) => {
-        return (
-          <Link
-            to={menu.path}
-            className={
-              currentPath === menu.path
-                ? 'ac__dockbar__menu active'
-                : 'ac__dockbar__menu'
-            }
-            key={menu.id}>
-            <Icon icon={menu.icon} />
-            <span className="blind">{menu.title}</span>
-          </Link>
-        );
-      })}
+      <div className="ac__dockbar__inner">
+        {dockbarMenus.map((menu) => {
+          return (
+            <Link
+              to={menu.path}
+              className={
+                currentPath === menu.path ? 'ac__dockbar__menu active' : 'ac__dockbar__menu'
+              }
+              key={menu.id}>
+              <Icon icon={menu.icon} />
+              <span className="blind">{menu.title}</span>
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }
