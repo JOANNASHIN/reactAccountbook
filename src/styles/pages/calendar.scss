@@ -1,14 +1,66 @@
-$headerHeight: 100px;
-$headerNav: 64px;
-
-.account {
+$headerHeight: 70px;
+$headerNav: 70px;
+$radius: rem(20px);
+.ac {
   &__calendar {
-    padding: rem($headerHeight 16px 0);
+    padding: rem($headerHeight 0 0);
+
+    &__wrapper {
+      @include shadow(inset);
+      padding: rem(24px 16px 0);
+    }
+
+    &__nav {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      margin: 0 auto;
+      padding: rem(4px 4px 0);
+      background: $point;
+      box-shadow: rem(0 3px 3px 0) rgba(#a2a3bd, 0.4);
+
+      .nav {
+        &__inner {
+          display: flex;
+          flex-wrap: nowrap;
+          justify-content: space-evenly;
+          position: relative;
+          z-index: 1;
+          border: {
+            top-left-radius: $radius !important;
+            top-right-radius: $radius !important;
+          }
+          padding: rem(4px 0 0);
+          // box-shadow: inset rem(-3px -3px 6px 0) rgba(#d5d6e9, 0.5),
+          //   inset rem(3px 0 6px 0) rgba(#9596b1, 0.5);
+        }
+
+        &__menu {
+          display: inline-block;
+          width: 100%;
+          @include fontcss($black, 400, rem(12px), rem(40px));
+
+          &.active {
+            position: relative;
+            z-index: 1;
+            border: {
+              top-left-radius: $radius !important;
+              top-right-radius: $radius !important;
+            }
+            background: #a3a7e4;
+            color: $white;
+            box-shadow: inset rem(-3px -3px 3px 0) rgba(#a2a3bd, 0.6),
+              rem(-3px -3px 3px 0) rgba(#5c5c68, 0.2),
+              rem(3px -3px 3px 0) rgba(#9596b1, 0.1);
+          }
+        }
+      }
+    }
 
     &__summary {
       display: flex;
       justify-content: space-around;
-      margin: rem(16px 0);
+      margin: rem(0 0 24px);
       padding: rem(8px 0);
       border-radius: rem(20px);
       text-align: center;
@@ -51,7 +103,7 @@ $headerNav: 64px;
         height: 100%;
       }
 
-      //헤더 툴바
+      //헤더 툴바 전체
       .fc-header-toolbar {
         display: flex;
         flex-direction: column;
@@ -80,26 +132,36 @@ $headerNav: 64px;
           flex: 0 0 rem($headerNav);
           width: 100%;
           margin-bottom: 0 !important;
+          padding-top: rem(20px);
 
-          button {
+          .fc-button {
             background: none;
             border: none;
-            border-radius: none !important;
+            padding: 0;
+            border-radius: 0 !important;
             color: $black;
+          }
+
+          .fc-icon {
+            font-size: rem(14px);
           }
         }
 
+        //today
         &:nth-child(2) {
-          display: none;
+          position: absolute;
+          top: rem(28px);
+          left: 50%;
+          transform: translateX(-50%);
+
+          button {
+            width: rem(80px);
+            opacity: 0;
+          }
         }
 
         &:nth-child(3) {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          flex: 1 1 auto;
-          overflow: hidden;
-          width: 100%;
+          display: none;
         }
       }
 
@@ -108,35 +170,16 @@ $headerNav: 64px;
         @include fontcss($black, 600, rem(13px));
       }
 
-      //탭 메뉴
-      .fc-button-group {
-        display: flex;
-        width: calc(100% - #{rem(32px)});
-        height: 85%;
-        margin: 0 auto;
+      //요일
+      .fc-col-header-cell-cushion {
+        font-family: $font_e, $noto;
+        @include fontcss($grey888, 600, rem(12px), 1.2);
+      }
 
-        button {
-          background: none;
-          border: none;
-          border-radius: 0 !important;
-          color: $black !important;
-          @include fontcss($black, 600, rem(13px));
-
-          &:focus {
-            box-shadow: none !important;
-          }
-        }
-
-        .fc-button-active {
-          overflow: hidden;
-          background: $bg !important;
-          border-top-left-radius: rem(10px) !important;
-          border-top-right-radius: rem(10px) !important;
-          border-bottom-left-radius: 0 !important;
-          border-bottom-right-radius: 0 !important;
-          border-bottom: 1px solid $bg !important;
-          box-shadow: rem(3px -3px 6px 0) rgba(76, 76, 76, 0.2);
-        }
+      //날짜
+      .fc-daygrid-day-number {
+        font-family: $font_e, $noto;
+        @include fontcss($grey888, 400, rem(11px), 1.2);
       }
     }
   }

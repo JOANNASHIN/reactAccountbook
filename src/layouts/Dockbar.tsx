@@ -26,15 +26,15 @@ function Dockbar(props: Props) {
   ];
 
   return (
-    <nav className="account__dockbar">
+    <nav className="ac__dockbar">
       {dockbarMenus.map((menu) => {
         return (
           <Link
             to={menu.path}
             className={
               currentPath === menu.path
-                ? 'account__dockbar__menu active'
-                : 'account__dockbar__menu'
+                ? 'ac__dockbar__menu active'
+                : 'ac__dockbar__menu'
             }
             key={menu.id}>
             <Icon icon={menu.icon} />

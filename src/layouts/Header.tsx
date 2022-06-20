@@ -4,8 +4,8 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 function Header() {
   return (
-    <header className="account__header">
-      <h1 className="account__logo">
+    <header className="ac__header">
+      <h1 className="ac__logo">
         <Icon icon={solid('wallet')} />
         <span>가계부</span>
       </h1>

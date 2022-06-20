@@ -5,7 +5,7 @@ import Property from '../pages/Property';
 
 export default function Router() {
   return (
-    <div className="account__contents">
+    <div className="ac__contents">
       <Routes>
         <Route path="/" element={<Calendar />} />
         <Route path="/property" element={<Property />} />
