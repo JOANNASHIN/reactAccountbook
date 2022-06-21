@@ -1,15 +1,14 @@
-import React, { Component, useEffect, useState } from 'react';
-import FullCalendar, { formatDate } from '@fullcalendar/react';
+import React, { useEffect, useRef, useState } from 'react';
+import FullCalendar from '@fullcalendar/react';
 import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import { INITIAL_EVENTS, createEventId } from './utils';
 import SummaryComponent, { Balance } from '../../components/Summary';
 
 type weekendsVisible = boolean;
 
-type TabKeys = 'c' | 'd' | 'w' | 's';
+type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
 
 interface Event {
   id: string;
@@ -71,12 +70,6 @@ function Calendar() {
             amount: '11000',
             title: '식비/점심',
           },
-          {
-            id: '13',
-            type: 'income',
-            amount: '2000',
-            title: '기타',
-          },
         ],
       },
     },
@@ -105,7 +98,7 @@ function Calendar() {
   // #endregion
 
   // #region summary
-  const [balance, setBalance] = useState({
+  const [balance, setBalance] = useState<Balance>({
     income: 0,
     spending: 0,
     total: 0,
@@ -128,6 +121,9 @@ function Calendar() {
         day.total -= +v.amount;
       }
     });
+
+    // 지출 - 비노출 처리
+    day.spending *= -1;
 
     return day;
   };
@@ -152,9 +148,6 @@ function Calendar() {
   // #endregion
 
   // #region full-calendar
-  /** 주말요일 노출 유무 */
-  const [weekendsVisible, setWeekendsVisible] = useState<weekendsVisible>(true);
-
   /** 렌더링 커스텀 */
   const renderCustomEvent = (eventInfo: any) => {
     const data = eventInfo.event?.extendedProps.data;
@@ -164,20 +157,44 @@ function Calendar() {
 
     return (
       <>
-        <span className="ac__calendar__price income">{day.income.toLocaleString('ko-kr')}</span>
+        {day.income !== 0 && (
+          <span className="ac__calendar__price income">{day.income.toLocaleString('ko-kr')}</span>
+        )}
         <span className="ac__calendar__price spending">{day.spending.toLocaleString('ko-kr')}</span>
-        <span className="ac__calendar__price balance">{day.total.toLocaleString('ko-kr')}</span>
+        {day.income !== 0 && (
+          <span className="ac__calendar__price balance">{day.total.toLocaleString('ko-kr')}</span>
+        )}
       </>
     );
   };
   // #endregion
 
   // #region tab 메뉴
-  const [activeTab, setActiveTab] = useState('c');
-  const handleChangeTab = (type: string) => {
-    setActiveTab(type);
+  const calendarRef = useRef<FullCalendar>(null);
+  const [isRender, setIsRender] = useState(false);
+
+  const [activeTab, setActiveTab] = useState<TabKeys>('dayGridMonth');
+  const handleChangeTab = async (key: TabKeys) => {
+    if (isRender) return;
+    setIsRender(true);
+
+    try {
+      // await calendarRef.current?.getApi().changeView(key);
+      setActiveTab(key);
+      setIsRender(false);
+    } catch (error) {
+      console.error('view update error');
+    }
   };
   // #endregion
+
+  const handleDateClick = (date: any) => {
+    console.log('팝업 오픈', date.view.getCurrentData());
+  };
+
+  const isActive = (key: TabKeys) => {
+    return activeTab === key ? 'tab__menu active' : 'tab__menu';
+  };
 
   return (
     <section className="ac__calendar">
@@ -187,30 +204,30 @@ function Calendar() {
         <div className="tab__inner">
           <button
             type="button"
-            className={activeTab === 'c' ? 'tab__menu active' : 'tab__menu'}
-            onClick={() => handleChangeTab('c')}>
+            className={isActive('dayGridMonth')}
+            onClick={() => handleChangeTab('dayGridMonth')}>
             달력
           </button>
 
           <button
             type="button"
-            className={activeTab === 'd' ? 'tab__menu active' : 'tab__menu'}
-            onClick={() => handleChangeTab('d')}>
+            className={isActive('listDay')}
+            onClick={() => handleChangeTab('listDay')}>
             일별
           </button>
 
           <button
             type="button"
-            className={activeTab === 'm' ? 'tab__menu active' : 'tab__menu'}
-            onClick={() => handleChangeTab('m')}>
-            월별
+            className={isActive('listWeek')}
+            onClick={() => handleChangeTab('listWeek')}>
+            주별
           </button>
 
           <button
             type="button"
-            className={activeTab === 's' ? 'tab__menu active' : 'tab__menu'}
-            onClick={() => handleChangeTab('s')}>
-            요약
+            className={isActive('listMonth')}
+            onClick={() => handleChangeTab('listMonth')}>
+            월별
           </button>
         </div>
       </nav>
@@ -219,7 +236,7 @@ function Calendar() {
         <SummaryComponent balance={balance} />
 
         {/* 월별 */}
-        {activeTab === 'c' && (
+        {activeTab === 'dayGridMonth' && (
           <div className="ac__calendar__box">
             <FullCalendar
               plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -234,14 +251,57 @@ function Calendar() {
               selectMirror
               dayMaxEvents
               events={list}
-              weekends={weekendsVisible}
+              weekends
+              viewHint={activeTab}
               eventContent={renderCustomEvent}
+              ref={calendarRef}
             />
           </div>
         )}
 
         {/* 일별 */}
-        {activeTab === 'd' && (
+        {activeTab === 'listDay' && (
+          <div className="ac__calendar__box">
+            <FullCalendar
+              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={{
+                left: 'prev title next',
+                center: 'today',
+              }}
+              initialView="listDay"
+              locale="kr"
+              editable
+              selectable
+              selectMirror
+              dayMaxEvents
+              events={list}
+              weekends
+            />
+          </div>
+        )}
+
+        {/* 주별 */}
+        {activeTab === 'listWeek' && (
+          <div className="ac__calendar__box">
+            <FullCalendar
+              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={{
+                left: 'prev title next',
+                center: 'today',
+              }}
+              initialView="listWeek"
+              locale="kr"
+              editable
+              selectable
+              selectMirror
+              dayMaxEvents
+              events={list}
+              weekends
+            />
+          </div>
+        )}
+
+        {activeTab === 'listMonth' && (
           <div className="ac__calendar__box">
             <FullCalendar
               plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -256,48 +316,7 @@ function Calendar() {
               selectMirror
               dayMaxEvents
               events={list}
-              weekends={weekendsVisible}
-            />
-          </div>
-        )}
-
-        {activeTab === 'm' && (
-          <div className="ac__calendar__box">
-            <FullCalendar
-              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={{
-                left: 'prev title next',
-                center: 'today',
-              }}
-              initialView="listYear"
-              locale="kr"
-              editable
-              selectable
-              selectMirror
-              dayMaxEvents
-              events={list}
-              weekends={weekendsVisible}
-            />
-          </div>
-        )}
-
-        {activeTab === 's' && (
-          <div className="ac__calendar__box">
-            <FullCalendar
-              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={{
-                left: 'prev title next',
-                center: 'today',
-              }}
-              initialView="dayGridMonth"
-              locale="kr"
-              editable
-              selectable
-              selectMirror
-              dayMaxEvents
-              events={list}
-              weekends={weekendsVisible}
-              eventContent={renderCustomEvent}
+              weekends
             />
           </div>
         )}

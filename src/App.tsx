@@ -7,10 +7,17 @@ import Routes from './routes';
 function App() {
   // #region location update
   const [currentPath, setCurrentPath] = useState('/');
+  const [currentId, setCurrentId] = useState('calendar');
   const location = useLocation();
+
+  const getCurrentId = (path: string) => {
+    if (path === '/') return 'calendar';
+    return 'property';
+  };
 
   useEffect(() => {
     setCurrentPath(location.pathname);
+    setCurrentId(getCurrentId(location.pathname));
   }, [location.pathname]);
   // #endregion
 
@@ -42,7 +49,7 @@ function App() {
   // #endregion
 
   return (
-    <div className="ac__layout">
+    <div className="ac__layout" id={currentId}>
       <Header />
       <Routes />
       <Dockbar currentPath={currentPath} />

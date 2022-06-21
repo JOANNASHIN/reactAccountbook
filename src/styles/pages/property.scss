@@ -1,3 +1,70 @@
 .property {
-  background: red;
+  overflow-y: auto;
+  height: 100%;
+  padding: rem(16px 12px);
+
+  &__title {
+    display: block;
+    margin-bottom: rem(24px);
+    @include fontcss($black, bold, rem(20px), 1.2);
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__wallet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 100%;
+    position: relative;
+    padding: rem(12px);
+    margin: rem(8px 0);
+    border-radius: rem(10px);
+    @include shadow();
+
+    &:after {
+      content: '';
+      display: block;
+      padding-bottom: 50%;
+    }
+
+    &.cash {
+      background: $mint;
+    }
+
+    &.card {
+      background: $point;
+    }
+
+    &.bank {
+      background: $lightblue;
+    }
+
+    &.saving {
+      background: $yellow;
+    }
+
+    &.investment {
+      background: $green;
+    }
+
+    &__name {
+      position: absolute;
+      top: rem(16px);
+      left: rem(16px);
+      @include fontcss($black, 600, rem(14px), 1.2);
+    }
+
+    &__amount {
+      @include fontcss($black, 400, rem(18px), 1);
+
+      em {
+        @include fontcss($black, 600, rem(24px), 1);
+        letter-spacing: 0;
+      }
+    }
+  }
 }

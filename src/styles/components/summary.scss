@@ -1,0 +1,29 @@
+.summary {
+  display: flex;
+  justify-content: space-around;
+  margin: rem(0 0 12px);
+  padding: rem(6px 0);
+  border-radius: rem(20px);
+  text-align: center;
+  @include shadow();
+
+  &__title {
+    @include fontcss($grey666, 600, rem(12px));
+  }
+
+  &__amount {
+    @include fontcss($black, 400, rem(12px));
+
+    em {
+      @include fontcss(inherit, 600, rem(13px));
+    }
+
+    &--income {
+      color: $blue;
+    }
+
+    &--spending {
+      color: $red;
+    }
+  }
+}

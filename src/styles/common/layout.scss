@@ -14,10 +14,25 @@
     position: relative;
     width: 100%;
     height: 100%;
-    padding: rem(0 0 70px);
-    padding: rem(constant(safe-area-inset-top) 0)
-      calc(constant(safe-area-inset-bottom) + #{rem(70px)});
-    padding: rem(env(safe-area-inset-top) 0) calc(env(safe-area-inset-bottom) + #{rem(70px)});
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: calc(1vh + #{rem(62px)});
+    // padding: rem(0 0 70px);
+    // padding: rem(constant(safe-area-inset-top) 0)
+    //   calc(constant(safe-area-inset-bottom) + #{rem(70px)});
+    // padding: rem(env(safe-area-inset-top) 0) calc(env(safe-area-inset-bottom) + #{rem(70px)});
+
+    &#property {
+      padding-bottom: 0;
+
+      .ac__dockbar {
+        &__inner {
+          background: $bg;
+          box-shadow: rem(-3px -3px 6px 0) rgba(76, 76, 76, 0.2),
+            rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
+        }
+      }
+    }
   }
 
   &__header {
@@ -63,20 +78,20 @@
     position: fixed;
     left: 0;
     right: 0;
-    bottom: rem(0);
-    bottom: calc(constant(safe-area-inset-bottom) + #{rem(0)});
-    bottom: calc(env(safe-area-inset-bottom) + #{rem(0)});
+    // bottom: rem(10px);
+    // bottom: calc(constant(safe-area-inset-bottom) + #{rem(10px)});
+    // bottom: calc(env(safe-area-inset-bottom) + #{rem(10px)});
+    bottom: 1vh;
     z-index: 1;
     width: 100%;
-    height: rem(70px);
     padding: rem(0 70px);
 
     &__inner {
       display: flex;
       justify-content: center;
-      border-radius: rem(20px);
       width: 100%;
-      padding: rem(8px 0);
+      padding: rem(10px 0);
+      border-radius: rem(20px);
       @include shadow();
     }
 
@@ -124,12 +139,6 @@
       margin: rem(0 20px);
       color: $greyccc;
       font-size: rem(28px);
-
-      // &:after {
-      //   content: '';
-      //   display: block;
-      //   padding-bottom: 77%;
-      // }
 
       &.active {
         color: $point;

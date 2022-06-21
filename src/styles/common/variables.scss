@@ -6,13 +6,18 @@
   //primary
   --background: #f0f0f0;
   --point: #acb0ee; //#a3a7e4 // #8cabfe; //#f5cd41; //#fec815;
+
+  //
+  --red: #f9173f; //#ff2d21;
   --blue: #307bc0;
 
   //support
   --yellow: #f5cd41;
-  --red: #f9173f; //#ff2d21;
-  --green: #00c751;
-  --mint: #1bbbc6;
+  --green: #91ce81;
+  --mint: #c3e2dd; //#1bbbc6;
+  --lightblue: #6eceda; //#1bbbc6;
+  --pink: #f07bbb; //#e33e8d;
+  --purple: #8c7bd3;
 
   //neutrals
   --white: #fff;
@@ -45,13 +50,16 @@ $black: var(--black);
 //primary
 $bg: var(--background);
 $point: var(--point);
-$blue: var(--blue);
 
 //support
-$yellow: var(--yellow);
 $red: var(--red);
+$blue: var(--blue);
+$yellow: var(--yellow);
 $green: var(--green);
+$lightblue: var(--lightblue);
 $mint: var(--mint);
+$pink: var(--pink);
+$purple: var(--purple);
 
 //neutrals
 $greyf8: var(--grey50);

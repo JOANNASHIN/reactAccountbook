@@ -23,23 +23,26 @@ export default function SummaryComponent(props: Props) {
   Object.assign(summary, balance);
 
   return (
-    <div className="ac__calendar__summary">
+    <div className="summary">
       <dl className="summary__list">
         <dt className="summary__title">수입</dt>
         <dd className="summary__amount summary__amount--income">
-          {summary.income.toLocaleString('ko-kr')}
+          <em>{summary.income.toLocaleString('ko-kr')}</em>
+          <span>원</span>
         </dd>
       </dl>
       <dl className="summary__list">
         <dt className="summary__title">지출</dt>
         <dd className="summary__amount summary__amount--spending">
-          {summary.spending.toLocaleString('ko-kr')}
+          <em>{summary.spending.toLocaleString('ko-kr')}</em>
+          <span>원</span>
         </dd>
       </dl>
       <dl className="summary__list">
         <dt className="summary__title">총합</dt>
         <dd className="summary__amount summary__amount--balance">
-          {summary.total.toLocaleString('ko-kr')}
+          <em>{summary.total.toLocaleString('ko-kr')}</em>
+          <span>원</span>
         </dd>
       </dl>
     </div>

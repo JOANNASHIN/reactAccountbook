@@ -10,5 +10,9 @@ $rem-baseline: 10px;
 @import './common/layout.scss';
 @import './common/common.scss';
 
+//components
+@import './components/summary.scss';
+
 //pages
 @import './pages/calendar.scss';
+@import './pages/property.scss';
