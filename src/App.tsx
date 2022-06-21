@@ -49,7 +49,7 @@ function App() {
   // #endregion
 
   return (
-    <div className="ac__layout" id={currentId}>
+    <div id={currentId} className="ac__layout">
       <Header />
       <Routes />
       <Dockbar currentPath={currentPath} />

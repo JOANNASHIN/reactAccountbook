@@ -43,12 +43,7 @@ $lineheights: (
   2.8rem: rem(42px),
 );
 
-@mixin fontcss(
-  $color: $black,
-  $weight: 200,
-  $size: rem(13px),
-  $lineheight: none
-) {
+@mixin fontcss($color: $black, $weight: 200, $size: rem(13px), $lineheight: none) {
   @if ($color) {
     color: $color;
   }
@@ -77,4 +72,27 @@ $lineheights: (
 
   // box-shadow: inset $white1 3px 3px 2px 0px, inset $black1 -3px -3px 2px 0px,
   //   $white2 -3px -3px 2px 0px, $black1 2px 2px 4px 0px;
+}
+
+@mixin safeArea($target: 'padding-bottom', $px: rem(16px), $direction: 'top') {
+  @if ($px == '') {
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+  } @else if ($target == 'padding-bottom') {
+    padding-bottom: $px;
+    padding-bottom: calc(constant(safe-area-inset-#{$direction}) + $px);
+    padding-bottom: calc(env(safe-area-inset-#{$direction}) + $px);
+  } @else if ($target == 'padding-top') {
+    padding-top: $px;
+    padding-top: calc(constant(safe-area-inset-#{$direction}) + $px);
+    padding-top: calc(env(safe-area-inset-#{$direction}) + $px);
+  } @else if ($target == 'height') {
+    height: $px;
+    height: calc(constant(safe-area-inset-#{$direction}) + $px);
+    height: calc(env(safe-area-inset-#{$direction}) + $px);
+  }
+}
+
+@function dim($opacity: 0.5) {
+  @return rgba(#111, $opacity);
 }

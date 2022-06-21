@@ -12,7 +12,8 @@ interface Props {
 }
 
 export { Balance };
-export default function SummaryComponent(props: Props) {
+
+function SummaryComponent(props: Props) {
   const { balance } = props;
   const summary: Balance = {
     income: 0,
@@ -48,3 +49,5 @@ export default function SummaryComponent(props: Props) {
     </div>
   );
 }
+
+export default SummaryComponent;

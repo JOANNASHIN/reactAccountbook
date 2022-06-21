@@ -5,8 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import SummaryComponent, { Balance } from '../../components/Summary';
-
-type weekendsVisible = boolean;
+import Modal from '../../components/Modal';
 
 type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
 
@@ -158,11 +157,11 @@ function Calendar() {
     return (
       <>
         {day.income !== 0 && (
-          <span className="ac__calendar__price income">{day.income.toLocaleString('ko-kr')}</span>
+          <span className="calendar__price income">{day.income.toLocaleString('ko-kr')}</span>
         )}
-        <span className="ac__calendar__price spending">{day.spending.toLocaleString('ko-kr')}</span>
+        <span className="calendar__price spending">{day.spending.toLocaleString('ko-kr')}</span>
         {day.income !== 0 && (
-          <span className="ac__calendar__price balance">{day.total.toLocaleString('ko-kr')}</span>
+          <span className="calendar__price balance">{day.total.toLocaleString('ko-kr')}</span>
         )}
       </>
     );
@@ -188,8 +187,24 @@ function Calendar() {
   };
   // #endregion
 
+  const [modal, setModal] = useState({
+    title: '',
+    isShow: false,
+  });
   const handleDateClick = (date: any) => {
-    console.log('팝업 오픈', date.view.getCurrentData());
+    console.log('팝업 오픈', date.view, date.view.currentStart, date.view.getCurrentData());
+
+    setModal({
+      title: '팝업',
+      isShow: true,
+    });
+  };
+
+  const handleCloseModal = () => {
+    setModal({
+      title: '',
+      isShow: false,
+    });
   };
 
   const isActive = (key: TabKeys) => {
@@ -197,10 +212,17 @@ function Calendar() {
   };
 
   return (
-    <section className="ac__calendar">
+    <section className="calendar">
       <h2 className="blind">캘린더</h2>
 
-      <nav className="ac__calendar__tab">
+      {modal.isShow && (
+        <Modal title={modal.title} onClose={handleCloseModal}>
+          <h1 className="Dialog-title">Welcome</h1>
+          <p className="Dialog-message">Thank you for visiting our spacecraft!</p>
+        </Modal>
+      )}
+
+      <nav className="calendar__tab">
         <div className="tab__inner">
           <button
             type="button"
@@ -232,12 +254,12 @@ function Calendar() {
         </div>
       </nav>
 
-      <div className="ac__calendar__wrapper">
+      <div className="calendar__wrapper">
         <SummaryComponent balance={balance} />
 
         {/* 월별 */}
         {activeTab === 'dayGridMonth' && (
-          <div className="ac__calendar__box">
+          <div className="calendar__box">
             <FullCalendar
               plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={{
@@ -252,7 +274,7 @@ function Calendar() {
               dayMaxEvents
               events={list}
               weekends
-              viewHint={activeTab}
+              dateClick={handleDateClick}
               eventContent={renderCustomEvent}
               ref={calendarRef}
             />
@@ -261,7 +283,7 @@ function Calendar() {
 
         {/* 일별 */}
         {activeTab === 'listDay' && (
-          <div className="ac__calendar__box">
+          <div className="calendar__box">
             <FullCalendar
               plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={{
@@ -282,7 +304,7 @@ function Calendar() {
 
         {/* 주별 */}
         {activeTab === 'listWeek' && (
-          <div className="ac__calendar__box">
+          <div className="calendar__box">
             <FullCalendar
               plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={{
@@ -302,7 +324,7 @@ function Calendar() {
         )}
 
         {activeTab === 'listMonth' && (
-          <div className="ac__calendar__box">
+          <div className="calendar__box">
             <FullCalendar
               plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
               headerToolbar={{

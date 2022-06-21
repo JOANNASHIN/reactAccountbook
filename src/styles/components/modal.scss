@@ -1,0 +1,176 @@
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+
+  &--show {
+    display: block;
+  }
+
+  //POPOVER 케이스
+  &.popover {
+    position: absolute;
+    top: calc(100% + #{rem(8px)});
+    left: 0;
+    right: 0;
+    z-index: 10;
+    height: auto;
+
+    .modal__layer {
+      top: auto;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      width: rem(280px);
+      border: 1px solid $black;
+      box-shadow: rem(0 3px 6px 0) dim(0.08);
+    }
+
+    .modal__content {
+      padding: rem(16px 15px);
+    }
+  }
+
+  &__mask {
+    width: 100%;
+    height: 100%;
+    background-color: dim(0.6);
+    font-size: 0;
+  }
+
+  &__layer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    position: absolute;
+    z-index: 1;
+    background: $white;
+
+    //모달 FULL-LAYER 타입
+    &.modalFull {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      .modal {
+        &__header {
+          padding-left: rem(56px);
+        }
+        &__title {
+          text-align: center;
+        }
+
+        &__body {
+          padding: rem(20px 16px);
+
+          &.padding16 {
+            padding: rem(16px) !important;
+          }
+        }
+      }
+    }
+
+    //모달 스크롤 타입 (DEFAULT)
+    &.modalScroll {
+      top: 50%;
+      left: 50%;
+      width: calc(100% - #{rem(48px)});
+      max-height: calc(100% - #{rem(160px)});
+      transform: translate(-50%, -50%);
+
+      .modal__body {
+        padding: rem(12px);
+      }
+    }
+
+    //모달 BOTTOM 타입
+    &.modalBottom {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-height: 80vh;
+
+      .modal {
+        &__header {
+          flex: 0 0 rem(40px);
+          padding: rem(16px 16px 0);
+          border-bottom: 0;
+        }
+
+        &__close {
+          top: auto;
+          transform: none;
+          bottom: 0;
+        }
+
+        &__body {
+          padding: rem(0 16px 32px);
+        }
+      }
+    }
+
+    //하단 버튼 플로팅 케이스
+    &.fixedFooter {
+      .modal {
+        &__body {
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          overflow: hidden;
+          height: 100%;
+          padding: 0;
+        }
+
+        &__content {
+          overflow: auto;
+          flex: 1 1 auto !important;
+          height: 100%;
+          padding: rem(16px 20px);
+        }
+
+        &__footer {
+          flex: 0 0 rem(56px);
+        }
+      }
+    }
+  }
+
+  &__header {
+    flex: 0 0 rem(52px);
+    position: relative;
+    padding: rem(14px 56px 14px 16px);
+    border-bottom: 1px solid $greye8;
+    box-sizing: border-box;
+  }
+
+  &__title {
+    @include fontcss($black, 600, rem(16px), rem(24px));
+    text-align: left;
+  }
+
+  &__close {
+    position: absolute;
+    top: 50%;
+    right: rem(16px);
+    width: rem(24px);
+    height: rem(24px);
+    transform: translate(0, -50%);
+    color: $grey666;
+    font-size: rem(20px);
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    overflow-y: scroll;
+
+    &.noPadding {
+      padding: 0 !important;
+    }
+  }
+}

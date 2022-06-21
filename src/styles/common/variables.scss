@@ -7,17 +7,16 @@
   --background: #f0f0f0;
   --point: #acb0ee; //#a3a7e4 // #8cabfe; //#f5cd41; //#fec815;
 
-  //
+  //support
   --red: #f9173f; //#ff2d21;
   --blue: #307bc0;
-
-  //support
   --yellow: #f5cd41;
   --green: #91ce81;
   --mint: #c3e2dd; //#1bbbc6;
   --lightblue: #6eceda; //#1bbbc6;
   --pink: #f07bbb; //#e33e8d;
   --purple: #8c7bd3;
+  --orange: #f99769; //#f89932;
 
   //neutrals
   --white: #fff;
@@ -60,6 +59,7 @@ $lightblue: var(--lightblue);
 $mint: var(--mint);
 $pink: var(--pink);
 $purple: var(--purple);
+$orange: var(--orange);
 
 //neutrals
 $greyf8: var(--grey50);
@@ -76,3 +76,5 @@ $noto: var(--noto);
 $font_n: var(--font_n);
 $font_e: var(--font_e);
 /* #endregion */
+
+$radius: rem(20px);
