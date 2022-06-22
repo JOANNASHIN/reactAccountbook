@@ -5,19 +5,21 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import SummaryComponent, { Balance } from '../../components/Summary';
-import Modal from '../../components/Modal';
+import ModalComponent from '../../components/Modal';
 
 type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
 
-interface Event {
+interface Item {
   id: string;
   type: string;
-  amount: string;
+  category: string;
+  amount: number;
   title: string;
+  property: string;
 }
 
 interface CustomProps {
-  data: Event[];
+  data: Item[];
 }
 
 interface EventList {
@@ -27,9 +29,15 @@ interface EventList {
   extendedProps: CustomProps;
 }
 
+interface CalendarModal {
+  title: string;
+  isShow: boolean;
+  data: null | Item[];
+}
+
 function Calendar() {
   // #region 샘플데이터
-  const list: EventList[] = [
+  const eventList: EventList[] = [
     {
       id: '0',
       start: '2022-06-12',
@@ -39,14 +47,18 @@ function Calendar() {
           {
             id: '01',
             type: 'spending',
-            amount: '8000',
+            amount: 8000,
             title: '석식대',
+            category: '식비/아침',
+            property: '삼성카드',
           },
           {
             id: '02',
             type: 'income',
-            amount: '2000',
-            title: '이자',
+            category: '월급',
+            amount: 1000000,
+            title: '6월 월급',
+            property: '신한은행',
           },
         ],
       },
@@ -60,35 +72,115 @@ function Calendar() {
           {
             id: '11',
             type: 'spending',
-            amount: '1200',
+            amount: 1200,
             title: '식비/아침',
+            category: '식비/아침',
+            property: '삼성카드',
           },
           {
             id: '12',
             type: 'spending',
-            amount: '11000',
+            amount: 11000,
             title: '식비/점심',
+            category: '식비/아침',
+            property: '삼성카드',
           },
         ],
       },
     },
     {
-      id: '1',
+      id: '2',
       start: '2022-06-21',
       title: '2022-06-21',
       extendedProps: {
         data: [
           {
-            id: '11',
+            id: '2-001',
             type: 'spending',
-            amount: '1500',
+            amount: 1500,
             title: '왕만두',
+            category: '식비/아침',
+            property: '삼성카드',
           },
           {
-            id: '13',
+            id: '2-002',
             type: 'income',
-            amount: '87',
+            amount: 87,
             title: '토스',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-003',
+            type: 'spending',
+            amount: 1500,
+            title: '왕만두',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-004',
+            type: 'income',
+            amount: 87,
+            title: '토스',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-005',
+            type: 'spending',
+            amount: 1500,
+            title: '왕만두',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-006',
+            type: 'income',
+            amount: 87,
+            title: '토스',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-007',
+            type: 'income',
+            amount: 87,
+            title: '토스',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-008',
+            type: 'spending',
+            amount: 1500,
+            title: '왕만두',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-009',
+            type: 'income',
+            amount: 87,
+            title: '토스',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-010',
+            type: 'spending',
+            amount: 1500,
+            title: '왕만두',
+            category: '식비/아침',
+            property: '삼성카드',
+          },
+          {
+            id: '2-011',
+            type: 'income',
+            amount: 87,
+            title: '마지막',
+            category: '식비/아침',
+            property: '삼성카드',
           },
         ],
       },
@@ -104,14 +196,14 @@ function Calendar() {
   });
 
   /** 수입 지출 계산 */
-  const calcSummaryBalance = (data: Event[]) => {
+  const calcSummaryBalance = (data: Item[]) => {
     const day = {
       income: 0,
       spending: 0,
       total: 0,
     };
 
-    data.forEach((v: Event) => {
+    data.forEach((v: Item) => {
       if (v.type === 'income') {
         day.income += +v.amount;
         day.total += +v.amount;
@@ -135,8 +227,11 @@ function Calendar() {
       total: 0,
     };
 
-    list.forEach((v) => {
-      const result = { ...month, ...calcSummaryBalance(v.extendedProps?.data) };
+    eventList.forEach((v) => {
+      const result = {
+        ...month,
+        ...calcSummaryBalance(v.extendedProps?.data),
+      };
       month.income += result.income;
       month.spending += result.spending;
       month.total += result.total;
@@ -157,11 +252,17 @@ function Calendar() {
     return (
       <>
         {day.income !== 0 && (
-          <span className="calendar__price income">{day.income.toLocaleString('ko-kr')}</span>
+          <span className="calendar__event income">
+            {day.income.toLocaleString('ko-kr')}
+          </span>
         )}
-        <span className="calendar__price spending">{day.spending.toLocaleString('ko-kr')}</span>
+        <span className="calendar__event spending">
+          {day.spending.toLocaleString('ko-kr')}
+        </span>
         {day.income !== 0 && (
-          <span className="calendar__price balance">{day.total.toLocaleString('ko-kr')}</span>
+          <span className="calendar__event balance">
+            {day.total.toLocaleString('ko-kr')}
+          </span>
         )}
       </>
     );
@@ -173,6 +274,11 @@ function Calendar() {
   const [isRender, setIsRender] = useState(false);
 
   const [activeTab, setActiveTab] = useState<TabKeys>('dayGridMonth');
+
+  const isActive = (key: TabKeys) => {
+    return activeTab === key ? 'tab__menu active' : 'tab__menu';
+  };
+
   const handleChangeTab = async (key: TabKeys) => {
     if (isRender) return;
     setIsRender(true);
@@ -187,16 +293,28 @@ function Calendar() {
   };
   // #endregion
 
-  const [modal, setModal] = useState({
+  // #region modal
+  const [modal, setModal] = useState<CalendarModal>({
     title: '',
     isShow: false,
+    data: null,
   });
-  const handleDateClick = (date: any) => {
-    console.log('팝업 오픈', date.view, date.view.currentStart, date.view.getCurrentData());
+
+  const handleDateClick = (info: any) => {
+    setModal({
+      title: info.dateStr,
+      isShow: true,
+      data: null,
+    });
+  };
+
+  const handleEventClick = ({ event }: any) => {
+    const { data } = event.extendedProps;
 
     setModal({
-      title: '팝업',
+      title: event.title,
       isShow: true,
+      data,
     });
   };
 
@@ -204,24 +322,16 @@ function Calendar() {
     setModal({
       title: '',
       isShow: false,
+      data: null,
     });
   };
-
-  const isActive = (key: TabKeys) => {
-    return activeTab === key ? 'tab__menu active' : 'tab__menu';
-  };
+  // #endregion
 
   return (
     <section className="calendar">
       <h2 className="blind">캘린더</h2>
 
-      {modal.isShow && (
-        <Modal title={modal.title} onClose={handleCloseModal}>
-          <h1 className="Dialog-title">Welcome</h1>
-          <p className="Dialog-message">Thank you for visiting our spacecraft!</p>
-        </Modal>
-      )}
-
+      {/* 탭 메뉴 */}
       <nav className="calendar__tab">
         <div className="tab__inner">
           <button
@@ -254,14 +364,20 @@ function Calendar() {
         </div>
       </nav>
 
+      {/* 콘텐츠 */}
       <div className="calendar__wrapper">
         <SummaryComponent balance={balance} />
 
-        {/* 월별 */}
+        {/* 달력 콘텐츠 */}
         {activeTab === 'dayGridMonth' && (
           <div className="calendar__box">
             <FullCalendar
-              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              plugins={[
+                listPlugin,
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+              ]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -272,20 +388,26 @@ function Calendar() {
               selectable
               selectMirror
               dayMaxEvents
-              events={list}
+              events={eventList}
               weekends
               dateClick={handleDateClick}
+              eventClick={handleEventClick}
               eventContent={renderCustomEvent}
               ref={calendarRef}
             />
           </div>
         )}
 
-        {/* 일별 */}
+        {/* 일별 콘텐츠 */}
         {activeTab === 'listDay' && (
           <div className="calendar__box">
             <FullCalendar
-              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              plugins={[
+                listPlugin,
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+              ]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -296,17 +418,22 @@ function Calendar() {
               selectable
               selectMirror
               dayMaxEvents
-              events={list}
+              events={eventList}
               weekends
             />
           </div>
         )}
 
-        {/* 주별 */}
+        {/* 주별 콘텐츠 */}
         {activeTab === 'listWeek' && (
           <div className="calendar__box">
             <FullCalendar
-              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              plugins={[
+                listPlugin,
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+              ]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -317,16 +444,22 @@ function Calendar() {
               selectable
               selectMirror
               dayMaxEvents
-              events={list}
+              events={eventList}
               weekends
             />
           </div>
         )}
 
+        {/* 월별 콘텐츠 */}
         {activeTab === 'listMonth' && (
           <div className="calendar__box">
             <FullCalendar
-              plugins={[listPlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              plugins={[
+                listPlugin,
+                dayGridPlugin,
+                timeGridPlugin,
+                interactionPlugin,
+              ]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -337,12 +470,56 @@ function Calendar() {
               selectable
               selectMirror
               dayMaxEvents
-              events={list}
+              events={eventList}
               weekends
             />
           </div>
         )}
+
+        <button type="button" className="calendar__plus ac__plus--yellow">
+          추가하기
+        </button>
       </div>
+
+      {/* 상세 모달 */}
+      {modal.isShow && (
+        <ModalComponent title={modal.title} onClose={handleCloseModal}>
+          <div className="calendar__date-details">
+            <ul className="details__cont">
+              {modal.data ? (
+                modal.data.map((event) => {
+                  return (
+                    <li className="details__event" key={event.id}>
+                      <span className="details__event__type">
+                        {event.category}
+                      </span>
+                      <div className="details__event__detail">
+                        <span className="details__event__title">
+                          {event.title}
+                        </span>
+                        <span className="details__event__method">
+                          {event.property}
+                        </span>
+                      </div>
+                      <span className={`details__event__price ${event.type}`}>
+                        <em>{event.amount.toLocaleString('ko-kr')}</em>원
+                      </span>
+                    </li>
+                  );
+                })
+              ) : (
+                <li className="details__empty">데이터가 없습니다.</li>
+              )}
+            </ul>
+
+            <nav className="details__nav">
+              <button type="button" className="ac__plus--yellow">
+                추가하기
+              </button>
+            </nav>
+          </div>
+        </ModalComponent>
+      )}
     </section>
   );
 }

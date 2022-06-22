@@ -26,6 +26,7 @@ module.exports = {
     'react/jsx-filename-extension': 0, // react 파일은 jsx로 선언해야하는거 끄기
     'no-unused-vars': 1, // 선언하고 사용하지않은 변수 1은 warning /0은 error
     'no-restricted-globals': ['error', 'event', 'fdescribe'],
+    'no-console': 'off', // 콘솔에 노란줄 삭제
   },
   env: {
     browser: true,

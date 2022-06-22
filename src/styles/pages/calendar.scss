@@ -8,16 +8,6 @@ $calendarTab: 36px;
   height: 100%;
   padding: rem($calendarHeader 0 0);
 
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: rem($calendarHeader);
-    background: $point;
-  }
-
   //탭
   &__tab {
     position: relative;
@@ -50,7 +40,8 @@ $calendarTab: 36px;
           color: $white;
           font-weight: 600;
           box-shadow: rem(-3px -3px 3px 0) rgba(#bec1f8, 0.6),
-            inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6), rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
+            inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6),
+            rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
         }
       }
     }
@@ -60,10 +51,10 @@ $calendarTab: 36px;
   &__wrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
     flex: 1 1 auto;
-    @include shadow(inset);
+    height: 100%;
     padding: rem(12px 12px 0);
+    @include shadow(inset);
   }
 
   //캘린더 커스텀
@@ -89,6 +80,8 @@ $calendarTab: 36px;
       @include safeArea('padding-top', rem(16px));
       margin-bottom: 0 !important;
       background: $point;
+      //
+      padding-right: rem(30px);
     }
 
     //헤더 툴바 각각
@@ -106,7 +99,8 @@ $calendarTab: 36px;
         background: #a3a7e4;
         border-radius: $radius;
         box-shadow: rem(-3px -3px 3px 0) rgba(#bec1f8, 0.6),
-          inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6), rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
+          inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6),
+          rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
 
         //날짜 2022.06
         .fc-toolbar-title {
@@ -179,7 +173,7 @@ $calendarTab: 36px;
 
     //달력 한칸 height 조정
     .fc-daygrid-day-frame {
-      min-height: rem(60px);
+      height: rem(50px);
     }
 
     //n일 타이틀 좌측 정렬
@@ -188,7 +182,7 @@ $calendarTab: 36px;
     }
 
     .fc-daygrid-day-events {
-      height: calc(100% - #{rem(16px)});
+      height: calc(100% - #{rem(20px)});
     }
 
     .fc-daygrid-event-harness,
@@ -204,26 +198,18 @@ $calendarTab: 36px;
       justify-content: flex-end;
       width: 100%;
       height: 100%;
-      padding-right: rem(2px);
     }
   }
 
   //이벤트 각각
-  &__price {
+  &__event {
     display: block;
     font-family: sans-serif;
     @include fontcss($grey666, 400, rem(9px), 1.2);
     text-align: right;
     letter-spacing: 0;
 
-    &.income {
-      color: $blue;
-    }
-
-    &.spending {
-      color: $red;
-    }
-
+    //@TODO: 숫자 길어질때
     &.size8 {
       font-size: rem(8px);
     }
@@ -241,6 +227,173 @@ $calendarTab: 36px;
     }
     &.size3 {
       font-size: rem(3px);
+    }
+  }
+
+  //추가하기
+  &__plus {
+    position: absolute;
+    bottom: calc(1vh + #{rem(50px)});
+    transform: translateY(-100%);
+    right: rem(20px);
+    z-index: 10;
+    // display: inline-block;
+    // width: rem(50px);
+    // height: rem(50px);
+    // font-size: 0;
+    // line-height: 0;
+    // border-radius: 50%;
+    // background: $yellow;
+    // box-shadow: inset rem(0 0 2px 2px) rgba(76, 76, 76, 0.1),
+    //   rem(0 0 3px) 1px rgba(76, 76, 76, 0.2);
+
+    // &:after {
+    //   content: '+';
+    //   display: inline-block;
+    //   width: 100%;
+    //   height: 100%;
+    //   border-radius: 100%;
+    //   text-align: center;
+    //   @include fontcss($white, 200, rem(40px), rem(50px));
+    // }
+  }
+
+  //상세내용보기 모달
+  &__date-details {
+    padding: rem(12px 16px);
+
+    .details {
+      &__cont {
+        overflow-y: auto;
+        max-height: 100%;
+
+        //@TODO:
+        &::-webkit-scrollbar {
+          display: none;
+
+          &-thumb {
+            display: none;
+          }
+
+          &-button {
+            display: none;
+          }
+        }
+      }
+
+      &__event {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: rem(8px 0);
+        border-bottom: 1px solid $greye8;
+
+        &:first-of-type {
+          padding-top: 0;
+        }
+
+        &:last-of-type {
+          border-bottom: 0;
+        }
+
+        &__type {
+          flex: 0 0 20%;
+          @include fontcss($grey888, 400, rem(11px), 1.2);
+          letter-spacing: 0;
+        }
+
+        &__detail {
+          flex: 1 1 auto;
+        }
+
+        &__title {
+          display: block;
+          @include fontcss($black, 400, rem(12px), 1.2);
+        }
+
+        &__method {
+          @include fontcss($grey888, 400, rem(10px), 1.2);
+          letter-spacing: 0;
+        }
+
+        &__price {
+          flex: 0 0 30%;
+          @include fontcss($grey888, 400, rem(12px), 1.2);
+          text-align: right;
+
+          em {
+            @include fontcss(inherit, 600, rem(13px), 1.2);
+            letter-spacing: -0.02em;
+          }
+        }
+      }
+
+      &__nav {
+        position: absolute;
+        bottom: rem(-65px);
+        left: 0;
+        right: 0;
+        color: $grey888;
+        font-size: rem(20px);
+        text-align: center;
+      }
+
+      &__add {
+        display: inline-block;
+        width: rem(50px);
+        height: rem(50px);
+        font-size: 0;
+        line-height: 0;
+        border-radius: 50%;
+        background: $yellow;
+        box-shadow: inset rem(0 0 4px 2px) rgba(#a78a27, 0.4),
+          rem(0 0 4px 2px) rgba(76, 76, 76, 0.2);
+
+        &:after {
+          content: '+';
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          border-radius: 100%;
+          text-align: center;
+          @include fontcss($white, 200, rem(40px), rem(50px));
+        }
+      }
+
+      // &__nav {
+      //   position: absolute;
+      //   top: rem(9px);
+      //   right: rem(16px);
+      //   color: $grey888;
+      //   font-size: rem(20px);
+      // }
+
+      // &__add {
+      //   display: inline-block;
+      //   width: rem(32px);
+      //   height: rem(32px);
+      //   font-size: 0;
+      //   line-height: 0;
+      //   border-radius: 50%;
+      //   background: $yellow;
+      //   @include shadow();
+
+      //   &:after {
+      //     content: '+';
+      //     display: inline-block;
+      //     width: 100%;
+      //     height: 100%;
+      //     border-radius: 100%;
+      //     text-align: center;
+      //     @include fontcss($white, 200, rem(32px), rem(32px));
+      //   }
+      // }
+
+      &__empty {
+        padding: rem(60px 0);
+        @include fontcss($grey888, 400, rem(13px), 1.2);
+        text-align: center;
+      }
     }
   }
 }

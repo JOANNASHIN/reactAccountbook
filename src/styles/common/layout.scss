@@ -20,11 +20,10 @@
     &#property {
       padding-bottom: 0;
 
-      .ac__dockbar {
+      .dockbar {
         &__inner {
           background: $bg;
-          box-shadow: rem(-3px -3px 6px 0) rgba(76, 76, 76, 0.2),
-            rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
+          @include shadow('', 'dark');
         }
       }
     }
@@ -34,7 +33,7 @@
     display: none;
     position: absolute;
     top: 0;
-    left: 0;
+    left: -20px;
     width: 100%;
     text-align: center;
     height: rem(96px);
@@ -64,64 +63,5 @@
     overflow: hidden;
     width: 100%;
     height: 100%;
-  }
-
-  &__dockbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 1vh;
-    z-index: 1;
-    width: 100%;
-    padding: rem(0 70px);
-
-    &__inner {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      padding: rem(10px 0);
-      border-radius: rem(20px);
-      @include shadow();
-    }
-
-    &__menu {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: rem(32px);
-      height: rem(32px);
-      margin: rem(0 20px);
-      color: $greyccc;
-      font-size: rem(28px);
-
-      &.active {
-        color: $point;
-        border-radius: rem(20px);
-        border-top-left-radius: rem(20px);
-        border-top-right-radius: rem(20px);
-      }
-    }
-  }
-
-  &__footer {
-    background: $greyf8;
-    padding-bottom: rem(52px);
-
-    &.bottomFloating {
-      padding-bottom: rem(56px);
-    }
-  }
-
-  &__floating {
-    display: flex;
-    overflow: hidden;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%;
   }
 }

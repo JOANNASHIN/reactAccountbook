@@ -1,81 +1,97 @@
 // Notosans
 @font-face {
-    font-family:'Notosans';
-    font-style:normal;
-    font-weight:200;
-    src:local('NotoSansLight'), local('NotoSansLight'), url(../../assets/fonts/NotoSansKR-Light.eot);
-    src:url(../../assets/fonts/NotoSansKR-Light.eot?#iefix) format('embedded-opentype'),
+  font-family: 'Notosans';
+  font-style: normal;
+  font-weight: 200;
+  src: local('NotoSansLight'), local('NotoSansLight'),
+    url(../../assets/fonts/NotoSansKR-Light.eot);
+  src: url(../../assets/fonts/NotoSansKR-Light.eot?#iefix)
+      format('embedded-opentype'),
     url(../../assets/fonts/NotoSansKR-Light.woff2) format('woff2'),
     url(../../assets/fonts/NotoSansKR-Light.woff) format('woff');
 }
 
 @font-face {
-    font-family:'Notosans';
-    font-style:normal;
-    font-weight:400;
-    src:local('NotoSansRegular'), local('NotoSansRegular'), url(../../assets/fonts/NotoSansKR-Regular.eot);
-    src:url(../../assets/fonts/NotoSansKR-Regular.eot?#iefix) format('embedded-opentype'),
+  font-family: 'Notosans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('NotoSansRegular'), local('NotoSansRegular'),
+    url(../../assets/fonts/NotoSansKR-Regular.eot);
+  src: url(../../assets/fonts/NotoSansKR-Regular.eot?#iefix)
+      format('embedded-opentype'),
     url(../../assets/fonts/NotoSansKR-Regular.woff2) format('woff2'),
     url(../../assets/fonts/NotoSansKR-Regular.woff) format('woff');
 }
 
 @font-face {
-    font-family:'Notosans';
-    font-style:normal;
-    font-weight:600;
-    src:local('NotoSansMedium'), local('NotoSansMedium'), url(../../assets/fonts/NotoSansKR-Medium.eot);
-    src:url(../../assets/fonts/NotoSansKR-Medium.eot?#iefix) format('embedded-opentype'),
+  font-family: 'Notosans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('NotoSansMedium'), local('NotoSansMedium'),
+    url(../../assets/fonts/NotoSansKR-Medium.eot);
+  src: url(../../assets/fonts/NotoSansKR-Medium.eot?#iefix)
+      format('embedded-opentype'),
     url(../../assets/fonts/NotoSansKR-Medium.woff2) format('woff2'),
     url(../../assets/fonts/NotoSansKR-Medium.woff) format('woff');
 }
 
 @font-face {
-    font-family:'Notosans';
-    font-style:normal;
-    font-weight:800;
-    src:local('NotoSansBold'), local('NotoSansBold'), url(../../assets/fonts/NotoSansKR-Bold.eot);
-    src:url(../../assets/fonts/NotoSansKR-Bold.eot?#iefix) format('embedded-opentype'),
+  font-family: 'Notosans';
+  font-style: normal;
+  font-weight: 800;
+  src: local('NotoSansBold'), local('NotoSansBold'),
+    url(../../assets/fonts/NotoSansKR-Bold.eot);
+  src: url(../../assets/fonts/NotoSansKR-Bold.eot?#iefix)
+      format('embedded-opentype'),
     url(../../assets/fonts/NotoSansKR-Bold.woff2) format('woff2'),
     url(../../assets/fonts/NotoSansKR-Bold.woff) format('woff');
 }
 
 // Montserrat
 @font-face {
-  font-family:'Montserrat';
-  font-style:normal;
-  font-weight:200;
-  src:local('MontserratLight'), local('MontserratLight'), url(../../assets/fonts/Montserrat-Light.eot);
-  src:url(../../assets/fonts/Montserrat-Light.eot?#iefix) format('embedded-opentype'),
-  url(../../assets/fonts/Montserrat-Light.woff2) format('woff2'),
-  url(../../assets/fonts/Montserrat-Light.woff) format('woff');
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 200;
+  src: local('MontserratLight'), local('MontserratLight'),
+    url(../../assets/fonts/Montserrat-Light.eot);
+  src: url(../../assets/fonts/Montserrat-Light.eot?#iefix)
+      format('embedded-opentype'),
+    url(../../assets/fonts/Montserrat-Light.woff2) format('woff2'),
+    url(../../assets/fonts/Montserrat-Light.woff) format('woff');
 }
 
 @font-face {
-  font-family:'Montserrat';
-  font-style:normal;
-  font-weight:400;
-  src:local('MontserratRegular'), local('MontserratRegular'), url(../../assets/fonts/Montserrat-Regular.eot);
-  src:url(../../assets/fonts/Montserrat-Regular.eot?#iefix) format('embedded-opentype'),
-  url(../../assets/fonts/Montserrat-Regular.woff2) format('woff2'),
-  url(../../assets/fonts/Montserrat-Regular.woff) format('woff');
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('MontserratRegular'), local('MontserratRegular'),
+    url(../../assets/fonts/Montserrat-Regular.eot);
+  src: url(../../assets/fonts/Montserrat-Regular.eot?#iefix)
+      format('embedded-opentype'),
+    url(../../assets/fonts/Montserrat-Regular.woff2) format('woff2'),
+    url(../../assets/fonts/Montserrat-Regular.woff) format('woff');
 }
 
 @font-face {
-  font-family:'Montserrat';
-  font-style:normal;
-  font-weight:600;
-  src:local('MontserratMedium'), local('MontserratMedium'), url(../../assets/fonts/Montserrat-Medium.eot);
-  src:url(../../assets/fonts/Montserrat-Medium.eot?#iefix) format('embedded-opentype'),
-  url(../../assets/fonts/Montserrat-Medium.woff2) format('woff2'),
-  url(../../assets/fonts/Montserrat-Medium.woff) format('woff');
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: local('MontserratMedium'), local('MontserratMedium'),
+    url(../../assets/fonts/Montserrat-Medium.eot);
+  src: url(../../assets/fonts/Montserrat-Medium.eot?#iefix)
+      format('embedded-opentype'),
+    url(../../assets/fonts/Montserrat-Medium.woff2) format('woff2'),
+    url(../../assets/fonts/Montserrat-Medium.woff) format('woff');
 }
 
 @font-face {
-  font-family:'Montserrat';
-  font-style:normal;
-  font-weight:800;
-  src:local('MontserratMedium'), local('MontserratMedium'), url(../../assets/fonts/Montserrat-SemiBold.eot);
-  src:url(../../assets/fonts/Montserrat-SemiBold.eot?#iefix) format('embedded-opentype'),
-  url(../../assets/fonts/Montserrat-SemiBold.woff2) format('woff2'),
-  url(../../assets/fonts/Montserrat-SemiBold.woff) format('woff');
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 800;
+  src: local('MontserratMedium'), local('MontserratMedium'),
+    url(../../assets/fonts/Montserrat-SemiBold.eot);
+  src: url(../../assets/fonts/Montserrat-SemiBold.eot?#iefix)
+      format('embedded-opentype'),
+    url(../../assets/fonts/Montserrat-SemiBold.woff2) format('woff2'),
+    url(../../assets/fonts/Montserrat-SemiBold.woff) format('woff');
 }

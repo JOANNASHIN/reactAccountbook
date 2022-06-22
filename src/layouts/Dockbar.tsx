@@ -26,15 +26,13 @@ function Dockbar(props: Props) {
   ];
 
   return (
-    <nav className="ac__dockbar">
-      <div className="ac__dockbar__inner">
+    <nav className="dockbar">
+      <div className="dockbar__inner">
         {dockbarMenus.map((menu) => {
           return (
             <Link
               to={menu.path}
-              className={
-                currentPath === menu.path ? 'ac__dockbar__menu active' : 'ac__dockbar__menu'
-              }
+              className={currentPath === menu.path ? 'dockbar__menu active' : 'dockbar__menu'}
               key={menu.id}>
               <Icon icon={menu.icon} />
               <span className="blind">{menu.title}</span>

@@ -48,7 +48,7 @@ function Property() {
     <section className="property">
       <header className="property__header">
         <h2 className="property__title">자산</h2>
-        <button type="button" className="property__add">
+        <button type="button" className="ac__plus--default">
           자산 추가 버튼
         </button>
       </header>

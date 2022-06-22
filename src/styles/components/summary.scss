@@ -17,13 +17,5 @@
     em {
       @include fontcss(inherit, 600, rem(13px));
     }
-
-    &--income {
-      color: $blue;
-    }
-
-    &--spending {
-      color: $red;
-    }
   }
 }

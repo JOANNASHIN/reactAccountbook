@@ -43,7 +43,12 @@ $lineheights: (
   2.8rem: rem(42px),
 );
 
-@mixin fontcss($color: $black, $weight: 200, $size: rem(13px), $lineheight: none) {
+@mixin fontcss(
+  $color: $black,
+  $weight: 200,
+  $size: rem(13px),
+  $lineheight: none
+) {
   @if ($color) {
     color: $color;
   }
@@ -60,18 +65,23 @@ $lineheights: (
   }
 }
 
-@mixin shadow($inset: '') {
-  //1안
-  box-shadow: #{$inset} rem(-3px -3px 6px 0) rgba(255, 255, 255, 0.8),
-    #{$inset} rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
+@mixin shadow($inset: '', $mode: '') {
+  @if ($mode == 'dark') {
+    box-shadow: rem(-3px -3px 6px 0) rgba(76, 76, 76, 0.2),
+      rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
+  } @else {
+    //1안
+    box-shadow: #{$inset} rem(-3px -3px 6px 0) rgba(255, 255, 255, 0.8),
+      #{$inset} rem(3px 3px 6px 0) rgba(76, 76, 76, 0.2);
 
-  //2안
-  // $white1: rgb(246 246 246);
-  // $white2: rgb(246 246 246 / 50%);
-  // $black1: rgb(60 60 60 / 30%);
+    //2안
+    // $white1: rgb(246 246 246);
+    // $white2: rgb(246 246 246 / 50%);
+    // $black1: rgb(60 60 60 / 30%);
 
-  // box-shadow: inset $white1 3px 3px 2px 0px, inset $black1 -3px -3px 2px 0px,
-  //   $white2 -3px -3px 2px 0px, $black1 2px 2px 4px 0px;
+    // box-shadow: inset $white1 3px 3px 2px 0px, inset $black1 -3px -3px 2px 0px,
+    //   $white2 -3px -3px 2px 0px, $black1 2px 2px 4px 0px;
+  }
 }
 
 @mixin safeArea($target: 'padding-bottom', $px: rem(16px), $direction: 'top') {

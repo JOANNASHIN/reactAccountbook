@@ -1,0 +1,39 @@
+.dockbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 1vh;
+  z-index: 1;
+  width: 100%;
+  padding: rem(0 70px);
+
+  &__inner {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: rem(10px 0);
+    border-radius: rem(20px);
+    @include shadow();
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(32px);
+    height: rem(32px);
+    margin: rem(0 20px);
+    color: $greyccc;
+    font-size: rem(28px);
+
+    &.active {
+      color: $point;
+      border-radius: rem(20px);
+      border-top-left-radius: rem(20px);
+      border-top-right-radius: rem(20px);
+    }
+  }
+}

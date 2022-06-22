@@ -38,7 +38,7 @@
   &__mask {
     width: 100%;
     height: 100%;
-    background-color: dim(0.6);
+    background-color: dim(0.4);
     font-size: 0;
   }
 
@@ -80,89 +80,75 @@
       top: 50%;
       left: 50%;
       width: calc(100% - #{rem(48px)});
-      max-height: calc(100% - #{rem(160px)});
+      max-height: calc(100% - #{rem(300px)});
+      border-radius: $radius;
+      background: $bg;
+      border-bottom: none;
       transform: translate(-50%, -50%);
-
-      .modal__body {
-        padding: rem(12px);
-      }
-    }
-
-    //모달 BOTTOM 타입
-    &.modalBottom {
-      top: auto;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      max-height: 80vh;
-
-      .modal {
-        &__header {
-          flex: 0 0 rem(40px);
-          padding: rem(16px 16px 0);
-          border-bottom: 0;
-        }
-
-        &__close {
-          top: auto;
-          transform: none;
-          bottom: 0;
-        }
-
-        &__body {
-          padding: rem(0 16px 32px);
-        }
-      }
-    }
-
-    //하단 버튼 플로팅 케이스
-    &.fixedFooter {
-      .modal {
-        &__body {
-          display: flex;
-          flex-direction: column;
-          flex-wrap: nowrap;
-          overflow: hidden;
-          height: 100%;
-          padding: 0;
-        }
-
-        &__content {
-          overflow: auto;
-          flex: 1 1 auto !important;
-          height: 100%;
-          padding: rem(16px 20px);
-        }
-
-        &__footer {
-          flex: 0 0 rem(56px);
-        }
-      }
+      $white1: rgb(246 246 246);
+      $white2: rgba(143, 137, 137, 0.282);
+      $black1: rgb(60 60 60 / 30%);
+      // box-shadow: rem(-2px -2px 2px 0) rgba(76, 76, 76, 0.2),
+      //   rem(2px 2px 2px 0) rgba(76, 76, 76, 0.2);
+      box-shadow: rem(-2px -2px 2px 0) rgba(76, 76, 76, 0.2),
+        inset rem(-2px -2px 6px 0) rgba(76, 76, 76, 0.2),
+        inset rem(3px 3px 6px 0) rgba(#888, 0.2),
+        rem(2px 2px 2px 0) rgba(76, 76, 76, 0.2);
     }
   }
 
   &__header {
-    flex: 0 0 rem(52px);
     position: relative;
-    padding: rem(14px 56px 14px 16px);
-    border-bottom: 1px solid $greye8;
-    box-sizing: border-box;
+    padding: rem(16px 56px 16px 18px);
+    border-bottom: 1px solid $greyddd;
   }
 
   &__title {
-    @include fontcss($black, 600, rem(16px), rem(24px));
+    @include fontcss($grey666, 600, rem(16px), 1.2);
     text-align: left;
   }
 
   &__close {
     position: absolute;
-    top: 50%;
-    right: rem(16px);
-    width: rem(24px);
-    height: rem(24px);
-    transform: translate(0, -50%);
-    color: $grey666;
-    font-size: rem(20px);
+    top: 0;
+    right: 0;
+    margin: 0 auto;
+    width: rem(50px);
+    height: rem(52px);
+    border-radius: 100%;
+    font-size: 0;
+
+    &:after {
+      content: '+';
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      @include fontcss($grey888, 200, rem(34px), rem(52px));
+      transform: rotate(45deg);
+    }
+
+    // position: absolute;
+    // bottom: rem(-50px);
+    // left: 0;
+    // right: 0;
+    // margin: 0 auto;
+    // width: rem(34px);
+    // height: rem(34px);
+    // border-radius: 100%;
+    // font-size: 0;
+    // box-shadow: rem(-2px -2px 2px 0) rgba(76, 76, 76, 0.2),
+    //   rem(2px 2px 2px 0) rgba(76, 76, 76, 0.2);
+
+    // &:after {
+    //   content: '+';
+    //   display: inline-block;
+    //   width: 100%;
+    //   height: 100%;
+    //   text-align: center;
+    //   @include fontcss($greyf2, 200, rem(34px), 1);
+    //   transform: rotate(45deg);
+    // }
   }
 
   &__body {

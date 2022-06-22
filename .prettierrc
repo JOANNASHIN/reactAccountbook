@@ -2,12 +2,14 @@
   "singleQuote": true,
   "semi": true,
   "useTabs": false,
-  "printWidth": 100,
+  "printWidth": 80,
+  "proseWrap": "preserve",
+  "jsxBracketSameLine": true,
   "trailingComma": "all",
   "tabWidth": 2,
   "endOfLine": "auto",
   "eslintIntegration": true,
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "proseWrap": "never"
+  "htmlWhitespaceSensitivity": "ignore"
 }

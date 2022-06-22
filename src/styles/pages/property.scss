@@ -15,20 +15,6 @@
     @include fontcss($black, bold, rem(20px), rem(24px));
   }
 
-  &__add {
-    font-size: 0;
-    line-height: 0;
-
-    &:after {
-      content: '+';
-      display: inline-block;
-      color: $greyaaa;
-      font-weight: 200;
-      font-size: rem(40px);
-      line-height: rem(24px);
-    }
-  }
-
   &__wrapper {
     display: flex;
     flex-wrap: wrap;
