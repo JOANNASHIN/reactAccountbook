@@ -4,6 +4,7 @@ import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { Link } from 'react-router-dom';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import ModalComponent from '../../components/Modal';
 
@@ -476,9 +477,9 @@ function Calendar() {
           </div>
         )}
 
-        <button type="button" className="calendar__plus ac__plus--yellow">
-          추가하기
-        </button>
+        <Link to="/add" className="calendar__plus ac__plus--yellow">
+          이벤트 추가하기
+        </Link>
       </div>
 
       {/* 상세 모달 */}
@@ -513,9 +514,9 @@ function Calendar() {
             </ul>
 
             <nav className="details__nav">
-              <button type="button" className="ac__plus--yellow">
-                추가하기
-              </button>
+              <Link to="/add" className="ac__plus--yellow">
+                이벤트 추가하기
+              </Link>
             </nav>
           </div>
         </ModalComponent>

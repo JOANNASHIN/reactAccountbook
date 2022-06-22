@@ -1,27 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Header from './layouts/Header';
-import Dockbar from './layouts/Dockbar';
+import Header from './components/Header';
+import Dockbar from './components/Dockbar';
 import Routes from './routes';
+
+interface PageInfo {
+  id: string;
+  title: string;
+}
 
 function App() {
   // #region location update
-  const [currentPath, setCurrentPath] = useState('/');
-  const [currentId, setCurrentId] = useState('calendar');
   const location = useLocation();
 
-  const getCurrentId = (path: string) => {
-    if (path === '/') return 'calendar';
-    return 'property';
+  const [currentPage, setCurrentPage] = useState({
+    id: 'calendar',
+    path: '/',
+    title: '달력',
+  });
+
+  /** 현재 페이지 정보 얻어오기 */
+  const getCurrentInfo = (path: string): PageInfo => {
+    if (path === '/') return { id: 'calendar', title: '달력' };
+    if (path === '/property') return { id: 'property', title: '자산' };
+    if (path === '/add') return { id: 'add', title: '추가하기' };
+    return { id: 'calendar', title: '달력' };
   };
 
+  /** 페이지 이동시 세팅 */
   useEffect(() => {
-    setCurrentPath(location.pathname);
-    setCurrentId(getCurrentId(location.pathname));
+    setCurrentPage({
+      id: getCurrentInfo(location.pathname).id,
+      path: location.pathname,
+      title: getCurrentInfo(location.pathname).title,
+    });
   }, [location.pathname]);
   // #endregion
 
-  // #region rem
+  // #region rem 세팅
   const settingRem = () => {
     const htmlDoc = document.documentElement;
     let enSizing = false;
@@ -49,10 +65,10 @@ function App() {
   // #endregion
 
   return (
-    <div id={currentId} className="ac__layout">
-      <Header />
+    <div id={currentPage.id} className="ac__layout">
+      {currentPage.id === 'add' && <Header title={currentPage.title} />}
       <Routes />
-      <Dockbar currentPath={currentPath} />
+      {currentPage.id !== 'add' && <Dockbar currentPath={currentPage.path} />}
     </div>
   );
 }

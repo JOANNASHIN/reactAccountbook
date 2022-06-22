@@ -30,32 +30,48 @@
   }
 
   &__header {
-    display: none;
     position: absolute;
     top: 0;
-    left: -20px;
     width: 100%;
-    text-align: center;
-    height: rem(96px);
+    padding: rem(14px 16px);
     background: $point;
+    text-align: center;
+    @include safeArea('padding-top', rem(14px));
+  }
+
+  &__back {
+    position: absolute;
+    top: 50%;
+    left: rem(16px);
+    @include fontcss($white, 600, rem(20px));
+    transform: translate(0, -50%);
+    @include safeArea('padding-top', '');
+
+    span {
+      display: none;
+    }
+  }
+
+  &__title {
+    @include fontcss($white, 600, rem(16px));
   }
 
   &__logo {
-    display: flex;
     display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     height: rem(30px);
     font-size: 0;
 
     svg {
-      color: $black;
-      font-size: rem(14px);
+      color: $white;
+      font-size: rem(16px);
     }
 
     span {
       margin-left: rem(8px);
-      @include fontcss($black, bold, rem(12px));
+      @include fontcss($white, 600, rem(16px));
     }
   }
 
