@@ -80,8 +80,6 @@ $calendarTab: 36px;
       @include safeArea('padding-top', rem(16px));
       margin-bottom: 0 !important;
       background: $point;
-      //
-      padding-right: rem(30px);
     }
 
     //헤더 툴바 각각
