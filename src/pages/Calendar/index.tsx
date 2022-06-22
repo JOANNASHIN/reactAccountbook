@@ -514,7 +514,7 @@ function Calendar() {
             </ul>
 
             <nav className="details__nav">
-              <Link to="/add" className="ac__plus--yellow">
+              <Link to="/add" className="details__nav__plus ac__plus--yellow">
                 이벤트 추가하기
               </Link>
             </nav>
