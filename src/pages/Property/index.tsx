@@ -1,6 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { Link } from 'react-router-dom';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import WalletComponent, { Wallet } from '../../components/Wallet';
 
@@ -48,9 +49,9 @@ function Property() {
     <section className="property">
       <header className="property__header">
         <h2 className="property__title">자산</h2>
-        <button type="button" className="ac__plus--default">
-          자산 추가 버튼
-        </button>
+        <Link to="/add" className="ac__plus--default">
+          자산 추가
+        </Link>
       </header>
 
       {/* 요약 */}
