@@ -23,7 +23,7 @@ function App() {
   const getCurrentInfo = (path: string): PageInfo => {
     if (path === '/') return { id: 'calendar', title: '달력' };
     if (path === '/property') return { id: 'property', title: '자산' };
-    if (path === '/add') return { id: 'add', title: '추가하기' };
+    if (path === '/addAccount') return { id: 'addAccount', title: '내역 추가' };
     return { id: 'calendar', title: '달력' };
   };
 
@@ -66,9 +66,11 @@ function App() {
 
   return (
     <div id={currentPage.id} className="ac__layout">
-      {currentPage.id === 'add' && <Header title={currentPage.title} />}
+      {currentPage.id === 'addAccount' && <Header title={currentPage.title} />}
       <Routes />
-      {currentPage.id !== 'add' && <Dockbar currentPath={currentPage.path} />}
+      {currentPage.id !== 'addAccount' && (
+        <Dockbar currentPath={currentPage.path} />
+      )}
     </div>
   );
 }

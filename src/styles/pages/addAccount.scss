@@ -1,0 +1,203 @@
+.add-account {
+  $inputWidth: auto;
+  $inputMaxWidth: rem(300px);
+
+  &__form {
+    padding: rem(16px 12px);
+
+    .form {
+      &__wrapper {
+        border-radius: $radius;
+        padding: rem(0 12px);
+      }
+
+      &__field {
+        margin-bottom: rem(12px);
+      }
+
+      &__label {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-end;
+
+        input {
+          padding: rem(8px 4px);
+          background: transparent;
+          @include fontcss($black, 600, rem(16px), 1.2);
+
+          &::placeholder {
+            color: $greyaaa;
+          }
+        }
+
+        select {
+          width: auto;
+          direction: rtl;
+          margin-right: rem(2px);
+          padding: rem(8px 12px 8px 4px);
+          background: transparent url(src('common', 'caret-down-solid.svg'))
+            no-repeat center right / rem(6px auto);
+          @include fontcss($black, 600, rem(16px), 1.2);
+        }
+      }
+
+      //help text
+      &__help-text {
+        margin-left: rem(4px);
+        @include fontcss($grey888, 400, rem(13px), 1);
+        white-space: nowrap;
+      }
+
+      //날짜
+      &__date {
+        justify-content: flex-start;
+
+        &__icon {
+          margin: rem(0 8px 0 0);
+          @include fontcss($black, 400, rem(16px), 1);
+          @include shadow();
+        }
+
+        &__input {
+          width: auto !important;
+          padding: 0 !important;
+          font-size: rem(14px);
+          &::-webkit-calendar-picker-indicator {
+            display: none;
+          }
+        }
+      }
+
+      //카테고리
+      &__category {
+        &__icon {
+          flex: 0 0 rem(40px);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: rem(40px);
+          height: rem(40px);
+          margin-right: rem(16px);
+          border-radius: 50%;
+          @include shadow();
+          @include fontcss($yellow, 600, rem(24px));
+        }
+
+        &__name {
+          @include fontcss($grey888, 600, rem(16px));
+        }
+      }
+
+      // 사용처
+      &__use {
+        &__input {
+          width: $inputWidth;
+          max-width: $inputMaxWidth;
+          text-align: right;
+        }
+      }
+
+      // 금액
+      &__amount {
+        input {
+          width: $inputWidth;
+          max-width: $inputMaxWidth;
+          padding: 0;
+          @include fontcss($black, bold, rem(28px), 1);
+          text-align: right;
+        }
+      }
+
+      // 결제수단
+      &__method {
+        select {
+          width: $inputWidth;
+        }
+      }
+
+      // 지출 수입 이체 유형
+      &__type {
+        margin-top: rem(20px);
+
+        input {
+          display: none;
+
+          &:checked + .form__type__name {
+            font-weight: 600;
+
+            &--spending {
+              background: $red;
+              color: $white;
+            }
+
+            &--income {
+              background: $blue;
+              color: $white;
+            }
+
+            &--send {
+              background: $yellow;
+              color: $black;
+            }
+          }
+        }
+
+        &__name {
+          display: inline-block;
+          margin-right: rem(10px);
+          padding: rem(2px 20px);
+          border-radius: $radius;
+          @include fontcss($grey888, 400, rem(13px), rem(30px));
+          @include shadow();
+        }
+      }
+
+      // 메모
+      &__memo {
+        margin-top: rem(24px);
+
+        textarea {
+          width: 100%;
+          height: rem(200px);
+          padding: rem(16px);
+          background: transparent;
+          border: none;
+          border-radius: $radius;
+          @include fontcss($black, 400, rem(14px));
+          @include shadow('inset');
+
+          &::placeholder {
+            color: $greyaaa;
+          }
+        }
+      }
+
+      &__nav {
+        margin-top: rem(24px);
+        text-align: center;
+      }
+
+      &__submit {
+        display: inline-block;
+        padding: rem(11px 40px);
+        background: $greyaaa;
+        border-radius: $radius;
+        @include shadow();
+        @include fontcss($white, 600, rem(14px));
+
+        &.active {
+          background: $yellow;
+          color: $black;
+        }
+      }
+
+      &__error {
+        display: block;
+        margin-top: rem(4px);
+        @include fontcss($red, 400, rem(12px), 1);
+        text-align: right;
+      }
+    }
+  }
+}

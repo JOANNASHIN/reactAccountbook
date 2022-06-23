@@ -17,6 +17,7 @@
     padding-bottom: calc(1vh + #{rem(62px)});
     @include safeArea('padding-top', '');
 
+    //자산페이지
     &#property {
       padding-bottom: 0;
 
@@ -26,6 +27,13 @@
           @include shadow('', 'dark');
         }
       }
+    }
+
+    //등록페이지
+    $addHeader: rem(52px);
+    &#addAccount {
+      padding-bottom: 0;
+      @include safeArea('padding-top', $addHeader);
     }
   }
 

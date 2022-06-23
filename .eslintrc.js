@@ -27,6 +27,24 @@ module.exports = {
     'no-unused-vars': 1, // 선언하고 사용하지않은 변수 1은 warning /0은 error
     'no-restricted-globals': ['error', 'event', 'fdescribe'],
     'no-console': 'off', // 콘솔에 노란줄 삭제
+    'no-alert': 'off', // alert 노란줄 삭제
+    // label관련 설정
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      {
+        required: {
+          some: ['nesting', 'id'],
+        },
+      },
+    ],
+    'jsx-a11y/label-has-for': [
+      'error',
+      {
+        required: {
+          some: ['nesting', 'id'],
+        },
+      },
+    ],
   },
   env: {
     browser: true,

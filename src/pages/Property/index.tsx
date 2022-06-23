@@ -7,6 +7,7 @@ import WalletComponent, { Wallet } from '../../components/Wallet';
 
 function Property() {
   const balance: Balance = {
+    type: 'property',
     income: 0,
     spending: 0,
     total: 0,
@@ -49,7 +50,7 @@ function Property() {
     <section className="property">
       <header className="property__header">
         <h2 className="property__title">자산</h2>
-        <Link to="/add" className="ac__plus--default">
+        <Link to="/addAccount" className="ac__plus--default">
           자산 추가
         </Link>
       </header>

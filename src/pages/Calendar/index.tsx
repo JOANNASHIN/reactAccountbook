@@ -16,7 +16,7 @@ interface Item {
   category: string;
   amount: number;
   title: string;
-  property: string;
+  method: string;
 }
 
 interface CustomProps {
@@ -51,7 +51,7 @@ function Calendar() {
             amount: 8000,
             title: '석식대',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '02',
@@ -59,7 +59,7 @@ function Calendar() {
             category: '월급',
             amount: 1000000,
             title: '6월 월급',
-            property: '신한은행',
+            method: '신한은행',
           },
         ],
       },
@@ -76,7 +76,7 @@ function Calendar() {
             amount: 1200,
             title: '식비/아침',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '12',
@@ -84,7 +84,7 @@ function Calendar() {
             amount: 11000,
             title: '식비/점심',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
         ],
       },
@@ -101,7 +101,7 @@ function Calendar() {
             amount: 1500,
             title: '왕만두',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-002',
@@ -109,7 +109,7 @@ function Calendar() {
             amount: 87,
             title: '토스',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-003',
@@ -117,7 +117,7 @@ function Calendar() {
             amount: 1500,
             title: '왕만두',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-004',
@@ -125,7 +125,7 @@ function Calendar() {
             amount: 87,
             title: '토스',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-005',
@@ -133,7 +133,7 @@ function Calendar() {
             amount: 1500,
             title: '왕만두',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-006',
@@ -141,7 +141,7 @@ function Calendar() {
             amount: 87,
             title: '토스',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-007',
@@ -149,7 +149,7 @@ function Calendar() {
             amount: 87,
             title: '토스',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-008',
@@ -157,7 +157,7 @@ function Calendar() {
             amount: 1500,
             title: '왕만두',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-009',
@@ -165,7 +165,7 @@ function Calendar() {
             amount: 87,
             title: '토스',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-010',
@@ -173,7 +173,7 @@ function Calendar() {
             amount: 1500,
             title: '왕만두',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
           {
             id: '2-011',
@@ -181,7 +181,7 @@ function Calendar() {
             amount: 87,
             title: '마지막',
             category: '식비/아침',
-            property: '삼성카드',
+            method: '삼성카드',
           },
         ],
       },
@@ -191,6 +191,7 @@ function Calendar() {
 
   // #region summary
   const [balance, setBalance] = useState<Balance>({
+    type: 'calendar',
     income: 0,
     spending: 0,
     total: 0,
@@ -222,7 +223,8 @@ function Calendar() {
 
   /** summary 데이터 세팅 */
   useEffect(() => {
-    const month = {
+    const month: Balance = {
+      type: 'calendar',
       income: 0,
       spending: 0,
       total: 0,
@@ -477,7 +479,7 @@ function Calendar() {
           </div>
         )}
 
-        <Link to="/add" className="calendar__plus ac__plus--yellow">
+        <Link to="/addAccount" className="calendar__plus ac__plus--yellow">
           이벤트 추가하기
         </Link>
       </div>
@@ -499,7 +501,7 @@ function Calendar() {
                           {event.title}
                         </span>
                         <span className="details__event__method">
-                          {event.property}
+                          {event.method}
                         </span>
                       </div>
                       <span className={`details__event__price ${event.type}`}>
@@ -514,8 +516,10 @@ function Calendar() {
             </ul>
 
             <nav className="details__nav">
-              <Link to="/add" className="details__nav__plus ac__plus--yellow">
-                이벤트 추가하기
+              <Link
+                to="/addAccount"
+                className="details__nav__plus ac__plus--yellow">
+                장부 추가하기
               </Link>
             </nav>
           </div>

@@ -106,3 +106,8 @@ $lineheights: (
 @function dim($opacity: 0.5) {
   @return rgba(#111, $opacity);
 }
+
+//image url
+@function src($folder: 'common', $filename: '') {
+  @return '../../assets/images/#{$folder}/#{$filename}';
+}
