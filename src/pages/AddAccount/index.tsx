@@ -22,11 +22,13 @@ interface Form {
   date: string;
   category: string;
   title: string;
-  amount: string;
+  amount: string | number;
   method: string;
   type: string;
   memo: string;
 }
+
+export { Form };
 
 function AddAccount() {
   const history = useNavigate();
@@ -123,7 +125,28 @@ function AddAccount() {
     if (!checkValidate()) return;
 
     nextTick(() => {
-      localStorage.setItem('data', JSON.stringify(form));
+      const prevData = localStorage.getItem('accountData');
+
+      if (!prevData) {
+        localStorage.setItem(
+          'accountData',
+          JSON.stringify([
+            Object.assign(form, {
+              amount: form.amount.toString().replace(/[^\d]/g, ''),
+            }),
+          ]),
+        );
+      } else {
+        localStorage.setItem(
+          'accountData',
+          JSON.stringify([
+            ...prevData,
+            Object.assign(form, {
+              amount: form.amount.toString().replace(/[^\d]/g, ''),
+            }),
+          ]),
+        );
+      }
 
       setTimeout(() => {
         alert('등록이 완료되었습니다.');

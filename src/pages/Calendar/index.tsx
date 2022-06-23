@@ -5,19 +5,12 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Link } from 'react-router-dom';
+import { nextTick } from 'process';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import ModalComponent from '../../components/Modal';
+import { Form as Item } from '../AddAccount';
 
 type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
-
-interface Item {
-  id: string;
-  type: string;
-  category: string;
-  amount: number;
-  title: string;
-  method: string;
-}
 
 interface CustomProps {
   data: Item[];
@@ -38,7 +31,7 @@ interface CalendarModal {
 
 function Calendar() {
   // #region 샘플데이터
-  const eventList: EventList[] = [
+  const eventList2 = [
     {
       id: '0',
       start: '2022-06-12',
@@ -187,6 +180,34 @@ function Calendar() {
       },
     },
   ];
+
+  const [eventList, setEventList] = useState<EventList[]>([]);
+
+  const customData = (savedData: any) => {
+    const formatter = savedData.map((event: Item, index: number) => {
+      return {
+        id: event.id,
+        start: event.date,
+        title: event.date,
+        extendedProps: {
+          data: [
+            {
+              id: event.id + index,
+              type: event.type,
+              amount: Number(event.amount),
+              title: event.title,
+              category: event.category,
+              method: event.method,
+              date: event.date,
+              memo: event.memo,
+            },
+          ],
+        },
+      };
+    });
+
+    setEventList(formatter);
+  };
   // #endregion
 
   // #region summary
@@ -215,7 +236,9 @@ function Calendar() {
       }
     });
 
-    // 지출 - 비노출 처리
+    console.log(day, data, 'zzzzzz');
+
+    // 지출 마이너스 비노출 처리
     day.spending *= -1;
 
     return day;
@@ -223,24 +246,29 @@ function Calendar() {
 
   /** summary 데이터 세팅 */
   useEffect(() => {
-    const month: Balance = {
-      type: 'calendar',
-      income: 0,
-      spending: 0,
-      total: 0,
-    };
+    const savedData = localStorage.getItem('accountData');
+    if (savedData) customData(JSON.parse(savedData));
 
-    eventList.forEach((v) => {
-      const result = {
-        ...month,
-        ...calcSummaryBalance(v.extendedProps?.data),
+    nextTick(() => {
+      const month: Balance = {
+        type: 'calendar',
+        income: 0,
+        spending: 0,
+        total: 0,
       };
-      month.income += result.income;
-      month.spending += result.spending;
-      month.total += result.total;
-    });
 
-    setBalance(month);
+      eventList.forEach((v) => {
+        const result = {
+          ...month,
+          ...calcSummaryBalance(v.extendedProps?.data),
+        };
+        month.income += result.income;
+        month.spending += result.spending;
+        month.total += result.total;
+      });
+
+      setBalance(month);
+    });
   }, []);
   // #endregion
 
@@ -505,7 +533,7 @@ function Calendar() {
                         </span>
                       </div>
                       <span className={`details__event__price ${event.type}`}>
-                        <em>{event.amount.toLocaleString('ko-kr')}</em>원
+                        <em>{event.amount}</em>원
                       </span>
                     </li>
                   );
