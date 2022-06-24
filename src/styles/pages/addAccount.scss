@@ -97,7 +97,7 @@
       // 사용처
       &__use {
         &__input {
-          width: $inputWidth;
+          width: rem(320px) !important;
           max-width: $inputMaxWidth;
           text-align: right;
         }
@@ -181,20 +181,28 @@
       &__nav {
         margin-top: rem(24px);
         text-align: center;
+
+        button {
+          display: inline-block;
+          margin: rem(0 10px);
+          padding: rem(11px 40px);
+          border-radius: $radius;
+          @include shadow();
+          @include fontcss($white, 600, rem(14px));
+        }
       }
 
       &__submit {
-        display: inline-block;
-        padding: rem(11px 40px);
         background: $greyaaa;
-        border-radius: $radius;
-        @include shadow();
-        @include fontcss($white, 600, rem(14px));
 
         &.active {
           background: $yellow;
           color: $black;
         }
+      }
+
+      &__delete {
+        background-color: $black;
       }
 
       &__error {

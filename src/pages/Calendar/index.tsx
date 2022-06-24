@@ -115,21 +115,27 @@ function Calendar() {
   // #endregion
 
   // #region full-calendar
+  const getAmountSizeClass = (value: string | number, classname?: string) => {
+    const amountLength = value?.toString().length;
+    let sizeClass = '';
+
+    if (amountLength > 12) sizeClass = 'sizeXS';
+    else if (amountLength > 10) sizeClass = 'sizeS';
+    else if (amountLength > 8) sizeClass = 'sizeM';
+
+    return `${classname} ${sizeClass}`;
+  };
+
   /** 렌더링 커스텀 */
   const renderCustomEvent = (eventInfo: any) => {
     const data = eventInfo.event?.extendedProps.data;
     if (!data || !data.length) return <span />;
 
     const day = calcSummaryBalance(data);
+
+    // 클래스
     const getClassNames = (key: 'income' | 'spending' | 'total') => {
-      const amountLength = day[key]?.toString().length;
-      let sizeClass = '';
-
-      if (amountLength > 10) sizeClass = 'abbr';
-      else if (amountLength > 9) sizeClass = 'size6';
-      else if (amountLength > 8) sizeClass = 'size7';
-      else if (amountLength > 7) sizeClass = 'size8';
-
+      const sizeClass = getAmountSizeClass(day[key]);
       return `calendar__event ${key} ${sizeClass}`;
     };
 
@@ -387,7 +393,12 @@ function Calendar() {
                           {event.method.name}
                         </span>
                       </div>
-                      <span className={`details__event__price ${event.type}`}>
+
+                      <span
+                        className={getAmountSizeClass(
+                          event.amount,
+                          `details__event__price ${event.type}`,
+                        )}>
                         <em>{Number(event.amount).toLocaleString('ko-kr')}</em>
                         원
                       </span>

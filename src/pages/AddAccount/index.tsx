@@ -46,6 +46,9 @@ function AddAccount() {
   /** 수정모드 여부 */
   const [isEdit, setIsEdit] = useState(false);
 
+  /** local storage 저장데이터 */
+  const [storageData] = useState(localStorage.getItem('accountData'));
+
   /** validation pass 여부 */
   const [isPass, setIsPass] = useState(false);
 
@@ -197,33 +200,31 @@ function AddAccount() {
    * 로컬스토리지 저장
    */
   const saveLocalStorage = () => {
-    const prevData = localStorage.getItem('accountData');
-
-    // @TODO: 수정모드일때
+    let saveData = null;
 
     // 최초 저장
-    if (!prevData) {
-      localStorage.setItem('accountData', JSON.stringify([form]));
+    if (!storageData) {
+      saveData = [form];
     }
     // 수정모드
     else if (isEdit) {
-      // 기존데이터
-      const prevJson: Form[] = JSON.parse(prevData);
+      const prevJson: Form[] = JSON.parse(storageData);
       const index = prevJson.findIndex((v) => v.id === form.id);
-      console.log(index);
+
       if (index !== -1) {
         prevJson.splice(index, 1, form);
-        localStorage.setItem('accountData', JSON.stringify(prevJson));
+        saveData = prevJson;
       }
     }
     // 기존 데이터 있을경우 추가
     else {
-      // 기존데이터
-      const prevJson = JSON.parse(prevData);
-
+      const prevJson = JSON.parse(storageData);
       prevJson.push(form);
-      localStorage.setItem('accountData', JSON.stringify(prevJson));
+      saveData = prevJson;
     }
+
+    // 로컬스토리지 저장 / 업데이트
+    if (saveData) localStorage.setItem('accountData', JSON.stringify(saveData));
   };
 
   /**
@@ -243,19 +244,38 @@ function AddAccount() {
       }, 100);
     });
   };
+
+  const handleDelete = () => {
+    const wantDelete = confirm('정말로 삭제하시겠습니까?');
+    if (!wantDelete || !storageData) return;
+
+    const query = new URLSearchParams(location.search);
+    const savedJson: Form[] = JSON.parse(storageData);
+    const uuid = query.get('id');
+    const targetIndex = savedJson.findIndex((v) => v.id === uuid);
+
+    if (targetIndex) {
+      savedJson.splice(targetIndex, 1);
+      localStorage.setItem('accountData', JSON.stringify(savedJson));
+
+      nextTick(() => {
+        alert('정상적으로 삭제되었습니다.');
+        router('/');
+      });
+    }
+  };
   // #endregion
 
   // #region 세팅
   const initForm = () => {
     const query = new URLSearchParams(location.search);
-    const savedData = localStorage.getItem('accountData');
 
     const isEditMode = query.get('mode') === 'edit';
     setIsEdit(isEditMode);
 
     // 수정일때
-    if (isEditMode && savedData) {
-      const savedJson: Form[] = JSON.parse(savedData);
+    if (isEditMode && storageData) {
+      const savedJson: Form[] = JSON.parse(storageData);
       const uuid = query.get('id');
       const target = savedJson.find((v) => v.id === uuid);
 
@@ -280,6 +300,7 @@ function AddAccount() {
     setIsPass(groupValidate());
   }, [form]);
 
+  // 최초 렌더링
   useEffect(() => {
     initForm();
   }, []);
@@ -348,13 +369,16 @@ function AddAccount() {
                   defaultValue={form.title}
                   placeholder="어디"
                   maxLength={15}
+                  spellCheck={false}
                   onInput={(e) => handleFormUpdate(e, 'title')}
                 />
                 <span className="form__use__text form__help-text">에서</span>
               </label>
 
               {validation.title === false && (
-                <p className="form__error">사용처를 입력해주세요.</p>
+                <p className="form__error">
+                  어디에서 사용하였는지 입력해주세요.
+                </p>
               )}
             </div>
 
@@ -447,11 +471,22 @@ function AddAccount() {
           </label>
 
           <nav className="form__nav">
+            {/* 등록/수정하기 */}
             <button
               type="submit"
               className={isPass ? 'form__submit active' : 'form__submit'}>
               {isEdit ? '수정하기' : '저장하기'}
             </button>
+
+            {/* 삭제하기 */}
+            {isEdit && (
+              <button
+                type="button"
+                className="form__delete"
+                onClick={handleDelete}>
+                삭제하기
+              </button>
+            )}
           </nav>
         </fieldset>
       </form>

@@ -16,6 +16,31 @@
   .spending {
     color: $red !important;
   }
+
+  .sizeM {
+    font-size: rem(12px) !important;
+
+    em {
+      font-size: rem(12px) !important;
+    }
+  }
+
+  .sizeS {
+    font-size: rem(10px) !important;
+
+    em {
+      font-size: rem(10px) !important;
+    }
+  }
+
+  .sizeXS {
+    font-size: rem(9px) !important;
+
+    em {
+      font-size: rem(9px) !important;
+    }
+  }
+
   /* #endregion */
 
   //국문 폰트
