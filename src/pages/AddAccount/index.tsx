@@ -72,8 +72,8 @@ function AddAccount() {
     setForm({ ...form, date, id });
   }, []);
 
-  const handleInputUpdate = (e: any, key: string) => {
-    setForm({ ...form, [key]: e.target.value });
+  const handleInputUpdate = (e: any, key: string, value?: any) => {
+    setForm({ ...form, [key]: value ?? e.target.value });
   };
 
   const handleInputAmount = (e: any) => {
@@ -85,7 +85,7 @@ function AddAccount() {
     );
 
     // 값 업데이트
-    handleInputUpdate(e, 'amount');
+    handleInputUpdate(e, 'amount', onlyNumber);
   };
 
   /** 유효성 검사 */
@@ -119,34 +119,29 @@ function AddAccount() {
   };
 
   /** 저장 */
+  const saveLocalStorage = () => {
+    const prevData = localStorage.getItem('accountData');
+
+    // 최초 저장
+    if (!prevData) {
+      localStorage.setItem('accountData', JSON.stringify([form]));
+    }
+    // 기존 데이터 있을경우 추가
+    else {
+      // 기존데이터
+      const prevJson = JSON.parse(prevData);
+
+      prevJson.push(form);
+      localStorage.setItem('accountData', JSON.stringify(prevJson));
+    }
+  };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (!checkValidate()) return;
 
     nextTick(() => {
-      const prevData = localStorage.getItem('accountData');
-
-      if (!prevData) {
-        localStorage.setItem(
-          'accountData',
-          JSON.stringify([
-            Object.assign(form, {
-              amount: form.amount.toString().replace(/[^\d]/g, ''),
-            }),
-          ]),
-        );
-      } else {
-        localStorage.setItem(
-          'accountData',
-          JSON.stringify([
-            ...prevData,
-            Object.assign(form, {
-              amount: form.amount.toString().replace(/[^\d]/g, ''),
-            }),
-          ]),
-        );
-      }
+      saveLocalStorage();
 
       setTimeout(() => {
         alert('등록이 완료되었습니다.');

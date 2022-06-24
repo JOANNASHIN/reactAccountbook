@@ -418,7 +418,6 @@ function Calendar() {
               editable
               selectable
               selectMirror
-              dayMaxEvents
               events={eventList}
               weekends
               dateClick={handleDateClick}
@@ -448,7 +447,6 @@ function Calendar() {
               editable
               selectable
               selectMirror
-              dayMaxEvents
               events={eventList}
               weekends
             />
@@ -474,7 +472,6 @@ function Calendar() {
               editable
               selectable
               selectMirror
-              dayMaxEvents
               events={eventList}
               weekends
             />
