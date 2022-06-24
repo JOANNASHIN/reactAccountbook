@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'process';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { IconDefinition, IconName } from '@fortawesome/fontawesome-svg-core';
 
 interface Selectbox {
   [key: string]: any;
@@ -72,6 +73,59 @@ function AddAccount() {
     memo: '',
   });
 
+  interface Test {
+    [key: string]: IconName;
+  }
+
+  // const categoryIcons = {
+  //   value: 'question',
+  //   icon: '',
+  // } as const;
+
+  const [categoryIcon, useCategoryIcon] = useState<IconName>('question');
+  useEffect(() => {
+    useCategoryIcon(
+      form.category.value === '' ? 'question' : form.category.value,
+    );
+  }, [form.category]);
+
+  const categories = [
+    {
+      id: 0,
+      name: '카테고리 선택',
+      value: '',
+    },
+
+    {
+      id: 1,
+      name: '식비/아침',
+      value: 'bread-slice',
+    },
+
+    {
+      id: 2,
+      name: '식비/점심',
+      value: 'burger',
+    },
+
+    {
+      id: 3,
+      name: '식비/커피',
+      value: 'mug-saucer',
+    },
+
+    {
+      id: 4,
+      name: '식비/간식',
+      value: 'cookie-bite',
+    },
+
+    {
+      id: 5,
+      name: '식비/저녁',
+      value: 'utensils',
+    },
+  ];
   // #endregion
 
   // #region events
@@ -336,18 +390,22 @@ function AddAccount() {
             <div className="form__field">
               <label className="form__category form__label">
                 <span className="form__category__icon">
-                  <Icon icon={solid('burger')} />
+                  <Icon icon={categoryIcon} />
                 </span>
 
                 <select
                   className={form.category.value !== '' ? 'active' : ''}
                   value={form.category.value}
                   onChange={(e) => handleSelectUpdate(e, 'category')}>
-                  <option value="">카테고리 선택</option>
-                  <option value="0">식비/아침</option>
-                  <option value="1">식비/점심</option>
-                  <option value="2">식비/커피</option>
-                  <option value="3">식비/저녁</option>
+                  {categories &&
+                    categories.length &&
+                    categories.map((category) => {
+                      return (
+                        <option value={category.value} key={category.id}>
+                          {category.name}
+                        </option>
+                      );
+                    })}
                 </select>
 
                 <span className="form__place__text form__help-text">
