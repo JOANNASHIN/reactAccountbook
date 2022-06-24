@@ -609,13 +609,6 @@ function AddAccount() {
           </label>
 
           <nav className="form__nav">
-            {/* 등록/수정하기 */}
-            <button
-              type="submit"
-              className={isPass ? 'form__submit active' : 'form__submit'}>
-              {isEdit ? '수정하기' : '저장하기'}
-            </button>
-
             {/* 삭제하기 */}
             {isEdit && (
               <button
@@ -625,6 +618,13 @@ function AddAccount() {
                 삭제하기
               </button>
             )}
+
+            {/* 등록/수정하기 */}
+            <button
+              type="submit"
+              className={isPass ? 'form__submit active' : 'form__submit'}>
+              {isEdit ? '수정하기' : '저장하기'}
+            </button>
           </nav>
         </fieldset>
       </form>
