@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Calendar from '../pages/Calendar';
 import Property from '../pages/Property';
 import AddAccount from '../pages/AddAccount';
+import AddProperty from '../pages/AddProperty';
 import Setting from '../pages/Setting';
 
 export default function Router() {
@@ -12,6 +13,7 @@ export default function Router() {
         <Route path="/" element={<Calendar />} />
         <Route path="/property" element={<Property />} />
         <Route path="/addAccount" element={<AddAccount />} />
+        <Route path="/addProperty" element={<AddProperty />} />
         <Route path="/setting" element={<Setting />} />
       </Routes>
     </div>

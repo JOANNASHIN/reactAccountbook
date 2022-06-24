@@ -50,7 +50,7 @@ function Property() {
     <section className="property">
       <header className="property__header">
         <h2 className="property__title">자산</h2>
-        <Link to="/addAccount" className="ac__plus--default">
+        <Link to="/addProperty" className="ac__plus--default">
           자산 추가
         </Link>
       </header>

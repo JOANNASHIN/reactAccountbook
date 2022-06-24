@@ -35,7 +35,7 @@ interface Form {
 
 export { Form };
 
-function AddAccount() {
+function AddProperty() {
   // #region 기본 변수
   /**
    * router
@@ -307,31 +307,13 @@ function AddAccount() {
   // #endregion
   return (
     <section className="add-account">
-      <h2 className="blind">장부 기록하기</h2>
+      <h2 className="blind">자산 등록하기</h2>
 
       <form className="add-account__form" onSubmit={handleSubmit}>
         <fieldset>
-          <legend>장부 입력</legend>
+          <legend>자산 입력</legend>
 
           <div className="form__wrapper">
-            {/* 날짜 */}
-            <div className="form__field">
-              <label htmlFor="date" className="form__date form__label">
-                <span className="form__date__icon">
-                  <Icon icon={solid('calendar-check')} />
-                </span>
-
-                <input
-                  type="date"
-                  name="date"
-                  defaultValue={form.date}
-                  required
-                  className="form__date__input"
-                  onChange={(e) => handleFormUpdate(e, 'date')}
-                />
-              </label>
-            </div>
-
             {/* 카테고리 */}
             <div className="form__field">
               <label className="form__category form__label">
@@ -360,7 +342,7 @@ function AddAccount() {
               )}
             </div>
 
-            {/* 사용처 */}
+            {/* 이름 */}
             <div className="form__field">
               <label className="form__use form__label">
                 <input
@@ -401,75 +383,28 @@ function AddAccount() {
               )}
             </div>
 
-            {/* 결제수단 */}
+            {/* 색상선택 */}
             <div className="form__field">
-              <label className="form__method form__label">
-                <select
-                  className={form.method.value !== '' ? 'active' : ''}
-                  value={form.method.value}
-                  onChange={(e) => handleSelectUpdate(e, 'method')}>
-                  <option value="">결제수단</option>
-                  <option value="1">현금</option>
-                  <option value="2">삼성카드</option>
-                  <option value="3">신한카드</option>
-                </select>
-                <span className="form__help-text">(으)로</span>
+              <label className="form__amount form__label">
+                <input
+                  type="radio"
+                  defaultValue={form.amount}
+                  className={form.type}
+                  maxLength={18}
+                  onInput={handleInputAmount}
+                />
               </label>
-
-              {validation.method === false && (
-                <p className="form__error">결제수단을 선택해주세요.</p>
-              )}
             </div>
 
-            {/* 유형 */}
-            <div className="form__type form__field">
-              <label>
-                <input
-                  type="radio"
-                  name="type"
-                  defaultValue="spending"
-                  defaultChecked
-                  onInput={(e) => handleFormUpdate(e, 'type')}
-                />
-                <span className="form__type__name form__type__name--spending">
-                  지출
-                </span>
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="type"
-                  defaultValue="income"
-                  onInput={(e) => handleFormUpdate(e, 'type')}
-                />
-                <span className="form__type__name form__type__name--income">
-                  수입
-                </span>
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="type"
-                  defaultValue="send"
-                  onInput={(e) => handleFormUpdate(e, 'type')}
-                />
-                <span className="form__type__name form__type__name--send">
-                  이체
-                </span>
-              </label>
-
-              <span className="form__help-text">했어요</span>
-            </div>
+            {/* 메모 */}
+            <label className="form__memo form__field">
+              <textarea
+                defaultValue={form.memo}
+                onChange={(e) => handleFormUpdate(e, 'memo')}
+                placeholder="메모를 입력해주세요."
+              />
+            </label>
           </div>
-
-          {/* 메모 */}
-          <label className="form__memo form__field">
-            <textarea
-              defaultValue={form.memo}
-              onChange={(e) => handleFormUpdate(e, 'memo')}
-              placeholder="메모를 입력해주세요."
-            />
-          </label>
 
           <nav className="form__nav">
             {/* 등록/수정하기 */}
@@ -495,4 +430,4 @@ function AddAccount() {
   );
 }
 
-export default AddAccount;
+export default AddProperty;

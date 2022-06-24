@@ -20,10 +20,13 @@ function App() {
   });
 
   /** 현재 페이지 정보 얻어오기 */
+  // @TODO: 라우터에서 받아오는 방법찾기 또는 한번에 처리..
   const getCurrentInfo = (path: string): PageInfo => {
     if (path === '/') return { id: 'calendar', title: '달력' };
     if (path === '/property') return { id: 'property', title: '자산' };
     if (path === '/addAccount') return { id: 'addAccount', title: '내역 추가' };
+    if (path === '/addProperty')
+      return { id: 'addProperty', title: '자산 추가' };
     return { id: 'calendar', title: '달력' };
   };
 
@@ -59,18 +62,33 @@ function App() {
     window.dispatchEvent(new Event('resize'));
   };
 
+  const [isShowHeader, setIsShowHeader] = useState(false);
+  const [isShowDockbar, setIsShowDockbar] = useState(false);
+
+  const getShowable = () => {
+    if (currentPage.id === 'addAccount' || currentPage.id === 'addProperty') {
+      setIsShowHeader(true);
+      setIsShowDockbar(false);
+    } else {
+      setIsShowHeader(false);
+      setIsShowDockbar(true);
+    }
+  };
+
+  useEffect(() => {
+    getShowable();
+  }, [currentPage]);
+
   useEffect(() => {
     settingRem();
-  });
+  }, []);
   // #endregion
 
   return (
     <div id={currentPage.id} className="ac__layout">
-      {currentPage.id === 'addAccount' && <Header title={currentPage.title} />}
+      {isShowHeader && <Header title={currentPage.title} />}
       <Routes />
-      {currentPage.id !== 'addAccount' && (
-        <Dockbar currentPath={currentPage.path} />
-      )}
+      {isShowDockbar && <Dockbar currentPath={currentPage.path} />}
     </div>
   );
 }
