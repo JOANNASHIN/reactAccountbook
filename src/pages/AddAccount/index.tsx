@@ -77,55 +77,107 @@ function AddAccount() {
     [key: string]: IconName;
   }
 
-  // const categoryIcons = {
-  //   value: 'question',
-  //   icon: '',
-  // } as const;
-
   const [categoryIcon, useCategoryIcon] = useState<IconName>('question');
+
   useEffect(() => {
     useCategoryIcon(
       form.category.value === '' ? 'question' : form.category.value,
     );
   }, [form.category]);
 
-  const categories = [
-    {
-      id: 0,
-      name: '카테고리 선택',
-      value: '',
-    },
+  useEffect(() => {
+    useCategoryIcon('question');
+  }, [form.type]);
 
-    {
-      id: 1,
-      name: '식비/아침',
-      value: 'bread-slice',
-    },
+  const categories = {
+    spending: [
+      {
+        id: 0,
+        name: '카테고리 선택',
+        value: '',
+      },
 
-    {
-      id: 2,
-      name: '식비/점심',
-      value: 'burger',
-    },
+      {
+        id: 1,
+        name: '식비/아침',
+        value: 'bread-slice',
+      },
 
-    {
-      id: 3,
-      name: '식비/커피',
-      value: 'mug-saucer',
-    },
+      {
+        id: 2,
+        name: '식비/점심',
+        value: 'burger',
+      },
 
-    {
-      id: 4,
-      name: '식비/간식',
-      value: 'cookie-bite',
-    },
+      {
+        id: 3,
+        name: '식비/커피',
+        value: 'mug-saucer',
+      },
 
-    {
-      id: 5,
-      name: '식비/저녁',
-      value: 'utensils',
-    },
-  ];
+      {
+        id: 4,
+        name: '식비/간식',
+        value: 'cookie-bite',
+      },
+
+      {
+        id: 5,
+        name: '식비/저녁',
+        value: 'utensils',
+      },
+    ],
+
+    income: [
+      {
+        id: 0,
+        name: '카테고리 선택',
+        value: '',
+      },
+
+      {
+        id: 1,
+        name: '월급',
+        value: 'sack-dollar',
+      },
+
+      {
+        id: 2,
+        name: '부수입',
+        value: 'sack-xmark',
+      },
+
+      {
+        id: 3,
+        name: '투자',
+        value: 'hand-holding-dollar',
+      },
+
+      {
+        id: 4,
+        name: '이자',
+        value: 'coins',
+      },
+
+      {
+        id: 5,
+        name: '용돈',
+        value: 'piggy-bank',
+      },
+
+      {
+        id: 6,
+        name: '이벤트',
+        value: 'gift',
+      },
+
+      {
+        id: 7,
+        name: '기타',
+        value: 'dollar-sign',
+      },
+    ],
+  } as const;
   // #endregion
 
   // #region events
@@ -388,30 +440,57 @@ function AddAccount() {
 
             {/* 카테고리 */}
             <div className="form__field">
-              <label className="form__category form__label">
-                <span className="form__category__icon">
-                  <Icon icon={categoryIcon} />
-                </span>
+              {form.type === 'income' ? (
+                <label className="form__category form__label">
+                  <span className="form__category__icon">
+                    <Icon icon={categoryIcon} />
+                  </span>
 
-                <select
-                  className={form.category.value !== '' ? 'active' : ''}
-                  value={form.category.value}
-                  onChange={(e) => handleSelectUpdate(e, 'category')}>
-                  {categories &&
-                    categories.length &&
-                    categories.map((category) => {
-                      return (
-                        <option value={category.value} key={category.id}>
-                          {category.name}
-                        </option>
-                      );
-                    })}
-                </select>
+                  <select
+                    className={form.category.value !== '' ? 'active' : ''}
+                    value={form.category.value}
+                    onChange={(e) => handleSelectUpdate(e, 'category')}>
+                    {categories.income &&
+                      categories.income.length &&
+                      categories.income.map((category) => {
+                        return (
+                          <option value={category.value} key={category.id}>
+                            {category.name}
+                          </option>
+                        );
+                      })}
+                  </select>
 
-                <span className="form__place__text form__help-text">
-                  (으)로
-                </span>
-              </label>
+                  <span className="form__place__text form__help-text">
+                    (으)로
+                  </span>
+                </label>
+              ) : (
+                <label className="form__category form__label">
+                  <span className="form__category__icon">
+                    <Icon icon={categoryIcon} />
+                  </span>
+
+                  <select
+                    className={form.category.value !== '' ? 'active' : ''}
+                    value={form.category.value}
+                    onChange={(e) => handleSelectUpdate(e, 'category')}>
+                    {categories.spending &&
+                      categories.spending.length &&
+                      categories.spending.map((category) => {
+                        return (
+                          <option value={category.value} key={category.id}>
+                            {category.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+
+                  <span className="form__place__text form__help-text">
+                    (으)로
+                  </span>
+                </label>
+              )}
 
               {validation.category === false && (
                 <p className="form__error">카테고리를 선택해주세요.</p>

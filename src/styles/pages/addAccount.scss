@@ -88,7 +88,7 @@
           margin-right: rem(16px);
           border-radius: 50%;
           @include shadow();
-          @include fontcss($yellow, 600, rem(24px));
+          @include fontcss($yellow, 600, rem(26px));
         }
 
         &__name {
