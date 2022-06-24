@@ -34,156 +34,6 @@ interface CalendarModal {
 
 function Calendar() {
   // #region 샘플데이터
-  const eventList2 = [
-    {
-      id: '0',
-      start: '2022-06-12',
-      title: '2022-06-12',
-      extendedProps: {
-        data: [
-          {
-            id: '01',
-            type: 'spending',
-            amount: 8000,
-            title: '석식대',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '02',
-            type: 'income',
-            category: '월급',
-            amount: 1000000,
-            title: '6월 월급',
-            method: '신한은행',
-          },
-        ],
-      },
-    },
-    {
-      id: '1',
-      start: '2022-06-20',
-      title: '2022-06-20',
-      extendedProps: {
-        data: [
-          {
-            id: '11',
-            type: 'spending',
-            amount: 1200,
-            title: '식비/아침',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '12',
-            type: 'spending',
-            amount: 11000,
-            title: '식비/점심',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-        ],
-      },
-    },
-    {
-      id: '2',
-      start: '2022-06-21',
-      title: '2022-06-21',
-      extendedProps: {
-        data: [
-          {
-            id: '2-001',
-            type: 'spending',
-            amount: 1500,
-            title: '왕만두',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-002',
-            type: 'income',
-            amount: 87,
-            title: '토스',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-003',
-            type: 'spending',
-            amount: 1500,
-            title: '왕만두',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-004',
-            type: 'income',
-            amount: 87,
-            title: '토스',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-005',
-            type: 'spending',
-            amount: 1500,
-            title: '왕만두',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-006',
-            type: 'income',
-            amount: 87,
-            title: '토스',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-007',
-            type: 'income',
-            amount: 87,
-            title: '토스',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-008',
-            type: 'spending',
-            amount: 1500,
-            title: '왕만두',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-009',
-            type: 'income',
-            amount: 87,
-            title: '토스',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-010',
-            type: 'spending',
-            amount: 1500,
-            title: '왕만두',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-          {
-            id: '2-011',
-            type: 'income',
-            amount: 87,
-            title: '마지막',
-            category: '식비/아침',
-            method: '삼성카드',
-          },
-        ],
-      },
-    },
-  ];
-
   const [eventList, setEventList] = useState<EventList[]>([]);
 
   const customData = (savedData: Item[]) => {
@@ -233,7 +83,6 @@ function Calendar() {
 
     // 지출 마이너스 비노출 처리
     day.spending *= -1;
-
     return day;
   };
 
@@ -272,21 +121,32 @@ function Calendar() {
     if (!data || !data.length) return <span />;
 
     const day = calcSummaryBalance(data);
+    const getClassNames = (key: 'income' | 'spending' | 'total') => {
+      const amountLength = day[key]?.toString().length;
+      let sizeClass = '';
+
+      if (amountLength > 10) sizeClass = 'abbr';
+      else if (amountLength > 9) sizeClass = 'size6';
+      else if (amountLength > 8) sizeClass = 'size7';
+      else if (amountLength > 7) sizeClass = 'size8';
+
+      return `calendar__event ${key} ${sizeClass}`;
+    };
 
     return (
       <>
         {day.income !== 0 && (
-          <span className="calendar__event income">
+          <span className={getClassNames('income')}>
             {day.income.toLocaleString('ko-kr')}
           </span>
         )}
         {day.spending !== 0 && (
-          <span className="calendar__event spending">
+          <span className={getClassNames('spending')}>
             {day.spending.toLocaleString('ko-kr')}
           </span>
         )}
         {day.income !== 0 && day.spending !== 0 && (
-          <span className="calendar__event balance">
+          <span className={getClassNames('total')}>
             {day.total.toLocaleString('ko-kr')}
           </span>
         )}
@@ -508,11 +368,14 @@ function Calendar() {
       {modal.isShow && (
         <ModalComponent title={modal.title} onClose={handleCloseModal}>
           <div className="calendar__date-details">
-            <ul className="details__cont">
+            <div className="details__cont">
               {modal.data ? (
                 modal.data.map((event) => {
                   return (
-                    <li className="details__event" key={event.id}>
+                    <Link
+                      key={event.id}
+                      className="details__event"
+                      to={`/addAccount?mode=edit&id=${event.id}`}>
                       <span className="details__event__type">
                         {event.category.name}
                       </span>
@@ -528,13 +391,13 @@ function Calendar() {
                         <em>{Number(event.amount).toLocaleString('ko-kr')}</em>
                         원
                       </span>
-                    </li>
+                    </Link>
                   );
                 })
               ) : (
-                <li className="details__empty">데이터가 없습니다.</li>
+                <p className="details__empty">데이터가 없습니다.</p>
               )}
-            </ul>
+            </div>
 
             <nav className="details__nav">
               <Link

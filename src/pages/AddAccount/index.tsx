@@ -4,7 +4,7 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'process';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface Selectbox {
   [key: string]: any;
@@ -36,12 +36,18 @@ interface Form {
 export { Form };
 
 function AddAccount() {
-  // #region
+  // #region 기본 변수
   /**
    * router
    */
   const router = useNavigate();
   const location = useLocation();
+
+  /** 수정모드 여부 */
+  const [isEdit, setIsEdit] = useState(false);
+
+  /** validation pass 여부 */
+  const [isPass, setIsPass] = useState(false);
 
   /**
    * form
@@ -63,15 +69,6 @@ function AddAccount() {
     memo: '',
   });
 
-  /**
-   * 초기설정
-   */
-  useEffect(() => {
-    const query = new URLSearchParams(location.search);
-    const date = query.get('date') ?? dayjs().format('YYYY-MM-DD');
-    const id = uuidv4();
-    setForm({ ...form, date, id });
-  }, []);
   // #endregion
 
   // #region events
@@ -142,6 +139,28 @@ function AddAccount() {
     memo: null,
   };
 
+  const groupValidate = () => {
+    if (form.category.value === '') {
+      setIsPass(false);
+      return false;
+    }
+    if (form.title === '') {
+      setIsPass(false);
+      return false;
+    }
+    if (form.amount === '' || form.amount === 0) {
+      setIsPass(false);
+      return false;
+    }
+    if (form.method.value === '') {
+      setIsPass(false);
+      return false;
+    }
+
+    setIsPass(true);
+    return true;
+  };
+
   /**
    * 유효성 검사
    */
@@ -159,7 +178,7 @@ function AddAccount() {
       isPass = false;
     }
 
-    if (form.amount === '') {
+    if (form.amount === '' || form.amount === 0) {
       Object.assign(copyValidator, { ...copyValidator, amount: false });
       isPass = false;
     }
@@ -180,9 +199,22 @@ function AddAccount() {
   const saveLocalStorage = () => {
     const prevData = localStorage.getItem('accountData');
 
+    // @TODO: 수정모드일때
+
     // 최초 저장
     if (!prevData) {
       localStorage.setItem('accountData', JSON.stringify([form]));
+    }
+    // 수정모드
+    else if (isEdit) {
+      // 기존데이터
+      const prevJson: Form[] = JSON.parse(prevData);
+      const index = prevJson.findIndex((v) => v.id === form.id);
+      console.log(index);
+      if (index !== -1) {
+        prevJson.splice(index, 1, form);
+        localStorage.setItem('accountData', JSON.stringify(prevJson));
+      }
     }
     // 기존 데이터 있을경우 추가
     else {
@@ -206,13 +238,52 @@ function AddAccount() {
       saveLocalStorage();
 
       setTimeout(() => {
-        alert('등록이 완료되었습니다.');
+        alert(`${isEdit ? '수정' : '등록'}이 완료되었습니다.`);
         router('/');
       }, 100);
     });
   };
   // #endregion
 
+  // #region 세팅
+  const initForm = () => {
+    const query = new URLSearchParams(location.search);
+    const savedData = localStorage.getItem('accountData');
+
+    const isEditMode = query.get('mode') === 'edit';
+    setIsEdit(isEditMode);
+
+    // 수정일때
+    if (isEditMode && savedData) {
+      const savedJson: Form[] = JSON.parse(savedData);
+      const uuid = query.get('id');
+      const target = savedJson.find((v) => v.id === uuid);
+
+      if (target) {
+        setForm({
+          ...form,
+          ...target,
+          amount: Number(target.amount).toLocaleString('ko-kr'),
+        });
+      }
+    }
+    // 저장일때
+    else {
+      const date = query.get('date') ?? dayjs().format('YYYY-MM-DD');
+      const id = uuidv4();
+      setForm({ ...form, date, id });
+    }
+  };
+
+  // form 값 변경 시 마다 submit 버튼 가능여부 체크
+  useEffect(() => {
+    setIsPass(groupValidate());
+  }, [form]);
+
+  useEffect(() => {
+    initForm();
+  }, []);
+  // #endregion
   return (
     <section className="add-account">
       <h2 className="blind">장부 기록하기</h2>
@@ -249,7 +320,7 @@ function AddAccount() {
 
                 <select
                   className={form.category.value !== '' ? 'active' : ''}
-                  defaultValue={form.category.value}
+                  value={form.category.value}
                   onChange={(e) => handleSelectUpdate(e, 'category')}>
                   <option value="">카테고리 선택</option>
                   <option value="0">식비/아침</option>
@@ -311,7 +382,7 @@ function AddAccount() {
               <label className="form__method form__label">
                 <select
                   className={form.method.value !== '' ? 'active' : ''}
-                  defaultValue={form.method.value}
+                  value={form.method.value}
                   onChange={(e) => handleSelectUpdate(e, 'method')}>
                   <option value="">결제수단</option>
                   <option value="1">현금</option>
@@ -376,8 +447,10 @@ function AddAccount() {
           </label>
 
           <nav className="form__nav">
-            <button type="submit" className="form__submit active">
-              저장하기
+            <button
+              type="submit"
+              className={isPass ? 'form__submit active' : 'form__submit'}>
+              {isEdit ? '수정하기' : '저장하기'}
             </button>
           </nav>
         </fieldset>
