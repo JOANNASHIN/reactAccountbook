@@ -6,6 +6,9 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Link } from 'react-router-dom';
 import { nextTick } from 'process';
+import _ from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import ModalComponent from '../../components/Modal';
 import { Form as Item } from '../AddAccount';
@@ -183,28 +186,20 @@ function Calendar() {
 
   const [eventList, setEventList] = useState<EventList[]>([]);
 
-  const customData = (savedData: any) => {
-    const formatter = savedData.map((event: Item, index: number) => {
-      return {
-        id: event.id,
-        start: event.date,
-        title: event.date,
-        extendedProps: {
-          data: [
-            {
-              id: event.id + index,
-              type: event.type,
-              amount: Number(event.amount),
-              title: event.title,
-              category: event.category,
-              method: event.method,
-              date: event.date,
-              memo: event.memo,
-            },
-          ],
-        },
-      };
-    });
+  const customData = (savedData: Item[]) => {
+    const formatter = _.chain(savedData)
+      .groupBy((v) => dayjs(v.date).format('YYYY-MM-DD'))
+      .map((value, key) => {
+        return {
+          id: uuidv4(),
+          start: key,
+          title: key,
+          extendedProps: {
+            data: value,
+          },
+        };
+      })
+      .value();
 
     setEventList(formatter);
   };
@@ -235,8 +230,6 @@ function Calendar() {
         day.total -= +v.amount;
       }
     });
-
-    console.log(day, data, 'zzzzzz');
 
     // 지출 마이너스 비노출 처리
     day.spending *= -1;
@@ -287,10 +280,12 @@ function Calendar() {
             {day.income.toLocaleString('ko-kr')}
           </span>
         )}
-        <span className="calendar__event spending">
-          {day.spending.toLocaleString('ko-kr')}
-        </span>
-        {day.income !== 0 && (
+        {day.spending !== 0 && (
+          <span className="calendar__event spending">
+            {day.spending.toLocaleString('ko-kr')}
+          </span>
+        )}
+        {day.income !== 0 && day.spending !== 0 && (
           <span className="calendar__event balance">
             {day.total.toLocaleString('ko-kr')}
           </span>
@@ -519,18 +514,19 @@ function Calendar() {
                   return (
                     <li className="details__event" key={event.id}>
                       <span className="details__event__type">
-                        {event.category}
+                        {event.category.name}
                       </span>
                       <div className="details__event__detail">
                         <span className="details__event__title">
                           {event.title}
                         </span>
                         <span className="details__event__method">
-                          {event.method}
+                          {event.method.name}
                         </span>
                       </div>
                       <span className={`details__event__price ${event.type}`}>
-                        <em>{event.amount}</em>원
+                        <em>{Number(event.amount).toLocaleString('ko-kr')}</em>
+                        원
                       </span>
                     </li>
                   );
@@ -542,7 +538,7 @@ function Calendar() {
 
             <nav className="details__nav">
               <Link
-                to="/addAccount"
+                to={`/addAccount?date=${modal.title}`}
                 className="details__nav__plus ac__plus--yellow">
                 장부 추가하기
               </Link>

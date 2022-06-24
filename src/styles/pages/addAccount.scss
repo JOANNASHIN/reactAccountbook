@@ -38,7 +38,11 @@
           padding: rem(8px 12px 8px 4px);
           background: transparent url(src('common', 'caret-down-solid.svg'))
             no-repeat center right / rem(6px auto);
-          @include fontcss($black, 600, rem(16px), 1.2);
+          @include fontcss($grey888, 600, rem(16px), 1.2);
+
+          &.active {
+            color: $black;
+          }
         }
       }
 

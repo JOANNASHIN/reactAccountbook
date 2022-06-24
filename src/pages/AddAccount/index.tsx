@@ -4,7 +4,12 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'process';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
+interface Selectbox {
+  [key: string]: any;
+  name: string;
+}
 
 interface Validation {
   id: null | boolean;
@@ -20,10 +25,10 @@ interface Validation {
 interface Form {
   id: string;
   date: string;
-  category: string;
+  category: Selectbox;
   title: string;
   amount: string | number;
-  method: string;
+  method: Selectbox;
   type: string;
   memo: string;
 }
@@ -31,8 +36,87 @@ interface Form {
 export { Form };
 
 function AddAccount() {
-  const history = useNavigate();
+  // #region
+  /**
+   * router
+   */
+  const router = useNavigate();
+  const location = useLocation();
 
+  /**
+   * form
+   */
+  const [form, setForm] = useState<Form>({
+    id: '',
+    date: '',
+    category: {
+      name: '카테고리 선택',
+      value: '',
+    },
+    title: '',
+    amount: '',
+    method: {
+      name: '결제수단',
+      value: '',
+    },
+    type: 'spending',
+    memo: '',
+  });
+
+  /**
+   * 초기설정
+   */
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const date = query.get('date') ?? dayjs().format('YYYY-MM-DD');
+    const id = uuidv4();
+    setForm({ ...form, date, id });
+  }, []);
+  // #endregion
+
+  // #region events
+  /**
+   * input 값 업데이트
+   */
+  const handleFormUpdate = (e: any, key: string, value?: any) => {
+    setForm({ ...form, [key]: value ?? e.target.value });
+  };
+
+  /**
+   * 금액 입력 값 업데이트
+   */
+  const handleInputAmount = (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    // 숫자만 입력
+    const onlyNumber = target.value.replace(/[^\d]/g, '');
+    // 단위변환
+    target.value = Number(onlyNumber.replace(/,/g, '')).toLocaleString('ko-kr');
+
+    // 값 업데이트
+    handleFormUpdate(e, 'amount', onlyNumber);
+  };
+
+  /**
+   * 카테고리 선택 값 업데이트
+   */
+  const handleSelectUpdate = (
+    e: React.FormEvent<HTMLSelectElement>,
+    key: string,
+  ) => {
+    const { value, selectedIndex, options } = e.target as HTMLSelectElement;
+    const name = options[selectedIndex].text;
+
+    handleFormUpdate(e, key, {
+      name,
+      value,
+    });
+  };
+  // #endregion
+
+  // #region 등록
+  /**
+   * validation keys
+   */
   const [validation, setValidation] = useState<Validation>({
     id: null,
     date: null,
@@ -44,6 +128,9 @@ function AddAccount() {
     memo: null,
   });
 
+  /**
+   * validation reset
+   */
   const resetValidation = {
     id: null,
     date: null,
@@ -55,45 +142,14 @@ function AddAccount() {
     memo: null,
   };
 
-  const [form, setForm] = useState<Form>({
-    id: '',
-    date: '',
-    category: '',
-    title: '',
-    amount: '',
-    method: '',
-    type: 'spending',
-    memo: '',
-  });
-
-  useEffect(() => {
-    const date = dayjs().format('YYYY-MM-DD');
-    const id = uuidv4();
-    setForm({ ...form, date, id });
-  }, []);
-
-  const handleInputUpdate = (e: any, key: string, value?: any) => {
-    setForm({ ...form, [key]: value ?? e.target.value });
-  };
-
-  const handleInputAmount = (e: any) => {
-    // 숫자만 입력
-    const onlyNumber = e.target.value.replace(/[^\d]/g, '');
-    // 단위변환
-    e.target.value = Number(onlyNumber.replace(/,/g, '')).toLocaleString(
-      'ko-kr',
-    );
-
-    // 값 업데이트
-    handleInputUpdate(e, 'amount', onlyNumber);
-  };
-
-  /** 유효성 검사 */
+  /**
+   * 유효성 검사
+   */
   const checkValidate = () => {
     let isPass = true;
     const copyValidator = { ...resetValidation };
 
-    if (form.category === '') {
+    if (form.category.value === '') {
       Object.assign(copyValidator, { ...copyValidator, category: false });
       isPass = false;
     }
@@ -108,7 +164,7 @@ function AddAccount() {
       isPass = false;
     }
 
-    if (form.method === '') {
+    if (form.method.value === '') {
       Object.assign(copyValidator, { ...copyValidator, method: false });
       isPass = false;
     }
@@ -118,7 +174,9 @@ function AddAccount() {
     return isPass;
   };
 
-  /** 저장 */
+  /**
+   * 로컬스토리지 저장
+   */
   const saveLocalStorage = () => {
     const prevData = localStorage.getItem('accountData');
 
@@ -135,7 +193,11 @@ function AddAccount() {
       localStorage.setItem('accountData', JSON.stringify(prevJson));
     }
   };
-  const handleSubmit = async (e: any) => {
+
+  /**
+   * 이벤트 등록
+   */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!checkValidate()) return;
@@ -145,10 +207,11 @@ function AddAccount() {
 
       setTimeout(() => {
         alert('등록이 완료되었습니다.');
-        history('/');
+        router('/');
       }, 100);
     });
   };
+  // #endregion
 
   return (
     <section className="add-account">
@@ -172,6 +235,7 @@ function AddAccount() {
                   defaultValue={form.date}
                   required
                   className="form__date__input"
+                  onChange={(e) => handleFormUpdate(e, 'date')}
                 />
               </label>
             </div>
@@ -184,8 +248,9 @@ function AddAccount() {
                 </span>
 
                 <select
-                  defaultValue={form.category}
-                  onChange={(e) => handleInputUpdate(e, 'category')}>
+                  className={form.category.value !== '' ? 'active' : ''}
+                  defaultValue={form.category.value}
+                  onChange={(e) => handleSelectUpdate(e, 'category')}>
                   <option value="">카테고리 선택</option>
                   <option value="0">식비/아침</option>
                   <option value="1">식비/점심</option>
@@ -212,7 +277,7 @@ function AddAccount() {
                   defaultValue={form.title}
                   placeholder="어디"
                   maxLength={15}
-                  onInput={(e) => handleInputUpdate(e, 'title')}
+                  onInput={(e) => handleFormUpdate(e, 'title')}
                 />
                 <span className="form__use__text form__help-text">에서</span>
               </label>
@@ -245,8 +310,9 @@ function AddAccount() {
             <div className="form__field">
               <label className="form__method form__label">
                 <select
-                  defaultValue={form.method}
-                  onChange={(e) => handleInputUpdate(e, 'method')}>
+                  className={form.method.value !== '' ? 'active' : ''}
+                  defaultValue={form.method.value}
+                  onChange={(e) => handleSelectUpdate(e, 'method')}>
                   <option value="">결제수단</option>
                   <option value="1">현금</option>
                   <option value="2">삼성카드</option>
@@ -268,7 +334,7 @@ function AddAccount() {
                   name="type"
                   defaultValue="spending"
                   defaultChecked
-                  onInput={(e) => handleInputUpdate(e, 'type')}
+                  onInput={(e) => handleFormUpdate(e, 'type')}
                 />
                 <span className="form__type__name form__type__name--spending">
                   지출
@@ -279,7 +345,7 @@ function AddAccount() {
                   type="radio"
                   name="type"
                   defaultValue="income"
-                  onInput={(e) => handleInputUpdate(e, 'type')}
+                  onInput={(e) => handleFormUpdate(e, 'type')}
                 />
                 <span className="form__type__name form__type__name--income">
                   수입
@@ -290,7 +356,7 @@ function AddAccount() {
                   type="radio"
                   name="type"
                   defaultValue="send"
-                  onInput={(e) => handleInputUpdate(e, 'type')}
+                  onInput={(e) => handleFormUpdate(e, 'type')}
                 />
                 <span className="form__type__name form__type__name--send">
                   이체
@@ -304,7 +370,7 @@ function AddAccount() {
           <label className="form__memo form__field">
             <textarea
               defaultValue={form.memo}
-              onChange={(e) => handleInputUpdate(e, 'memo')}
+              onChange={(e) => handleFormUpdate(e, 'memo')}
               placeholder="메모를 입력해주세요."
             />
           </label>
