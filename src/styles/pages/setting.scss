@@ -1,0 +1,39 @@
+.setting {
+  &__reset {
+    display: block;
+    width: 100%;
+    padding: rem(16px);
+    border-radius: $radius;
+    @include fontcss($black, 600, rem(13px));
+    @include shadow();
+
+    margin-bottom: rem(24px);
+  }
+
+  &__wrapper {
+    padding: rem(24px 0);
+  }
+
+  &__menu {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: rem(20px 40px 20px 12px);
+    border-bottom: 1px solid $greyddd;
+    @include fontcss($black, 600, rem(15px));
+
+    &__link {
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: rem(14px);
+        height: 100%;
+        background: url(src('common', 'angle-down-solid.svg')) no-repeat 0
+          center / rem(100% auto);
+        transform: rotate(-90deg);
+      }
+    }
+  }
+}

@@ -245,9 +245,9 @@ function AddAccount() {
     });
   };
 
-  const handleDelete = () => {
-    const wantDelete = confirm('정말로 삭제하시겠습니까?');
-    if (!wantDelete || !storageData) return;
+  const handleDelete = async () => {
+    const wantToDelete = await confirm('정말로 삭제하시겠습니까?');
+    if (!wantToDelete || !storageData) return ;
 
     const query = new URLSearchParams(location.search);
     const savedJson: Form[] = JSON.parse(storageData);

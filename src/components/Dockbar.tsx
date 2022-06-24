@@ -23,6 +23,12 @@ function Dockbar(props: Props) {
       path: '/property',
       icon: solid('wallet'),
     },
+    {
+      id: '002',
+      title: '설정',
+      path: '/setting',
+      icon: solid('gear'),
+    },
   ];
 
   return (
@@ -32,7 +38,11 @@ function Dockbar(props: Props) {
           return (
             <Link
               to={menu.path}
-              className={currentPath === menu.path ? 'dockbar__menu active' : 'dockbar__menu'}
+              className={
+                currentPath === menu.path
+                  ? 'dockbar__menu active'
+                  : 'dockbar__menu'
+              }
               key={menu.id}>
               <Icon icon={menu.icon} />
               <span className="blind">{menu.title}</span>
