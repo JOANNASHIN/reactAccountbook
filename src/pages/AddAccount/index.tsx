@@ -554,7 +554,7 @@ function AddAccount() {
               </label>
 
               {validation.method === false && (
-                <p className="form__error">결제수단을 선택해주세요.</p>
+                <p className="form__error">자산을 선택해주세요.</p>
               )}
             </div>
 
