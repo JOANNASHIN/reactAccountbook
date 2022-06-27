@@ -4,13 +4,13 @@ import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import dayjs from 'dayjs';
+import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import { nextTick } from 'process';
-import _ from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import dayjs from 'dayjs';
-import SummaryComponent, { Balance } from '../../components/Summary';
 import ModalComponent from '../../components/Modal';
+import SummaryComponent, { Balance } from '../../components/Summary';
 import { Form as Item } from '../AddAccount';
 
 type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
@@ -33,9 +33,11 @@ interface CalendarModal {
 }
 
 function Calendar() {
-  // #region 샘플데이터
+  // #region 데이터
+  /** 가계부 리스트 */
   const [eventList, setEventList] = useState<EventList[]>([]);
 
+  /** fullCalendar 데이터양식에 맞게 커스텀 */
   const customData = (savedData: Item[]) => {
     const formatter = _.chain(savedData)
       .groupBy((v) => dayjs(v.date).format('YYYY-MM-DD'))
@@ -53,15 +55,6 @@ function Calendar() {
 
     setEventList(formatter);
   };
-  // #endregion
-
-  // #region summary
-  const [balance, setBalance] = useState<Balance>({
-    type: 'calendar',
-    income: 0,
-    spending: 0,
-    total: 0,
-  });
 
   /** 수입 지출 계산 */
   const calcSummaryBalance = (data: Item[]) => {
@@ -86,32 +79,43 @@ function Calendar() {
     return day;
   };
 
-  /** summary 데이터 세팅 */
   useEffect(() => {
     const savedData = localStorage.getItem('accountData');
     if (savedData) customData(JSON.parse(savedData));
+  }, []);
+  // #endregion
 
-    nextTick(() => {
-      const month: Balance = {
-        type: 'calendar',
-        income: 0,
-        spending: 0,
-        total: 0,
+  // #region summary
+  /** 잔고 summary */
+  const [balance, setBalance] = useState<Balance>({
+    type: 'calendar',
+    income: 0,
+    spending: 0,
+    total: 0,
+  });
+
+  /** summary 데이터 세팅 */
+  useEffect(() => {
+    const month: Balance = {
+      type: 'calendar',
+      income: 0,
+      spending: 0,
+      total: 0,
+    };
+
+    eventList.forEach((v) => {
+      const result = {
+        ...month,
+        ...calcSummaryBalance(v.extendedProps?.data),
       };
 
-      eventList.forEach((v) => {
-        const result = {
-          ...month,
-          ...calcSummaryBalance(v.extendedProps?.data),
-        };
-        month.income += result.income;
-        month.spending += result.spending;
-        month.total += result.total;
-      });
-
-      setBalance(month);
+      month.income += result.income;
+      month.spending += result.spending;
+      month.total += result.total;
     });
-  }, []);
+
+    setBalance(month);
+  }, [eventList]);
   // #endregion
 
   // #region full-calendar
@@ -126,7 +130,7 @@ function Calendar() {
     return `${classname} ${sizeClass}`;
   };
 
-  /** 렌더링 커스텀 */
+  /** 달력 안 콘텐츠 커스텀 */
   const renderCustomEvent = (eventInfo: any) => {
     const data = eventInfo.event?.extendedProps.data;
     if (!data || !data.length) return <span />;
