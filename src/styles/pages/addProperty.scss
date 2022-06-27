@@ -1,11 +1,14 @@
 .add-property {
   .add-account__form {
+    .form__field {
+      margin-bottom: rem(32px) !important;
+    }
+
     .form__label {
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: rem(32px) !important;
 
       &__name {
         flex: 0 0 30%;
@@ -16,6 +19,10 @@
         width: 100%;
         text-align: left;
       }
+    }
+
+    .form__error {
+      text-align: left;
     }
   }
 
