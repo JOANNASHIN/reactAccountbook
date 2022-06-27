@@ -15,8 +15,27 @@
     @include fontcss($black, bold, rem(20px), rem(24px));
   }
 
-  &__wrapper {
+  &__box {
     display: flex;
     flex-wrap: wrap;
+  }
+
+  &__empty {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    text-align: center;
+
+    &__add {
+      display: inline-block;
+      width: rem(200px);
+      padding: rem(16px);
+      border-radius: $radius;
+      background: $yellow;
+      @include fontcss($black, 600, rem(13px));
+      @include shadow();
+    }
   }
 }

@@ -18,12 +18,12 @@ function WalletComponent(props: Props) {
   const { wallet } = props;
 
   return (
-    <li className={`wallet ${wallet.background}`}>
+    <div className={`wallet ${wallet.background}`}>
       <strong className="wallet__name">{wallet.name}</strong>
       <span className="wallet__amount">
-        <em>{wallet.amount.toLocaleString('ko-kr')}</em>원
+        <em>{Number(wallet.amount).toLocaleString('ko-kr')}</em>원
       </span>
-    </li>
+    </div>
   );
 }
 

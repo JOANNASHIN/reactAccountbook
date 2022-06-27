@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Link } from 'react-router-dom';
@@ -6,45 +6,46 @@ import SummaryComponent, { Balance } from '../../components/Summary';
 import WalletComponent, { Wallet } from '../../components/Wallet';
 
 function Property() {
-  const balance: Balance = {
+  const [walletList, setWalletList] = useState<Wallet[]>();
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('propertyData');
+    if (savedData) setWalletList(JSON.parse(savedData));
+  }, []);
+
+  // #region summary
+  /** 잔고 summary */
+  const [balance, setBalance] = useState<Balance>({
     type: 'property',
     income: 0,
     spending: 0,
     total: 0,
-  };
+  });
 
-  const walletList: Wallet[] = [
-    {
-      id: 'cash',
-      name: '현금',
-      amount: 0,
-      background: 'mint',
-    },
-    {
-      id: 'card',
-      name: '카드',
-      amount: 50000,
-      background: 'orange',
-    },
-    {
-      id: 'bank',
-      name: '은행',
-      amount: 0,
-      background: 'lightblue',
-    },
-    {
-      id: 'saving',
-      name: '저축',
-      amount: 1000000,
-      background: 'yellow',
-    },
-    {
-      id: 'investment',
-      name: '투자',
-      amount: 1000000,
-      background: '',
-    },
-  ];
+  /** summary 데이터 세팅 */
+  useEffect(() => {
+    const total: Balance = {
+      type: 'property',
+      income: 0,
+      spending: 0,
+      total: 0,
+    };
+
+    if (walletList) {
+      walletList.forEach((v) => {
+        if (v.amount < 0) {
+          total.spending -= +v.amount;
+        } else if (v.amount) {
+          total.income += +v.amount;
+        }
+
+        total.total += +v.amount;
+      });
+    }
+
+    setBalance(total);
+  }, [walletList]);
+  // #endregion
 
   return (
     <section className="property">
@@ -59,11 +60,26 @@ function Property() {
       <SummaryComponent balance={balance} />
 
       {/* 카드 */}
-      <ul className="property__wrapper">
-        {walletList.map((wallet) => {
-          return <WalletComponent wallet={wallet} key={wallet.id} />;
-        })}
-      </ul>
+      <div className="property__wrapper">
+        {walletList && walletList.length ? (
+          walletList.map((wallet) => {
+            return (
+              <Link
+                to={`/addProperty?mode=edit&id=${wallet.id}`}
+                key={wallet.id}
+                className="property__box">
+                <WalletComponent wallet={wallet} />
+              </Link>
+            );
+          })
+        ) : (
+          <div className="property__empty">
+            <Link to="/addProperty" className="property__empty__add">
+              자산 추가하기
+            </Link>
+          </div>
+        )}
+      </div>
     </section>
   );
 }

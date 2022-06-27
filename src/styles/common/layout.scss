@@ -31,7 +31,8 @@
 
     //등록페이지
     $addHeader: rem(52px);
-    &#addAccount {
+    &#addAccount,
+    &#addProperty {
       padding-bottom: 0;
       @include safeArea('padding-top', $addHeader);
     }

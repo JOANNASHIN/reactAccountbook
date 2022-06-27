@@ -1,39 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'process';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-interface Selectbox {
-  [key: string]: any;
-  name: string;
-}
+import WalletComponent, { Wallet } from '../../components/Wallet';
 
 interface Validation {
-  id: null | boolean;
-  date: null | boolean;
-  category: null | boolean;
-  title: null | boolean;
-  amount: null | boolean;
-  method: null | boolean;
-  type: null | boolean;
-  memo: null | boolean;
+  name: null | boolean;
 }
-
-interface Form {
-  id: string;
-  date: string;
-  category: Selectbox;
-  title: string;
-  amount: string | number;
-  method: Selectbox;
-  type: string;
-  memo: string;
-}
-
-export { Form };
 
 function AddProperty() {
   // #region 기본 변수
@@ -47,7 +21,7 @@ function AddProperty() {
   const [isEdit, setIsEdit] = useState(false);
 
   /** local storage 저장데이터 */
-  const [storageData] = useState(localStorage.getItem('accountData'));
+  const [storageData] = useState(localStorage.getItem('propertyData'));
 
   /** validation pass 여부 */
   const [isPass, setIsPass] = useState(false);
@@ -55,23 +29,72 @@ function AddProperty() {
   /**
    * form
    */
-  const [form, setForm] = useState<Form>({
+  const [form, setForm] = useState<Wallet>({
     id: '',
-    date: '',
-    category: {
-      name: '카테고리 선택',
-      value: '',
-    },
-    title: '',
-    amount: '',
-    method: {
-      name: '결제수단',
-      value: '',
-    },
-    type: 'spending',
-    memo: '',
+    name: '',
+    amount: 0,
+    background: 'mint',
   });
 
+  const colors = [
+    {
+      name: 'mint',
+      value: 'mint',
+    },
+    {
+      name: 'green',
+      value: 'green',
+    },
+    {
+      name: 'brightmint',
+      value: 'brightmint',
+    },
+    {
+      name: 'lightblue',
+      value: 'lightblue',
+    },
+
+    {
+      name: 'blue',
+      value: 'blue',
+    },
+    {
+      name: 'point',
+      value: 'point',
+    },
+    {
+      name: 'purple',
+      value: 'purple',
+    },
+    {
+      name: 'yellow',
+      value: 'yellow',
+    },
+    {
+      name: 'orange',
+      value: 'orange',
+    },
+    {
+      name: 'peach',
+      value: 'peach',
+    },
+    {
+      name: 'pink',
+      value: 'pink',
+    },
+    {
+      name: 'red',
+      value: 'red',
+    },
+    {
+      name: 'white',
+      value: 'white',
+    },
+    {
+      name: 'greyccc',
+      value: 'greyccc',
+    },
+  ];
   // #endregion
 
   // #region events
@@ -95,22 +118,6 @@ function AddProperty() {
     // 값 업데이트
     handleFormUpdate(e, 'amount', onlyNumber);
   };
-
-  /**
-   * 카테고리 선택 값 업데이트
-   */
-  const handleSelectUpdate = (
-    e: React.FormEvent<HTMLSelectElement>,
-    key: string,
-  ) => {
-    const { value, selectedIndex, options } = e.target as HTMLSelectElement;
-    const name = options[selectedIndex].text;
-
-    handleFormUpdate(e, key, {
-      name,
-      value,
-    });
-  };
   // #endregion
 
   // #region 등록
@@ -118,44 +125,18 @@ function AddProperty() {
    * validation keys
    */
   const [validation, setValidation] = useState<Validation>({
-    id: null,
-    date: null,
-    category: null,
-    title: null,
-    amount: null,
-    method: null,
-    type: null,
-    memo: null,
+    name: null,
   });
 
   /**
    * validation reset
    */
   const resetValidation = {
-    id: null,
-    date: null,
-    category: null,
-    title: null,
-    amount: null,
-    method: null,
-    type: null,
-    memo: null,
+    name: null,
   };
 
   const groupValidate = () => {
-    if (form.category.value === '') {
-      setIsPass(false);
-      return false;
-    }
-    if (form.title === '') {
-      setIsPass(false);
-      return false;
-    }
-    if (form.amount === '' || form.amount === 0) {
-      setIsPass(false);
-      return false;
-    }
-    if (form.method.value === '') {
+    if (form.name === '') {
       setIsPass(false);
       return false;
     }
@@ -171,23 +152,8 @@ function AddProperty() {
     let isPass = true;
     const copyValidator = { ...resetValidation };
 
-    if (form.category.value === '') {
-      Object.assign(copyValidator, { ...copyValidator, category: false });
-      isPass = false;
-    }
-
-    if (form.title === '') {
-      Object.assign(copyValidator, { ...copyValidator, title: false });
-      isPass = false;
-    }
-
-    if (form.amount === '' || form.amount === 0) {
-      Object.assign(copyValidator, { ...copyValidator, amount: false });
-      isPass = false;
-    }
-
-    if (form.method.value === '') {
-      Object.assign(copyValidator, { ...copyValidator, method: false });
+    if (form.name === '') {
+      Object.assign(copyValidator, { ...copyValidator, name: false });
       isPass = false;
     }
 
@@ -208,7 +174,7 @@ function AddProperty() {
     }
     // 수정모드
     else if (isEdit) {
-      const prevJson: Form[] = JSON.parse(storageData);
+      const prevJson: Wallet[] = JSON.parse(storageData);
       const index = prevJson.findIndex((v) => v.id === form.id);
 
       if (index !== -1) {
@@ -224,7 +190,8 @@ function AddProperty() {
     }
 
     // 로컬스토리지 저장 / 업데이트
-    if (saveData) localStorage.setItem('accountData', JSON.stringify(saveData));
+    if (saveData)
+      localStorage.setItem('propertyData', JSON.stringify(saveData));
   };
 
   /**
@@ -240,7 +207,7 @@ function AddProperty() {
 
       setTimeout(() => {
         alert(`${isEdit ? '수정' : '등록'}이 완료되었습니다.`);
-        router('/');
+        router('/property');
       }, 100);
     });
   };
@@ -250,17 +217,17 @@ function AddProperty() {
     if (!wantToDelete || !storageData) return;
 
     const query = new URLSearchParams(location.search);
-    const savedJson: Form[] = JSON.parse(storageData);
+    const savedJson: Wallet[] = JSON.parse(storageData);
     const uuid = query.get('id');
     const targetIndex = savedJson.findIndex((v) => v.id === uuid);
 
     if (targetIndex) {
       savedJson.splice(targetIndex, 1);
-      localStorage.setItem('accountData', JSON.stringify(savedJson));
+      localStorage.setItem('propertyData', JSON.stringify(savedJson));
 
       nextTick(() => {
         alert('정상적으로 삭제되었습니다.');
-        router('/');
+        router('/property');
       });
     }
   };
@@ -275,7 +242,7 @@ function AddProperty() {
 
     // 수정일때
     if (isEditMode && storageData) {
-      const savedJson: Form[] = JSON.parse(storageData);
+      const savedJson: Wallet[] = JSON.parse(storageData);
       const uuid = query.get('id');
       const target = savedJson.find((v) => v.id === uuid);
 
@@ -283,7 +250,6 @@ function AddProperty() {
         setForm({
           ...form,
           ...target,
-          amount: Number(target.amount).toLocaleString('ko-kr'),
         });
       }
     }
@@ -306,114 +272,78 @@ function AddProperty() {
   }, []);
   // #endregion
   return (
-    <section className="add-account">
-      <h2 className="blind">자산 등록하기</h2>
+    <section className="add-account add-property">
+      <h2 className="blind">자산 추가하기</h2>
 
       <form className="add-account__form" onSubmit={handleSubmit}>
         <fieldset>
-          <legend>자산 입력</legend>
-
+          <legend>장부 입력</legend>
           <div className="form__wrapper">
-            {/* 카테고리 */}
+            {/* 자산이름 */}
             <div className="form__field">
-              <label className="form__category form__label">
-                <span className="form__category__icon">
-                  <Icon icon={solid('burger')} />
-                </span>
-
-                <select
-                  className={form.category.value !== '' ? 'active' : ''}
-                  value={form.category.value}
-                  onChange={(e) => handleSelectUpdate(e, 'category')}>
-                  <option value="">카테고리 선택</option>
-                  <option value="0">식비/아침</option>
-                  <option value="1">식비/점심</option>
-                  <option value="2">식비/커피</option>
-                  <option value="3">식비/저녁</option>
-                </select>
-
-                <span className="form__place__text form__help-text">
-                  (으)로
-                </span>
-              </label>
-
-              {validation.category === false && (
-                <p className="form__error">카테고리를 선택해주세요.</p>
-              )}
-            </div>
-
-            {/* 이름 */}
-            <div className="form__field">
-              <label className="form__use form__label">
+              <label className="form__label">
+                <span className="form__label__name">자산이름</span>
                 <input
                   type="text"
-                  className="form__use__input"
-                  defaultValue={form.title}
-                  placeholder="어디"
+                  value={form.name}
+                  placeholder="자산 이름"
                   maxLength={15}
                   spellCheck={false}
-                  onInput={(e) => handleFormUpdate(e, 'title')}
+                  onInput={(e) => handleFormUpdate(e, 'name')}
                 />
-                <span className="form__use__text form__help-text">에서</span>
               </label>
 
-              {validation.title === false && (
-                <p className="form__error">
-                  어디에서 사용하였는지 입력해주세요.
-                </p>
+              {validation.name === false && (
+                <p className="form__error">자산 이름을 입력해주세요.</p>
               )}
             </div>
 
             {/* 금액 */}
             <div className="form__field">
               <label className="form__amount form__label">
+                <span className="form__label__name">자산금액</span>
                 <input
                   type="tel"
-                  defaultValue={form.amount}
+                  value={Number(form.amount).toLocaleString('ko-kr')}
                   placeholder="0"
                   className={form.type}
                   maxLength={18}
                   onInput={handleInputAmount}
                 />
-                <span className="form__help-text">원을</span>
-              </label>
-
-              {validation.amount === false && (
-                <p className="form__error">금액을 입력해주세요.</p>
-              )}
-            </div>
-
-            {/* 색상선택 */}
-            <div className="form__field">
-              <label className="form__amount form__label">
-                <input
-                  type="radio"
-                  defaultValue={form.amount}
-                  className={form.type}
-                  maxLength={18}
-                  onInput={handleInputAmount}
-                />
               </label>
             </div>
 
-            {/* 메모 */}
-            <label className="form__memo form__field">
-              <textarea
-                defaultValue={form.memo}
-                onChange={(e) => handleFormUpdate(e, 'memo')}
-                placeholder="메모를 입력해주세요."
-              />
-            </label>
+            {/* 컬러 */}
+            <div className="form__field form__color">
+              {colors &&
+                colors.length &&
+                colors.map((color, index) => {
+                  return (
+                    <label className="form__color__box" key={color.value}>
+                      <input
+                        type="radio"
+                        name="color"
+                        value={color.value}
+                        onInput={(e) => handleFormUpdate(e, 'background')}
+                        defaultChecked={index === 0}
+                      />
+
+                      <span className="form__color__name">
+                        <em className={color.value}>{color.name}</em>
+                      </span>
+                    </label>
+                  );
+                })}
+            </div>
           </div>
 
-          <nav className="form__nav">
-            {/* 등록/수정하기 */}
-            <button
-              type="submit"
-              className={isPass ? 'form__submit active' : 'form__submit'}>
-              {isEdit ? '수정하기' : '저장하기'}
-            </button>
+          <section className="add-property__preview">
+            <h3 className="preview__title">미리보기</h3>
 
+            <WalletComponent wallet={form} />
+          </section>
+
+          <nav className="form__nav">
             {/* 삭제하기 */}
             {isEdit && (
               <button
@@ -423,6 +353,13 @@ function AddProperty() {
                 삭제하기
               </button>
             )}
+
+            {/* 등록/수정하기 */}
+            <button
+              type="submit"
+              className={isPass ? 'form__submit active' : 'form__submit'}>
+              {isEdit ? '수정하기' : '저장하기'}
+            </button>
           </nav>
         </fieldset>
       </form>

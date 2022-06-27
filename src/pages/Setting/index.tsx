@@ -8,6 +8,7 @@ function Setting() {
     if (!wantToDelete) return;
 
     localStorage.removeItem('accountData');
+    localStorage.removeItem('propertyData');
 
     nextTick(() => {
       setTimeout(() => {

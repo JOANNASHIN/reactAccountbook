@@ -8,6 +8,22 @@
     clip: rect(1px, 1px, 1px, 1px);
   }
 
+  .sizeS {
+    font-size: rem(10px) !important;
+
+    em {
+      font-size: rem(10px) !important;
+    }
+  }
+
+  .sizeXS {
+    font-size: rem(9px) !important;
+
+    em {
+      font-size: rem(9px) !important;
+    }
+  }
+
   /* #region color */
   .income {
     color: $blue !important;
@@ -25,20 +41,64 @@
     }
   }
 
-  .sizeS {
-    font-size: rem(10px) !important;
-
-    em {
-      font-size: rem(10px) !important;
-    }
+  .white {
+    background: $white !important;
   }
 
-  .sizeXS {
-    font-size: rem(9px) !important;
+  .black {
+    background: $black !important;
+  }
 
-    em {
-      font-size: rem(9px) !important;
-    }
+  .point {
+    background: $point !important;
+  }
+
+  .red {
+    background: $red !important;
+  }
+
+  .blue {
+    background: $blue !important;
+  }
+
+  .yellow {
+    background: $yellow !important;
+  }
+
+  .green {
+    background: $green !important;
+  }
+
+  .lightblue {
+    background: $lightblue !important;
+  }
+
+  .mint {
+    background: $mint !important;
+  }
+
+  .brightmint {
+    background: $brightmint !important;
+  }
+
+  .pink {
+    background: $pink !important;
+  }
+
+  .purple {
+    background: $purple !important;
+  }
+
+  .orange {
+    background: $orange !important;
+  }
+
+  .peach {
+    background: $peach !important;
+  }
+
+  .greyccc {
+    background: $greyccc !important;
   }
 
   /* #endregion */

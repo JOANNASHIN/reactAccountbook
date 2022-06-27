@@ -1,0 +1,30 @@
+.add-property {
+  .add-account__form {
+    .form__label {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: rem(32px) !important;
+
+      &__name {
+        flex: 0 0 30%;
+        @include fontcss($grey888, 400, rem(12px));
+      }
+
+      input {
+        text-align: left;
+      }
+    }
+  }
+
+  &__preview {
+    margin: rem(48px 12px);
+
+    .preview {
+      &__title {
+        @include fontcss($grey666, 400, rem(12px));
+      }
+    }
+  }
+}

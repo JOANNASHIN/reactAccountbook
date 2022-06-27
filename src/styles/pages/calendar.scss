@@ -105,6 +105,7 @@ $calendarTab: 36px;
           width: rem(140px);
           padding: rem(10px 0);
           text-align: center;
+          white-space: nowrap;
           @include fontcss($white, 600, rem(13px));
         }
 

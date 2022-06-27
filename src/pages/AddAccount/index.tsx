@@ -48,7 +48,8 @@ function AddAccount() {
   const [isEdit, setIsEdit] = useState(false);
 
   /** local storage 저장데이터 */
-  const [storageData] = useState(localStorage.getItem('accountData'));
+  const [accountStorage] = useState(localStorage.getItem('accountData'));
+  const propertyStorage = localStorage.getItem('propertyData');
 
   /** validation pass 여부 */
   const [isPass, setIsPass] = useState(false);
@@ -73,21 +74,7 @@ function AddAccount() {
     memo: '',
   });
 
-  interface Test {
-    [key: string]: IconName;
-  }
-
   const [categoryIcon, useCategoryIcon] = useState<IconName>('question');
-
-  useEffect(() => {
-    useCategoryIcon(
-      form.category.value === '' ? 'question' : form.category.value,
-    );
-  }, [form.category]);
-
-  useEffect(() => {
-    useCategoryIcon('question');
-  }, [form.type]);
 
   const categories = {
     spending: [
@@ -125,6 +112,18 @@ function AddAccount() {
         id: 5,
         name: '식비/저녁',
         value: 'utensils',
+      },
+
+      {
+        id: 6,
+        name: '친구/약속',
+        value: 'user-group',
+      },
+
+      {
+        id: 7,
+        name: '생활/장보기',
+        value: 'cart-shopping',
       },
     ],
 
@@ -178,6 +177,34 @@ function AddAccount() {
       },
     ],
   } as const;
+
+  const [properties, setProperties] = useState([
+    {
+      id: '0',
+      name: '결제수단',
+      value: '',
+    },
+  ]);
+
+  useEffect(() => {
+    useCategoryIcon(
+      form.category.value === '' ? 'question' : form.category.value,
+    );
+  }, [form.category]);
+
+  useEffect(() => {
+    useCategoryIcon('question');
+  }, [form.type]);
+
+  useEffect(() => {
+    if (propertyStorage) {
+      const propertyJson = JSON.parse(propertyStorage);
+      console.log(propertyJson);
+
+      setProperties([...properties, ...propertyJson]);
+    }
+  }, []);
+
   // #endregion
 
   // #region events
@@ -309,12 +336,12 @@ function AddAccount() {
     let saveData = null;
 
     // 최초 저장
-    if (!storageData) {
+    if (!accountStorage) {
       saveData = [form];
     }
     // 수정모드
     else if (isEdit) {
-      const prevJson: Form[] = JSON.parse(storageData);
+      const prevJson: Form[] = JSON.parse(accountStorage);
       const index = prevJson.findIndex((v) => v.id === form.id);
 
       if (index !== -1) {
@@ -324,7 +351,7 @@ function AddAccount() {
     }
     // 기존 데이터 있을경우 추가
     else {
-      const prevJson = JSON.parse(storageData);
+      const prevJson = JSON.parse(accountStorage);
       prevJson.push(form);
       saveData = prevJson;
     }
@@ -353,10 +380,10 @@ function AddAccount() {
 
   const handleDelete = async () => {
     const wantToDelete = await confirm('정말로 삭제하시겠습니까?');
-    if (!wantToDelete || !storageData) return;
+    if (!wantToDelete || !accountStorage) return;
 
     const query = new URLSearchParams(location.search);
-    const savedJson: Form[] = JSON.parse(storageData);
+    const savedJson: Form[] = JSON.parse(accountStorage);
     const uuid = query.get('id');
     const targetIndex = savedJson.findIndex((v) => v.id === uuid);
 
@@ -380,8 +407,8 @@ function AddAccount() {
     setIsEdit(isEditMode);
 
     // 수정일때
-    if (isEditMode && storageData) {
-      const savedJson: Form[] = JSON.parse(storageData);
+    if (isEditMode && accountStorage) {
+      const savedJson: Form[] = JSON.parse(accountStorage);
       const uuid = query.get('id');
       const target = savedJson.find((v) => v.id === uuid);
 
@@ -450,8 +477,7 @@ function AddAccount() {
                     className={form.category.value !== '' ? 'active' : ''}
                     value={form.category.value}
                     onChange={(e) => handleSelectUpdate(e, 'category')}>
-                    {categories.income &&
-                      categories.income.length &&
+                    {categories?.income?.length &&
                       categories.income.map((category) => {
                         return (
                           <option value={category.value} key={category.id}>
@@ -475,8 +501,7 @@ function AddAccount() {
                     className={form.category.value !== '' ? 'active' : ''}
                     value={form.category.value}
                     onChange={(e) => handleSelectUpdate(e, 'category')}>
-                    {categories.spending &&
-                      categories.spending.length &&
+                    {categories?.spending?.length &&
                       categories.spending.map((category) => {
                         return (
                           <option value={category.value} key={category.id}>
@@ -545,10 +570,14 @@ function AddAccount() {
                   className={form.method.value !== '' ? 'active' : ''}
                   value={form.method.value}
                   onChange={(e) => handleSelectUpdate(e, 'method')}>
-                  <option value="">결제수단</option>
-                  <option value="1">현금</option>
-                  <option value="2">삼성카드</option>
-                  <option value="3">신한카드</option>
+                  {properties?.length &&
+                    properties.map((property) => {
+                      return (
+                        <option value={property.value} key={property.id}>
+                          {property.name}
+                        </option>
+                      );
+                    })}
                 </select>
                 <span className="form__help-text">(으)로</span>
               </label>

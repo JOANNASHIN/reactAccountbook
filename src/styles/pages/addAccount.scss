@@ -2,6 +2,9 @@
   $inputWidth: auto;
   $inputMaxWidth: rem(300px);
 
+  overflow-y: auto;
+  height: 100%;
+
   &__form {
     padding: rem(16px 12px);
 
@@ -176,6 +179,45 @@
 
           &::placeholder {
             color: $greyaaa;
+          }
+        }
+      }
+
+      //색상선택
+      &__color {
+        &__box {
+          display: inline-block;
+          margin-right: rem(8px);
+        }
+
+        input[type='radio'] {
+          display: none;
+
+          &:checked + .form__color__name {
+            background: $white;
+            @include shadow();
+          }
+        }
+
+        &__name {
+          display: inline-block;
+          position: relative;
+          width: rem(34px);
+          height: rem(34px);
+          border-radius: 50%;
+          font-size: 0;
+
+          em {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: rem(24px);
+            height: rem(24px);
+            margin: auto;
+            background: $mint;
+            border-radius: 50%;
           }
         }
       }
