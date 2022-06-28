@@ -63,6 +63,39 @@ $calendarTab: 36px;
     width: 100%;
     height: 100%;
 
+    //리스트 타입
+    &--list {
+      .fc-list-event-title {
+        padding: 0 !important;
+        background: transparent !important;
+      }
+
+      .fc-list-event-time {
+        display: none;
+      }
+
+      .fc-list-event-graphic {
+        display: none;
+      }
+
+      .fc-list-day-text,
+      .fc-list-day-side-text {
+        @include fontcss($grey666, 600, rem(12px));
+      }
+
+      .detail__wrapper {
+        padding: rem(8px 0 0 0);
+      }
+
+      .detail__event {
+        padding: rem(8px 12px) !important;
+
+        &:last-child {
+          border-bottom: 1px solid $greye8 !important;
+        }
+      }
+    }
+
     //달력크기 (100% - 여백제외)
     .fc {
       height: calc(100% - #{rem(24px)});
@@ -237,77 +270,10 @@ $calendarTab: 36px;
   }
 
   //상세내용보기 모달
-  &__date-details {
+  &__details {
     padding: rem(12px 16px);
 
     .details {
-      &__cont {
-        overflow-y: auto;
-        max-height: 100%;
-
-        //@TODO:
-        &::-webkit-scrollbar {
-          display: none;
-
-          &-thumb {
-            display: none;
-          }
-
-          &-button {
-            display: none;
-          }
-        }
-      }
-
-      &__event {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: rem(8px 0);
-        border-bottom: 1px solid $greye8;
-
-        &:first-of-type {
-          padding-top: 0;
-        }
-
-        &:last-of-type {
-          border-bottom: 0;
-        }
-
-        &__type {
-          flex: 0 0 20%;
-          @include fontcss($grey888, 400, rem(11px), 1.2);
-          letter-spacing: 0;
-        }
-
-        &__detail {
-          overflow: hidden;
-          flex: 1 1 auto;
-          padding-left: rem(8px);
-        }
-
-        &__title {
-          display: block;
-          @include fontcss($black, 400, rem(12px), 1.2);
-        }
-
-        &__method {
-          @include fontcss($grey888, 400, rem(10px), 1.2);
-          letter-spacing: 0;
-        }
-
-        &__price {
-          flex: 0 0 32%;
-          @include fontcss($grey888, 400, rem(12px), 1.2);
-          text-align: right;
-
-          em {
-            @include fontcss(inherit, 600, rem(13px), 1.2);
-            letter-spacing: -0.02em;
-          }
-        }
-      }
-
       &__nav {
         position: absolute;
         bottom: rem(-54px);
@@ -325,41 +291,6 @@ $calendarTab: 36px;
             @include fontcss($white, 200, rem(30px), rem(40px));
           }
         }
-      }
-
-      // &__nav {
-      //   position: absolute;
-      //   top: rem(9px);
-      //   right: rem(16px);
-      //   color: $grey888;
-      //   font-size: rem(20px);
-      // }
-
-      // &__add {
-      //   display: inline-block;
-      //   width: rem(32px);
-      //   height: rem(32px);
-      //   font-size: 0;
-      //   line-height: 0;
-      //   border-radius: 50%;
-      //   background: $yellow;
-      //   @include shadow();
-
-      //   &:after {
-      //     content: '+';
-      //     display: inline-block;
-      //     width: 100%;
-      //     height: 100%;
-      //     border-radius: 100%;
-      //     text-align: center;
-      //     @include fontcss($white, 200, rem(32px), rem(32px));
-      //   }
-      // }
-
-      &__empty {
-        padding: rem(60px 0);
-        @include fontcss($grey888, 400, rem(13px), 1.2);
-        text-align: center;
       }
     }
   }

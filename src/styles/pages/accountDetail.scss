@@ -1,0 +1,76 @@
+.account-detail {
+  .detail {
+    &__wrapper {
+      overflow-y: auto;
+      max-height: 100%;
+
+      //@TODO:
+      &::-webkit-scrollbar {
+        display: none;
+
+        &-thumb {
+          display: none;
+        }
+
+        &-button {
+          display: none;
+        }
+      }
+    }
+
+    &__event {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: rem(8px 0);
+      border-bottom: 1px solid $greye8;
+
+      &:first-of-type {
+        padding-top: 0;
+      }
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+
+      &__type {
+        flex: 0 0 20%;
+        @include fontcss($grey888, 400, rem(11px), 1.2);
+        letter-spacing: 0;
+      }
+
+      &__detail {
+        overflow: hidden;
+        flex: 1 1 auto;
+        padding-left: rem(8px);
+      }
+
+      &__title {
+        display: block;
+        @include fontcss($black, 400, rem(12px), 1.2);
+      }
+
+      &__method {
+        @include fontcss($grey888, 400, rem(10px), 1.2);
+        letter-spacing: 0;
+      }
+
+      &__price {
+        flex: 0 0 32%;
+        @include fontcss($grey888, 400, rem(12px), 1.2);
+        text-align: right;
+
+        em {
+          @include fontcss(inherit, 600, rem(13px), 1.2);
+          letter-spacing: -0.02em;
+        }
+      }
+    }
+
+    &__empty {
+      padding: rem(60px 0);
+      @include fontcss($grey888, 400, rem(13px), 1.2);
+      text-align: center;
+    }
+  }
+}

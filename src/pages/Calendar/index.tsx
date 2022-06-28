@@ -7,11 +7,11 @@ import interactionPlugin from '@fullcalendar/interaction';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-import { nextTick } from 'process';
 import { v4 as uuidv4 } from 'uuid';
 import ModalComponent from '../../components/Modal';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import { Form as Item } from '../AddAccount';
+import AccountDetail from './AccountDetail';
 
 type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
 
@@ -31,6 +31,19 @@ interface CalendarModal {
   isShow: boolean;
   data: null | Item[];
 }
+
+const getAmountSizeClass = (value: string | number, classname?: string) => {
+  const amountLength = value?.toString().length;
+  let sizeClass = '';
+
+  if (amountLength > 12) sizeClass = 'sizeXS';
+  else if (amountLength > 10) sizeClass = 'sizeS';
+  else if (amountLength > 8) sizeClass = 'sizeM';
+
+  return `${classname ?? ''} ${sizeClass}`;
+};
+
+export { getAmountSizeClass };
 
 function Calendar() {
   // #region 데이터
@@ -81,24 +94,22 @@ function Calendar() {
 
   useEffect(() => {
     const savedAccountData = localStorage.getItem('accountData');
+    const savedPropertyData = localStorage.getItem('propertyData');
+    const defaultProperty = [
+      {
+        id: uuidv4(),
+        name: '현금',
+        amount: 0,
+        background: 'mint',
+      },
+    ] as const;
+
+    /** account데이터 받아오기 */
     if (savedAccountData) customData(JSON.parse(savedAccountData));
 
-    const savedPropertyData = localStorage.getItem('propertyData');
-    if (
-      !savedPropertyData ||
-      (savedPropertyData && JSON.parse(savedPropertyData).length === 0)
-    ) {
-      localStorage.setItem(
-        'propertyData',
-        JSON.stringify([
-          {
-            id: uuidv4(),
-            name: '현금',
-            amount: 0,
-            background: 'mint',
-          },
-        ]),
-      );
+    /** 기본 자산 설정하기 */
+    if (!savedPropertyData) {
+      localStorage.setItem('propertyData', JSON.stringify(defaultProperty));
     }
   }, []);
   // #endregion
@@ -137,17 +148,6 @@ function Calendar() {
   // #endregion
 
   // #region full-calendar
-  const getAmountSizeClass = (value: string | number, classname?: string) => {
-    const amountLength = value?.toString().length;
-    let sizeClass = '';
-
-    if (amountLength > 12) sizeClass = 'sizeXS';
-    else if (amountLength > 10) sizeClass = 'sizeS';
-    else if (amountLength > 8) sizeClass = 'sizeM';
-
-    return `${classname} ${sizeClass}`;
-  };
-
   /** 달력 안 콘텐츠 커스텀 */
   const renderCustomEvent = (eventInfo: any) => {
     const data = eventInfo.event?.extendedProps.data;
@@ -157,8 +157,8 @@ function Calendar() {
 
     // 클래스
     const getClassNames = (key: 'income' | 'spending' | 'total') => {
-      const sizeClass = getAmountSizeClass(day[key]);
-      return `calendar__event ${key} ${sizeClass}`;
+      const size = getAmountSizeClass(day[key]) ?? '';
+      return `calendar__event ${key} ${size}`;
     };
 
     return (
@@ -180,6 +180,13 @@ function Calendar() {
         )}
       </>
     );
+  };
+
+  const renderCustomList = (eventInfo: any) => {
+    const data = eventInfo.event?.extendedProps.data;
+    if (!data || !data.length) return <span />;
+
+    return <AccountDetail data={data} />;
   };
   // #endregion
 
@@ -313,14 +320,9 @@ function Calendar() {
 
         {/* 일별 콘텐츠 */}
         {activeTab === 'listDay' && (
-          <div className="calendar__box">
+          <div className="calendar__box calendar__box--list">
             <FullCalendar
-              plugins={[
-                listPlugin,
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-              ]}
+              plugins={[listPlugin]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -330,22 +332,18 @@ function Calendar() {
               editable
               selectable
               selectMirror
-              events={eventList}
               weekends
+              events={eventList}
+              eventContent={renderCustomList}
             />
           </div>
         )}
 
         {/* 주별 콘텐츠 */}
         {activeTab === 'listWeek' && (
-          <div className="calendar__box">
+          <div className="calendar__box calendar__box--list">
             <FullCalendar
-              plugins={[
-                listPlugin,
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-              ]}
+              plugins={[listPlugin]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -355,22 +353,18 @@ function Calendar() {
               editable
               selectable
               selectMirror
-              events={eventList}
               weekends
+              events={eventList}
+              eventContent={renderCustomList}
             />
           </div>
         )}
 
         {/* 월별 콘텐츠 */}
         {activeTab === 'listMonth' && (
-          <div className="calendar__box">
+          <div className="calendar__box calendar__box--list">
             <FullCalendar
-              plugins={[
-                listPlugin,
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-              ]}
+              plugins={[listPlugin]}
               headerToolbar={{
                 left: 'prev title next',
                 center: 'today',
@@ -381,8 +375,9 @@ function Calendar() {
               selectable
               selectMirror
               dayMaxEvents
-              events={eventList}
               weekends
+              events={eventList}
+              eventContent={renderCustomList}
             />
           </div>
         )}
@@ -395,43 +390,8 @@ function Calendar() {
       {/* 상세 모달 */}
       {modal.isShow && (
         <ModalComponent title={modal.title} onClose={handleCloseModal}>
-          <div className="calendar__date-details">
-            <div className="details__cont">
-              {modal.data ? (
-                modal.data.map((event) => {
-                  return (
-                    <Link
-                      key={event.id}
-                      className="details__event"
-                      to={`/addAccount?mode=edit&id=${event.id}`}>
-                      <span className="details__event__type">
-                        {event.category.name}
-                      </span>
-                      <div className="details__event__detail">
-                        <span className="details__event__title">
-                          {event.title}
-                        </span>
-                        <span className="details__event__method">
-                          {event.method.name}
-                        </span>
-                      </div>
-
-                      <span
-                        className={getAmountSizeClass(
-                          event.amount,
-                          `details__event__price ${event.type}`,
-                        )}>
-                        <em>{Number(event.amount).toLocaleString('ko-kr')}</em>
-                        원
-                      </span>
-                    </Link>
-                  );
-                })
-              ) : (
-                <p className="details__empty">데이터가 없습니다.</p>
-              )}
-            </div>
-
+          <div className="calendar__details">
+            <AccountDetail data={modal.data} />
             <nav className="details__nav">
               <Link
                 to={`/addAccount?date=${modal.title}`}

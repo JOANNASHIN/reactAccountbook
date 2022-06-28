@@ -1,6 +1,5 @@
 import { nextTick } from 'process';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 function Setting() {
   const handleDeleteAll = async () => {
@@ -17,6 +16,10 @@ function Setting() {
     });
   };
 
+  const controlType = () => {
+    alert('준비중입니다.');
+  };
+
   return (
     <section className="setting ac__page-layout">
       <header className="ac__page-layout__header">
@@ -31,21 +34,10 @@ function Setting() {
           전체 데이터 리셋하기
         </button>
 
-        <button
-          type="button"
-          onClick={handleDeleteAll}
-          className="setting__reset">
-          전체 데이터 리셋하기
+        <button type="button" onClick={controlType} className="setting__reset">
+          분류 설정하기
         </button>
-
-        <button
-          type="button"
-          onClick={handleDeleteAll}
-          className="setting__reset">
-          전체 데이터 리셋하기
-        </button>
-
-        <ul className="setting__wrapper">
+        {/* <ul className="setting__wrapper">
           <li className="setting__menu">
             <Link to="/" className="setting__menu__link">
               메뉴
@@ -53,7 +45,7 @@ function Setting() {
           </li>
           <li className="setting__menu">메뉴</li>
           <li className="setting__menu">메뉴</li>
-        </ul>
+        </ul> */}
       </div>
     </section>
   );
