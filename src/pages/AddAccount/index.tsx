@@ -387,7 +387,7 @@ function AddAccount() {
     const uuid = query.get('id');
     const targetIndex = savedJson.findIndex((v) => v.id === uuid);
 
-    if (targetIndex) {
+    if (targetIndex !== -1) {
       savedJson.splice(targetIndex, 1);
       localStorage.setItem('accountData', JSON.stringify(savedJson));
 

@@ -38,8 +38,8 @@ function Calendar() {
   const [eventList, setEventList] = useState<EventList[]>([]);
 
   /** fullCalendar 데이터양식에 맞게 커스텀 */
-  const customData = (savedData: Item[]) => {
-    const formatter = _.chain(savedData)
+  const customData = (savedAccountData: Item[]) => {
+    const formatter = _.chain(savedAccountData)
       .groupBy((v) => dayjs(v.date).format('YYYY-MM-DD'))
       .map((value, key) => {
         return {
@@ -80,8 +80,26 @@ function Calendar() {
   };
 
   useEffect(() => {
-    const savedData = localStorage.getItem('accountData');
-    if (savedData) customData(JSON.parse(savedData));
+    const savedAccountData = localStorage.getItem('accountData');
+    if (savedAccountData) customData(JSON.parse(savedAccountData));
+
+    const savedPropertyData = localStorage.getItem('propertyData');
+    if (
+      !savedPropertyData ||
+      (savedPropertyData && JSON.parse(savedPropertyData).length === 0)
+    ) {
+      localStorage.setItem(
+        'propertyData',
+        JSON.stringify([
+          {
+            id: uuidv4(),
+            name: '현금',
+            amount: 0,
+            background: 'mint',
+          },
+        ]),
+      );
+    }
   }, []);
   // #endregion
 

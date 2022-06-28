@@ -22,6 +22,7 @@ function AddProperty() {
 
   /** local storage 저장데이터 */
   const [storageData] = useState(localStorage.getItem('propertyData'));
+  const storageJSON: Wallet[] = storageData ? JSON.parse(storageData) : [];
 
   /** validation pass 여부 */
   const [isPass, setIsPass] = useState(false);
@@ -217,13 +218,12 @@ function AddProperty() {
     if (!wantToDelete || !storageData) return;
 
     const query = new URLSearchParams(location.search);
-    const savedJson: Wallet[] = JSON.parse(storageData);
     const uuid = query.get('id');
-    const targetIndex = savedJson.findIndex((v) => v.id === uuid);
+    const targetIndex = storageJSON.findIndex((v) => v.id === uuid);
 
-    if (targetIndex) {
-      savedJson.splice(targetIndex, 1);
-      localStorage.setItem('propertyData', JSON.stringify(savedJson));
+    if (targetIndex !== -1) {
+      storageJSON.splice(targetIndex, 1);
+      localStorage.setItem('propertyData', JSON.stringify(storageJSON));
 
       nextTick(() => {
         alert('정상적으로 삭제되었습니다.');
@@ -242,9 +242,8 @@ function AddProperty() {
 
     // 수정일때
     if (isEditMode && storageData) {
-      const savedJson: Wallet[] = JSON.parse(storageData);
       const uuid = query.get('id');
-      const target = savedJson.find((v) => v.id === uuid);
+      const target = storageJSON.find((v) => v.id === uuid);
 
       if (target) {
         setForm({
@@ -345,7 +344,7 @@ function AddProperty() {
 
           <nav className="form__nav">
             {/* 삭제하기 */}
-            {isEdit && (
+            {isEdit && storageJSON.length > 1 && (
               <button
                 type="button"
                 className="form__delete"
