@@ -287,100 +287,103 @@ function Calendar() {
 
       {/* 콘텐츠 */}
       <div className="calendar__wrapper">
+        {/* 상단 금액 요약 */}
         <SummaryComponent balance={balance} />
 
-        {/* 달력 콘텐츠 */}
-        {activeTab === 'dayGridMonth' && (
-          <div className="calendar__box">
-            <FullCalendar
-              plugins={[
-                listPlugin,
-                dayGridPlugin,
-                timeGridPlugin,
-                interactionPlugin,
-              ]}
-              headerToolbar={{
-                left: 'prev title next',
-                center: 'today',
-              }}
-              initialView="dayGridMonth"
-              locale="kr"
-              editable
-              selectable
-              selectMirror
-              events={eventList}
-              weekends
-              dateClick={handleDateClick}
-              eventClick={handleEventClick}
-              eventContent={renderCustomEvent}
-              ref={calendarRef}
-            />
-          </div>
-        )}
+        <div className="calendar__full-calendar">
+          {/* 달력 콘텐츠 */}
+          {activeTab === 'dayGridMonth' && (
+            <div className="full-calendar__calendar">
+              <FullCalendar
+                plugins={[
+                  listPlugin,
+                  dayGridPlugin,
+                  timeGridPlugin,
+                  interactionPlugin,
+                ]}
+                headerToolbar={{
+                  left: 'prev title next',
+                  center: 'today',
+                }}
+                initialView="dayGridMonth"
+                locale="kr"
+                editable
+                selectable
+                selectMirror
+                events={eventList}
+                weekends
+                dateClick={handleDateClick}
+                eventClick={handleEventClick}
+                eventContent={renderCustomEvent}
+                ref={calendarRef}
+              />
+            </div>
+          )}
 
-        {/* 일별 콘텐츠 */}
-        {activeTab === 'listDay' && (
-          <div className="calendar__box calendar__box--list">
-            <FullCalendar
-              plugins={[listPlugin]}
-              headerToolbar={{
-                left: 'prev title next',
-                center: 'today',
-              }}
-              initialView="listDay"
-              locale="kr"
-              editable
-              selectable
-              selectMirror
-              weekends
-              events={eventList}
-              eventContent={renderCustomList}
-            />
-          </div>
-        )}
+          {/* 일별 콘텐츠 */}
+          {activeTab === 'listDay' && (
+            <div className="full-calendar__list">
+              <FullCalendar
+                plugins={[listPlugin]}
+                headerToolbar={{
+                  left: 'prev title next',
+                  center: 'today',
+                }}
+                initialView="listDay"
+                locale="kr"
+                editable
+                selectable
+                selectMirror
+                weekends
+                events={eventList}
+                eventContent={renderCustomList}
+              />
+            </div>
+          )}
 
-        {/* 주별 콘텐츠 */}
-        {activeTab === 'listWeek' && (
-          <div className="calendar__box calendar__box--list">
-            <FullCalendar
-              plugins={[listPlugin]}
-              headerToolbar={{
-                left: 'prev title next',
-                center: 'today',
-              }}
-              initialView="listWeek"
-              locale="kr"
-              editable
-              selectable
-              selectMirror
-              weekends
-              events={eventList}
-              eventContent={renderCustomList}
-            />
-          </div>
-        )}
+          {/* 주별 콘텐츠 */}
+          {activeTab === 'listWeek' && (
+            <div className="full-calendar__list">
+              <FullCalendar
+                plugins={[listPlugin]}
+                headerToolbar={{
+                  left: 'prev title next',
+                  center: 'today',
+                }}
+                initialView="listWeek"
+                locale="kr"
+                editable
+                selectable
+                selectMirror
+                weekends
+                events={eventList}
+                eventContent={renderCustomList}
+              />
+            </div>
+          )}
 
-        {/* 월별 콘텐츠 */}
-        {activeTab === 'listMonth' && (
-          <div className="calendar__box calendar__box--list">
-            <FullCalendar
-              plugins={[listPlugin]}
-              headerToolbar={{
-                left: 'prev title next',
-                center: 'today',
-              }}
-              initialView="listMonth"
-              locale="kr"
-              editable
-              selectable
-              selectMirror
-              dayMaxEvents
-              weekends
-              events={eventList}
-              eventContent={renderCustomList}
-            />
-          </div>
-        )}
+          {/* 월별 콘텐츠 */}
+          {activeTab === 'listMonth' && (
+            <div className="full-calendar__list">
+              <FullCalendar
+                plugins={[listPlugin]}
+                headerToolbar={{
+                  left: 'prev title next',
+                  center: 'today',
+                }}
+                initialView="listMonth"
+                locale="kr"
+                editable
+                selectable
+                selectMirror
+                dayMaxEvents
+                weekends
+                events={eventList}
+                eventContent={renderCustomList}
+              />
+            </div>
+          )}
+        </div>
 
         <Link to="/addAccount" className="calendar__plus ac__plus--yellow">
           이벤트 추가하기

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getAmountSizeClass } from '../pages/Calendar';
 
 /* eslint react/forbid-prop-types: 0 */
 interface Balance {
@@ -45,21 +46,29 @@ function SummaryComponent(props: Props) {
     <div className="summary">
       <dl className="summary__list">
         <dt className="summary__title">{title.income}</dt>
-        <dd className="summary__amount income">
+        <dd
+          className={getAmountSizeClass(
+            summary.income,
+            `summary__amount income`,
+          )}>
           <em>{summary.income.toLocaleString('ko-kr')}</em>
           <span>원</span>
         </dd>
       </dl>
       <dl className="summary__list">
         <dt className="summary__title">{title.spending}</dt>
-        <dd className="summary__amount spending">
+        <dd
+          className={getAmountSizeClass(
+            summary.income,
+            `summary__amount spending`,
+          )}>
           <em>{summary.spending.toLocaleString('ko-kr')}</em>
           <span>원</span>
         </dd>
       </dl>
       <dl className="summary__list">
         <dt className="summary__title">{title.balance}</dt>
-        <dd className="summary__amount">
+        <dd className={getAmountSizeClass(summary.income, `summary__amount`)}>
           <em>{summary.total.toLocaleString('ko-kr')}</em>
           <span>원</span>
         </dd>

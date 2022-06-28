@@ -58,189 +58,200 @@ $calendarTab: 36px;
   }
 
   //캘린더 커스텀
-  &__box {
+  &__full-calendar {
     flex: 1 1 auto;
     width: 100%;
     height: 100%;
 
-    //리스트 타입
-    &--list {
-      .fc-list-event-title {
-        padding: 0 !important;
-        background: transparent !important;
+    .full-calendar {
+      //달력화면
+      &__calendar {
+        height: 100%;
       }
 
-      .fc-list-event-time {
-        display: none;
-      }
+      //리스트 타입
+      &__list {
+        height: 100%;
 
-      .fc-list-event-graphic {
-        display: none;
-      }
+        /** full-calendar listView 커스텀 */
+        .fc {
+          //time, graphic 비노출
+          &-list-event-time,
+          &-list-event-graphic {
+            display: none;
+          }
 
-      .fc-list-day-text,
-      .fc-list-day-side-text {
-        @include fontcss($grey666, 600, rem(12px));
-      }
+          //각각 이벤트
+          &-list-event-title {
+            padding: 0 !important;
+            background: transparent !important;
+          }
 
-      .detail__wrapper {
-        padding: rem(8px 0 0 0);
-      }
+          //월요일 2022-06-12 타이틀 영역
+          &-list-day-text,
+          &-list-day-side-text {
+            @include fontcss($grey666, 600, rem(12px));
+          }
+        }
 
-      .detail__event {
-        padding: rem(8px 12px) !important;
+        //각각 이벤트 padding
+        .detail__event {
+          padding: rem(8px 12px) !important;
 
-        &:last-child {
-          border-bottom: 1px solid $greye8 !important;
+          &:last-child {
+            border-bottom: 1px solid $greye8 !important;
+          }
         }
       }
     }
 
-    //달력크기 (100% - 여백제외)
+    /** full-calendar 커스텀 */
     .fc {
+      //달력크기 (100% - 여백제외)
       height: calc(100% - #{rem(24px)});
-    }
 
-    //헤더 툴바 전체
-    .fc-header-toolbar {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      @include safeArea('height', rem($calendarHeader));
-      @include safeArea('padding-top', rem(16px));
-      margin-bottom: 0 !important;
-      background: $point;
-    }
-
-    //헤더 툴바 각각
-    .fc-toolbar-chunk {
-      flex: 0 0 100%;
-
-      //left: 네비게이션 < 2022.06 >
-      &:first-child {
+      //헤더 툴바 전체
+      &-header-toolbar {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 rem($calendarNav);
-        margin-bottom: 0 !important;
-        padding: rem(0 8px);
-        background: #a3a7e4;
-        border-radius: $radius;
-        box-shadow: rem(-3px -3px 3px 0) rgba(#bec1f8, 0.6),
-          inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6),
-          rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
-
-        //날짜 2022.06
-        .fc-toolbar-title {
-          width: rem(140px);
-          padding: rem(10px 0);
-          text-align: center;
-          white-space: nowrap;
-          @include fontcss($white, 600, rem(13px));
-        }
-
-        //< > 버튼
-        .fc-button {
-          background: none;
-          border: none;
-          padding: rem(10px);
-          border-radius: 0 !important;
-          color: $white;
-        }
-
-        //< > 버튼 아이콘
-        .fc-icon {
-          font-size: rem(20px);
-        }
-      }
-
-      //center: today
-      &:nth-child(2) {
+        flex-direction: column;
         position: absolute;
-        top: 50%;
-        left: 50%;
-        z-index: 2;
-        transform: translate(-50%);
+        top: 0;
+        left: 0;
+        width: 100%;
+        @include safeArea('height', rem($calendarHeader));
+        @include safeArea('padding-top', rem(16px));
+        margin-bottom: 0 !important;
+        background: $point;
+      }
 
-        & > button {
+      //헤더 툴바 각각
+      &-toolbar-chunk {
+        flex: 0 0 100%;
+
+        //left: 네비게이션 < 2022.06 >
+        &:first-child {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 rem($calendarNav);
+          margin-bottom: 0 !important;
+          padding: rem(0 8px);
+          background: #a3a7e4;
+          border-radius: $radius;
+          box-shadow: rem(-3px -3px 3px 0) rgba(#bec1f8, 0.6),
+            inset rem(3px 3px 3px 0) rgba(#a3a7e4, 0.6),
+            rem(3px 3px 3px 0) rgba(#8c8fcf, 0.6);
+
+          //날짜 2022.06
+          .fc-toolbar-title {
+            width: rem(140px);
+            padding: rem(10px 0);
+            text-align: center;
+            white-space: nowrap;
+            @include fontcss($white, 600, rem(13px));
+          }
+
+          //< > 버튼
+          .fc-button {
+            background: none;
+            border: none;
+            padding: rem(10px);
+            border-radius: 0 !important;
+            color: $white;
+          }
+
+          //< > 버튼 아이콘
+          .fc-icon {
+            font-size: rem(20px);
+          }
+        }
+
+        //center: today
+        &:nth-child(2) {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          z-index: 2;
+          transform: translate(-50%);
+
+          & > button {
+            display: none;
+            width: rem(140px);
+            height: rem($calendarNav);
+            // opacity: 0;
+          }
+        }
+
+        //right
+        &:nth-child(3) {
           display: none;
-          width: rem(140px);
-          height: rem($calendarNav);
-          // opacity: 0;
         }
       }
 
-      //right
-      &:nth-child(3) {
-        display: none;
+      //제목 2022.06
+      &-toolbar-title {
+        @include fontcss($black, 600, rem(13px));
       }
-    }
 
-    //제목 2022.06
-    .fc-toolbar-title {
-      @include fontcss($black, 600, rem(13px));
-    }
+      //요일
+      &-col-header-cell-cushion {
+        font-family: $font_e, $noto;
+        @include fontcss($grey888, 600, rem(10px), 1.2);
+      }
 
-    //요일
-    .fc-col-header-cell-cushion {
-      font-family: $font_e, $noto;
-      @include fontcss($grey888, 600, rem(10px), 1.2);
-    }
+      //날짜
+      &-daygrid-day-number {
+        padding-bottom: 0;
+        font-family: $font_e, $noto;
+        @include fontcss($grey888, 400, rem(10px), 1.2);
+      }
 
-    //날짜
-    .fc-daygrid-day-number {
-      padding-bottom: 0;
-      font-family: $font_e, $noto;
-      @include fontcss($grey888, 400, rem(10px), 1.2);
-    }
+      //이벤트 각각 색상 제거
+      &-h-event {
+        background: none !important;
+        border: none !important;
+      }
 
-    //이벤트 각각 색상 제거
-    .fc-h-event {
-      background: none !important;
-      border: none !important;
-    }
+      //달력 한칸 height 조정
+      &-daygrid-day-frame {
+        height: rem(50px);
+      }
 
-    //달력 한칸 height 조정
-    .fc-daygrid-day-frame {
-      height: rem(50px);
-    }
+      //n일 타이틀 좌측 정렬
+      &-daygrid-day-top {
+        flex-direction: row;
+      }
 
-    //n일 타이틀 좌측 정렬
-    .fc-daygrid-day-top {
-      flex-direction: row;
-    }
+      //달력 한칸 안 콘텐츠
+      &-daygrid-day-events {
+        height: calc(100% - #{rem(20px)});
+      }
 
-    .fc-daygrid-day-events {
-      height: calc(100% - #{rem(20px)});
-    }
+      &-daygrid-event-harness,
+      &-daygrid-event {
+        height: 100%;
+      }
 
-    .fc-daygrid-event-harness,
-    .fc-daygrid-event {
-      height: 100%;
-    }
+      //이벤트 각각 감싼 박스
+      &-event-main {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+        width: 100%;
+        height: 100%;
+      }
 
-    //이벤트 각각 감싼 박스
-    .fc-event-main {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      justify-content: flex-end;
-      width: 100%;
-      height: 100%;
-    }
-
-    //focus할때 css 리셋
-    .fc-event-selected,
-    .fc-event:focus,
-    .fc-event-selected:after,
-    .fc-event:focus:after {
-      box-shadow: none !important;
-      border: none !important;
-      outline: none !important;
-      background: none !important;
+      //focus할때 css 리셋
+      &-event-selected,
+      &-event:focus,
+      &-event-selected:after,
+      &-event:focus:after {
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+        background: none !important;
+      }
     }
   }
 
