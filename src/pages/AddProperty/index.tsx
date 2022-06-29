@@ -46,6 +46,13 @@ function AddProperty() {
     positiveNumber: true,
   });
 
+  const [wallet, setWallet] = useState<Wallet>({
+    id: '',
+    name: '',
+    amount: 0,
+    background: 'mint',
+  });
+
   const colors = [
     {
       name: 'mint',
@@ -180,22 +187,22 @@ function AddProperty() {
 
     // 최초 저장
     if (!storageData) {
-      saveData = [form];
+      saveData = [wallet];
     }
     // 수정모드
     else if (isEdit) {
       const prevJson: Wallet[] = JSON.parse(storageData);
-      const index = prevJson.findIndex((v) => v.id === form.id);
+      const index = prevJson.findIndex((v) => v.id === wallet.id);
 
       if (index !== -1) {
-        prevJson.splice(index, 1, form);
+        prevJson.splice(index, 1, wallet);
         saveData = prevJson;
       }
     }
     // 기존 데이터 있을경우 추가
     else {
       const prevJson = JSON.parse(storageData);
-      prevJson.push(form);
+      prevJson.push(wallet);
       saveData = prevJson;
     }
 
@@ -258,6 +265,7 @@ function AddProperty() {
         setForm({
           ...form,
           ...target,
+          amount: Math.abs(target.amount),
         });
       }
     }
@@ -267,13 +275,6 @@ function AddProperty() {
       setForm({ ...form, id });
     }
   };
-
-  const [wallet, setWallet] = useState<Wallet>({
-    id: '',
-    name: '',
-    amount: 0,
-    background: 'mint',
-  });
 
   const updatePreview = () => {
     // eslint-disable-next-line eqeqeq
@@ -293,6 +294,7 @@ function AddProperty() {
     initForm();
   }, []);
   // #endregion
+
   return (
     <section className="add-property">
       <h2 className="blind">자산 추가하기</h2>
