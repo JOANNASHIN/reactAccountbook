@@ -392,22 +392,25 @@ function AddAccount() {
 
   const changePropertyValue = () => {
     const multipleNumber = form.type === 'spending' ? -1 : 1;
-    const target = propertyStorageJson.find((v) => v.name === form.method.name);
+    const targetData = propertyStorageJson.find(
+      (v) => v.name === form.method.name,
+    );
     const targetIndex = propertyStorageJson.findIndex(
       (v) => v.name === form.method.name,
     );
 
-    if (!target || targetIndex === -1) return;
-    const calcAmount =
-      target.amount + getOnlyNumber(form.amount) * multipleNumber;
+    if (targetData && targetIndex !== -1) {
+      const calcAmount =
+        targetData.amount + getOnlyNumber(form.amount) * multipleNumber || 0;
 
-    const customForm = {
-      ...target,
-      amount: calcAmount,
-    };
+      const customForm = {
+        ...targetData,
+        amount: calcAmount,
+      };
 
-    propertyStorageJson.splice(targetIndex, 1, customForm);
-    localStorage.setItem('propertyData', JSON.stringify(propertyStorageJson));
+      propertyStorageJson.splice(targetIndex, 1, customForm);
+      localStorage.setItem('propertyData', JSON.stringify(propertyStorageJson));
+    }
   };
 
   /**
