@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Wallet {
-  [key: string]: any;
+  // [key: string]: any;
   id: string;
   name: string;
   amount: number;

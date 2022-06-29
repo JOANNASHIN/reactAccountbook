@@ -5,7 +5,8 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'process';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IconDefinition, IconName } from '@fortawesome/fontawesome-svg-core';
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+import { Wallet } from '../../components/Wallet';
 
 interface Selectbox {
   [key: string]: any;
@@ -45,6 +46,10 @@ interface ResponseForm {
   memo: string;
 }
 
+interface Property {
+  [key: string]: any;
+}
+
 export { Form };
 
 function AddAccount() {
@@ -65,7 +70,7 @@ function AddAccount() {
     : null;
 
   const propertyStorage = localStorage.getItem('propertyData');
-  const propertyStorageJson = propertyStorage
+  const propertyStorageJson: Wallet[] = propertyStorage
     ? JSON.parse(propertyStorage)
     : null;
 
@@ -92,7 +97,7 @@ function AddAccount() {
     memo: '',
   });
 
-  const [properties, setProperties] = useState([
+  const [properties, setProperties] = useState<Property[]>([
     {
       id: '0',
       name: '결제수단',
@@ -217,8 +222,6 @@ function AddAccount() {
   /** 자산데이터 불러오기 */
   useEffect(() => {
     if (propertyStorage) {
-      console.log(propertyStorageJson);
-
       setProperties([...properties, ...propertyStorageJson]);
     }
   }, []);
@@ -359,13 +362,10 @@ function AddAccount() {
    */
   const saveLocalStorage = () => {
     let saveData = null;
-    console.log({ ...form }, '...form...form...form');
     const customForm: ResponseForm = {
       ...form,
       amount: getOnlyNumber(form.amount) ?? 0,
     };
-
-    console.log('form.amount', form.amount);
 
     // 최초 저장
     if (!accountStorage) {
@@ -373,10 +373,10 @@ function AddAccount() {
     }
     // 수정모드
     else if (isEdit) {
-      const index = accountStorageJson.findIndex((v) => v.id === form.id);
+      const targetIndex = accountStorageJson.findIndex((v) => v.id === form.id);
 
-      if (index !== -1) {
-        accountStorageJson.splice(index, 1, customForm);
+      if (targetIndex !== -1) {
+        accountStorageJson.splice(targetIndex, 1, customForm);
         saveData = accountStorageJson;
       }
     }
@@ -390,6 +390,26 @@ function AddAccount() {
     if (saveData) localStorage.setItem('accountData', JSON.stringify(saveData));
   };
 
+  const changePropertyValue = () => {
+    const multipleNumber = form.type === 'spending' ? -1 : 1;
+    const target = propertyStorageJson.find((v) => v.name === form.method.name);
+    const targetIndex = propertyStorageJson.findIndex(
+      (v) => v.name === form.method.name,
+    );
+
+    if (!target || targetIndex === -1) return;
+    const calcAmount =
+      target.amount + getOnlyNumber(form.amount) * multipleNumber;
+
+    const customForm = {
+      ...target,
+      amount: calcAmount,
+    };
+
+    propertyStorageJson.splice(targetIndex, 1, customForm);
+    localStorage.setItem('propertyData', JSON.stringify(propertyStorageJson));
+  };
+
   /**
    * 이벤트 등록
    */
@@ -400,6 +420,7 @@ function AddAccount() {
 
     nextTick(() => {
       saveLocalStorage();
+      changePropertyValue();
 
       setTimeout(() => {
         alert(`${isEdit ? '수정' : '등록'}이 완료되었습니다.`);

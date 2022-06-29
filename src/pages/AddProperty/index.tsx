@@ -119,7 +119,6 @@ function AddProperty() {
    * input 값 업데이트
    */
   const handleFormUpdate = (e: any, key: string, value?: any) => {
-    console.log(e.target.value, 'e.target.value');
     setForm({ ...form, [key]: value ?? e.target.value });
   };
 
