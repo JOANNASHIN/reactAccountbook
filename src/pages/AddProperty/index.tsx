@@ -9,6 +9,14 @@ interface Validation {
   name: null | boolean;
 }
 
+interface Form {
+  id: string;
+  name: string;
+  amount: number;
+  background: string;
+  positiveNumber: boolean;
+}
+
 function AddProperty() {
   // #region 기본 변수
   /**
@@ -30,11 +38,12 @@ function AddProperty() {
   /**
    * form
    */
-  const [form, setForm] = useState<Wallet>({
+  const [form, setForm] = useState<Form>({
     id: '',
     name: '',
     amount: 0,
     background: 'mint',
+    positiveNumber: true,
   });
 
   const colors = [
@@ -103,6 +112,7 @@ function AddProperty() {
    * input 값 업데이트
    */
   const handleFormUpdate = (e: any, key: string, value?: any) => {
+    console.log(e.target.value, 'e.target.value');
     setForm({ ...form, [key]: value ?? e.target.value });
   };
 
@@ -111,10 +121,9 @@ function AddProperty() {
    */
   const handleInputAmount = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
+
     // 숫자만 입력
-    const onlyNumber = target.value.replace(/[^\d]/g, '');
-    // 단위변환
-    target.value = Number(onlyNumber.replace(/,/g, '')).toLocaleString('ko-kr');
+    const onlyNumber = Number(target.value.replace(/[^\-\d]/g, '')) || 0;
 
     // 값 업데이트
     handleFormUpdate(e, 'amount', onlyNumber);
@@ -254,15 +263,29 @@ function AddProperty() {
     }
     // 저장일때
     else {
-      const date = query.get('date') ?? dayjs().format('YYYY-MM-DD');
       const id = uuidv4();
-      setForm({ ...form, date, id });
+      setForm({ ...form, id });
     }
+  };
+
+  const [wallet, setWallet] = useState<Wallet>({
+    id: '',
+    name: '',
+    amount: 0,
+    background: 'mint',
+  });
+
+  const updatePreview = () => {
+    // eslint-disable-next-line eqeqeq
+    const multipleNumber = form.amount == 0 || form.positiveNumber ? 1 : -1;
+    const amount = form.amount * multipleNumber;
+    setWallet({ ...form, amount });
   };
 
   // form 값 변경 시 마다 submit 버튼 가능여부 체크
   useEffect(() => {
     setIsPass(groupValidate());
+    updatePreview();
   }, [form]);
 
   // 최초 렌더링
@@ -271,17 +294,17 @@ function AddProperty() {
   }, []);
   // #endregion
   return (
-    <section className="add-account add-property">
+    <section className="add-property">
       <h2 className="blind">자산 추가하기</h2>
 
-      <form className="add-account__form" onSubmit={handleSubmit}>
+      <form className="add-property__form" onSubmit={handleSubmit}>
         <fieldset>
           <legend>장부 입력</legend>
           <div className="form__wrapper">
             {/* 자산이름 */}
-            <div className="form__field">
-              <label className="form__label">
-                <span className="form__label__name">자산이름</span>
+            <dl className="form__field">
+              <dt className="form__field__name">자산이름</dt>
+              <dd className="form__field__cont">
                 <input
                   type="text"
                   value={form.name}
@@ -290,56 +313,72 @@ function AddProperty() {
                   spellCheck={false}
                   onInput={(e) => handleFormUpdate(e, 'name')}
                 />
-              </label>
 
-              {validation.name === false && (
-                <p className="form__error">자산 이름을 입력해주세요.</p>
-              )}
-            </div>
+                {validation.name === false && (
+                  <p className="form__error">자산 이름을 입력해주세요.</p>
+                )}
+              </dd>
+            </dl>
 
             {/* 금액 */}
-            <div className="form__field">
-              <label className="form__amount form__label">
-                <span className="form__label__name">자산금액</span>
-                <input
-                  type="tel"
-                  value={Number(form.amount).toLocaleString('ko-kr')}
-                  placeholder="0"
-                  className={form.type}
-                  maxLength={18}
-                  onInput={handleInputAmount}
-                />
-              </label>
-            </div>
+            <dl className="form__field form__amount">
+              <dt className="form__field__name">자산금액</dt>
+              <dd className="form__field__cont">
+                <label className="form__amount__checkbox">
+                  <input
+                    type="checkbox"
+                    name="positiveNumber"
+                    checked={form.positiveNumber}
+                    onChange={(e) =>
+                      handleFormUpdate(e, 'positiveNumber', e.target.checked)
+                    }
+                  />
+                  <span>-/+</span>
+                </label>
+
+                <label className="form__amount__input">
+                  <input
+                    type="tel"
+                    value={Number(form.amount).toLocaleString('ko-kr')}
+                    placeholder="0"
+                    maxLength={18}
+                    onInput={handleInputAmount}
+                  />
+                </label>
+              </dd>
+            </dl>
 
             {/* 컬러 */}
-            <div className="form__field form__color">
-              {colors &&
-                colors.length &&
-                colors.map((color, index) => {
-                  return (
-                    <label className="form__color__box" key={color.value}>
-                      <input
-                        type="radio"
-                        name="color"
-                        value={color.value}
-                        onInput={(e) => handleFormUpdate(e, 'background')}
-                        defaultChecked={index === 0}
-                      />
+            <dl className="form__field form__color">
+              <dt className="blind">컬러</dt>
+              <dd className="form__field__cont">
+                {colors &&
+                  colors.length &&
+                  colors.map((color, index) => {
+                    return (
+                      <label className="form__color__box" key={color.value}>
+                        <input
+                          type="radio"
+                          name="color"
+                          value={color.value}
+                          onInput={(e) => handleFormUpdate(e, 'background')}
+                          defaultChecked={index === 0}
+                        />
 
-                      <span className="form__color__name">
-                        <em className={color.value}>{color.name}</em>
-                      </span>
-                    </label>
-                  );
-                })}
-            </div>
+                        <span className="form__color__name">
+                          <em className={color.value}>{color.name}</em>
+                        </span>
+                      </label>
+                    );
+                  })}
+              </dd>
+            </dl>
           </div>
 
           <section className="add-property__preview">
             <h3 className="preview__title">미리보기</h3>
 
-            <WalletComponent wallet={form} />
+            <WalletComponent wallet={wallet} />
           </section>
 
           <nav className="form__nav">

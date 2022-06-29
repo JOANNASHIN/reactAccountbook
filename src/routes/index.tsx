@@ -5,6 +5,7 @@ import Property from '../pages/Property';
 import AddAccount from '../pages/AddAccount';
 import AddProperty from '../pages/AddProperty';
 import Setting from '../pages/Setting';
+import Error404 from '../pages/Error/404';
 
 export default function Router() {
   return (
@@ -15,6 +16,7 @@ export default function Router() {
         <Route path="/addAccount" element={<AddAccount />} />
         <Route path="/addProperty" element={<AddProperty />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/*" element={<Error404 />} />
       </Routes>
     </div>
   );

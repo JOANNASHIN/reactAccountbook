@@ -1,28 +1,162 @@
 .add-property {
-  .add-account__form {
-    .form__field {
-      margin-bottom: rem(32px) !important;
-    }
+  overflow-y: auto;
+  height: 100%;
 
-    .form__label {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      justify-content: space-between;
+  &__form {
+    padding: rem(16px 12px);
 
-      &__name {
-        flex: 0 0 30%;
-        @include fontcss($grey888, 400, rem(12px));
+    .form {
+      &__wrapper {
+        border-radius: $radius;
+        padding: rem(0 12px);
       }
 
-      input {
-        width: 100%;
+      &__field {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        margin-bottom: rem(32px) !important;
+
+        &__name {
+          flex: 0 0 20%;
+          @include fontcss($grey888, 400, rem(12px));
+        }
+
+        &__cont {
+          width: 100%;
+
+          input {
+            width: 100%;
+            padding: rem(8px 4px);
+            background: transparent;
+            @include fontcss($black, 600, rem(16px), 1.2);
+
+            &::placeholder {
+              color: $greyaaa;
+            }
+          }
+        }
+      }
+
+      // 금액
+      &__amount {
+        .form__field__cont {
+          display: flex;
+          align-items: center;
+        }
+
+        &__checkbox {
+          flex: 0 0 rem(34px);
+          height: rem(34px);
+          margin-right: rem(12px);
+          font-size: 0;
+
+          input {
+            display: none;
+
+            &:checked + span:after {
+              content: '+';
+              // color: $blue;
+              line-height: rem(34px);
+            }
+          }
+
+          span {
+            &:after {
+              content: '-';
+              display: inline-block;
+              width: 100%;
+              height: 100%;
+              border-radius: rem(10px);
+              background: $greyf2;
+              @include fontcss($grey888, 600, rem(44px), rem(28px));
+              text-align: center;
+              @include shadow();
+            }
+          }
+        }
+
+        &__input {
+          input {
+            padding: 0;
+            @include fontcss($black, 600, rem(20px), 1);
+            text-align: left;
+          }
+        }
+      }
+
+      //색상선택
+      &__color {
+        &__box {
+          display: inline-block;
+          margin-right: rem(8px);
+        }
+
+        input[type='radio'] {
+          display: none;
+
+          &:checked + .form__color__name {
+            background: $white;
+            @include shadow();
+          }
+        }
+
+        &__name {
+          display: inline-block;
+          position: relative;
+          width: rem(34px);
+          height: rem(34px);
+          border-radius: 50%;
+          font-size: 0;
+
+          em {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: rem(24px);
+            height: rem(24px);
+            margin: auto;
+            background: $mint;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      &__nav {
+        margin-top: rem(24px);
+        text-align: center;
+
+        button {
+          display: inline-block;
+          margin: rem(0 10px);
+          padding: rem(11px 40px);
+          border-radius: $radius;
+          @include shadow();
+          @include fontcss($white, 600, rem(14px));
+        }
+      }
+
+      &__submit {
+        background: $greyaaa;
+
+        &.active {
+          background: $yellow;
+          color: $black;
+        }
+      }
+
+      &__delete {
+        background-color: $black;
+      }
+
+      &__error {
+        display: block;
+        margin-top: rem(4px);
+        @include fontcss($red, 400, rem(12px), 1);
         text-align: left;
       }
-    }
-
-    .form__error {
-      text-align: left;
     }
   }
 

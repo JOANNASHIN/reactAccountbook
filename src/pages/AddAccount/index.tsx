@@ -28,7 +28,18 @@ interface Form {
   date: string;
   category: Selectbox;
   title: string;
-  amount: string | number;
+  amount: string;
+  method: Selectbox;
+  type: string;
+  memo: string;
+}
+
+interface ResponseForm {
+  id: string;
+  date: string;
+  category: Selectbox;
+  title: string;
+  amount: number;
   method: Selectbox;
   type: string;
   memo: string;
@@ -49,7 +60,14 @@ function AddAccount() {
 
   /** local storage 저장데이터 */
   const [accountStorage] = useState(localStorage.getItem('accountData'));
+  const accountStorageJson: ResponseForm[] = accountStorage
+    ? JSON.parse(accountStorage)
+    : null;
+
   const propertyStorage = localStorage.getItem('propertyData');
+  const propertyStorageJson = propertyStorage
+    ? JSON.parse(propertyStorage)
+    : null;
 
   /** validation pass 여부 */
   const [isPass, setIsPass] = useState(false);
@@ -73,6 +91,14 @@ function AddAccount() {
     type: 'spending',
     memo: '',
   });
+
+  const [properties, setProperties] = useState([
+    {
+      id: '0',
+      name: '결제수단',
+      value: '',
+    },
+  ]);
 
   const [categoryIcon, useCategoryIcon] = useState<IconName>('question');
 
@@ -178,14 +204,6 @@ function AddAccount() {
     ],
   } as const;
 
-  const [properties, setProperties] = useState([
-    {
-      id: '0',
-      name: '결제수단',
-      value: '',
-    },
-  ]);
-
   useEffect(() => {
     useCategoryIcon(
       form.category.value === '' ? 'question' : form.category.value,
@@ -196,12 +214,12 @@ function AddAccount() {
     useCategoryIcon('question');
   }, [form.type]);
 
+  /** 자산데이터 불러오기 */
   useEffect(() => {
     if (propertyStorage) {
-      const propertyJson = JSON.parse(propertyStorage);
-      console.log(propertyJson);
+      console.log(propertyStorageJson);
 
-      setProperties([...properties, ...propertyJson]);
+      setProperties([...properties, ...propertyStorageJson]);
     }
   }, []);
 
@@ -215,15 +233,22 @@ function AddAccount() {
     setForm({ ...form, [key]: value ?? e.target.value });
   };
 
+  /** 숫자만 return */
+  const getOnlyNumber = (amount: string) => {
+    if (typeof amount === 'number') return amount;
+    return Number(amount?.replace(/[^\d]/g, '')) ?? 0;
+  };
+
   /**
    * 금액 입력 값 업데이트
    */
   const handleInputAmount = (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     // 숫자만 입력
-    const onlyNumber = target.value.replace(/[^\d]/g, '');
+    const onlyNumber = getOnlyNumber(target.value);
+
     // 단위변환
-    target.value = Number(onlyNumber.replace(/,/g, '')).toLocaleString('ko-kr');
+    target.value = onlyNumber.toLocaleString('ko-kr');
 
     // 값 업데이트
     handleFormUpdate(e, 'amount', onlyNumber);
@@ -284,7 +309,7 @@ function AddAccount() {
       setIsPass(false);
       return false;
     }
-    if (form.amount === '' || form.amount === 0) {
+    if (form.amount === '') {
       setIsPass(false);
       return false;
     }
@@ -314,7 +339,7 @@ function AddAccount() {
       isPass = false;
     }
 
-    if (form.amount === '' || form.amount === 0) {
+    if (form.amount === '') {
       Object.assign(copyValidator, { ...copyValidator, amount: false });
       isPass = false;
     }
@@ -334,26 +359,31 @@ function AddAccount() {
    */
   const saveLocalStorage = () => {
     let saveData = null;
+    console.log({ ...form }, '...form...form...form');
+    const customForm: ResponseForm = {
+      ...form,
+      amount: getOnlyNumber(form.amount) ?? 0,
+    };
+
+    console.log('form.amount', form.amount);
 
     // 최초 저장
     if (!accountStorage) {
-      saveData = [form];
+      saveData = [customForm];
     }
     // 수정모드
     else if (isEdit) {
-      const prevJson: Form[] = JSON.parse(accountStorage);
-      const index = prevJson.findIndex((v) => v.id === form.id);
+      const index = accountStorageJson.findIndex((v) => v.id === form.id);
 
       if (index !== -1) {
-        prevJson.splice(index, 1, form);
-        saveData = prevJson;
+        accountStorageJson.splice(index, 1, customForm);
+        saveData = accountStorageJson;
       }
     }
     // 기존 데이터 있을경우 추가
     else {
-      const prevJson = JSON.parse(accountStorage);
-      prevJson.push(form);
-      saveData = prevJson;
+      accountStorageJson.push(customForm);
+      saveData = accountStorageJson;
     }
 
     // 로컬스토리지 저장 / 업데이트
@@ -383,13 +413,12 @@ function AddAccount() {
     if (!wantToDelete || !accountStorage) return;
 
     const query = new URLSearchParams(location.search);
-    const savedJson: Form[] = JSON.parse(accountStorage);
     const uuid = query.get('id');
-    const targetIndex = savedJson.findIndex((v) => v.id === uuid);
+    const targetIndex = accountStorageJson.findIndex((v) => v.id === uuid);
 
     if (targetIndex !== -1) {
-      savedJson.splice(targetIndex, 1);
-      localStorage.setItem('accountData', JSON.stringify(savedJson));
+      accountStorageJson.splice(targetIndex, 1);
+      localStorage.setItem('accountData', JSON.stringify(accountStorageJson));
 
       nextTick(() => {
         alert('정상적으로 삭제되었습니다.');
@@ -408,9 +437,8 @@ function AddAccount() {
 
     // 수정일때
     if (isEditMode && accountStorage) {
-      const savedJson: Form[] = JSON.parse(accountStorage);
       const uuid = query.get('id');
-      const target = savedJson.find((v) => v.id === uuid);
+      const target = accountStorageJson.find((v) => v.id === uuid);
 
       if (target) {
         setForm({
@@ -457,7 +485,7 @@ function AddAccount() {
                 <input
                   type="date"
                   name="date"
-                  defaultValue={form.date}
+                  value={form.date}
                   required
                   className="form__date__input"
                   onChange={(e) => handleFormUpdate(e, 'date')}
@@ -528,7 +556,7 @@ function AddAccount() {
                 <input
                   type="text"
                   className="form__use__input"
-                  defaultValue={form.title}
+                  value={form.title}
                   placeholder="어디"
                   maxLength={15}
                   spellCheck={false}
@@ -593,7 +621,7 @@ function AddAccount() {
                 <input
                   type="radio"
                   name="type"
-                  defaultValue="spending"
+                  value="spending"
                   defaultChecked
                   onInput={(e) => handleFormUpdate(e, 'type')}
                 />
@@ -605,7 +633,7 @@ function AddAccount() {
                 <input
                   type="radio"
                   name="type"
-                  defaultValue="income"
+                  value="income"
                   onInput={(e) => handleFormUpdate(e, 'type')}
                 />
                 <span className="form__type__name form__type__name--income">
@@ -616,7 +644,7 @@ function AddAccount() {
                 <input
                   type="radio"
                   name="type"
-                  defaultValue="send"
+                  value="send"
                   onInput={(e) => handleFormUpdate(e, 'type')}
                 />
                 <span className="form__type__name form__type__name--send">
@@ -631,7 +659,7 @@ function AddAccount() {
           {/* 메모 */}
           <label className="form__memo form__field">
             <textarea
-              defaultValue={form.memo}
+              value={form.memo}
               onChange={(e) => handleFormUpdate(e, 'memo')}
               placeholder="메모를 입력해주세요."
             />

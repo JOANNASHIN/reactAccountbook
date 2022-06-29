@@ -32,6 +32,7 @@ interface CalendarModal {
   data: null | Item[];
 }
 
+// @TODO: Number.MAX_VALUE
 const getAmountSizeClass = (value: string | number, classname?: string) => {
   const amountLength = value?.toString().length;
   let sizeClass = '';

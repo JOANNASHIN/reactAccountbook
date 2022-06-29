@@ -1,0 +1,19 @@
+.error {
+  padding: rem(150px 0);
+  text-align: center;
+
+  &__warning {
+    @include fontcss($black, 600, rem(15px));
+  }
+
+  &__link {
+    display: block;
+    width: rem(120px);
+    margin: rem(30px auto 0);
+    padding: rem(10px 20px);
+    background: $yellow;
+    border-radius: $radius;
+    @include fontcss($black, 600, rem(13px));
+    @include shadow();
+  }
+}
