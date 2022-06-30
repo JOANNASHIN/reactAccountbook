@@ -9,7 +9,8 @@
   letter-spacing: -0.025em;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -19,7 +20,7 @@ html {
 }
 
 body {
-  -webkit-text-size-adjust: 100%;  
+  -webkit-text-size-adjust: 100%;
   min-width: rem(360px);
   font-size: rem(13px);
 }
@@ -146,7 +147,9 @@ p {
   margin: 0;
 }
 
-i, em, address {
+i,
+em,
+address {
   font-style: normal;
 }
 
@@ -203,7 +206,7 @@ input {
     display: none;
   }
 
-  &[type="file"] {
+  &[type='file'] {
     &::-webkit-file-upload-button {
       opacity: 0;
     }
@@ -212,11 +215,10 @@ input {
   &[type='number'] {
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
-  
 }
 
 select {

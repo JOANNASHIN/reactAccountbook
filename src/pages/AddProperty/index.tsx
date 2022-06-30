@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { nextTick } from 'process';
 import { useLocation, useNavigate } from 'react-router-dom';

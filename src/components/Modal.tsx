@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 

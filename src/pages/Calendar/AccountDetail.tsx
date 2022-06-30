@@ -1,9 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import CustomLink from '../../components/CustomLink';
 import { getAmountSizeClass } from './index';
 
 function AccountDetail(props: any) {
-  const { data } = props;
+  const { data, activeTab } = props;
 
   return (
     <div className="account-detail">
@@ -11,10 +11,14 @@ function AccountDetail(props: any) {
         {data && data.length ? (
           data.map((event: any) => {
             return (
-              <Link
+              <CustomLink
                 key={event.id}
-                className="detail__event"
-                to={`/addAccount?mode=edit&id=${event.id}`}>
+                to={`/addAccount?mode=edit&id=${event.id}`}
+                from="/"
+                state={{
+                  tab: activeTab,
+                }}
+                className="detail__event">
                 <span className="detail__event__type">
                   {event.category?.name}
                 </span>
@@ -32,7 +36,7 @@ function AccountDetail(props: any) {
                   )}>
                   <em>{Number(event.amount).toLocaleString('ko-kr')}</em>원
                 </span>
-              </Link>
+              </CustomLink>
             );
           })
         ) : (

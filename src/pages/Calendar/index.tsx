@@ -6,14 +6,20 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayjs from 'dayjs';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { createBrowserHistory } from 'history';
 import ModalComponent from '../../components/Modal';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import { Form as Item } from '../AddAccount';
 import AccountDetail from './AccountDetail';
+import CustomLink from '../../components/CustomLink';
 
 type TabKeys = 'dayGridMonth' | 'listDay' | 'listMonth' | 'listWeek';
+
+interface CalendarHistoryState {
+  tab: TabKeys;
+}
 
 interface CustomProps {
   data: Item[];
@@ -47,7 +53,12 @@ const getAmountSizeClass = (value: string | number, classname?: string) => {
 export { getAmountSizeClass };
 
 function Calendar() {
+  const location = useLocation();
+
   // #region 데이터
+  /** active 탭메뉴 */
+  const [activeTab, setActiveTab] = useState<TabKeys>('dayGridMonth');
+
   /** 가계부 리스트 */
   const [eventList, setEventList] = useState<EventList[]>([]);
 
@@ -93,9 +104,13 @@ function Calendar() {
     return day;
   };
 
-  useEffect(() => {
+  const setLocalStorageData = () => {
+    /** 장부데이터 */
     const savedAccountData = localStorage.getItem('accountData');
+    /** 자산데이터 */
     const savedPropertyData = localStorage.getItem('propertyData');
+
+    /** default 현금 자산 세팅 */
     const defaultProperty = [
       {
         id: uuidv4(),
@@ -112,7 +127,41 @@ function Calendar() {
     if (!savedPropertyData) {
       localStorage.setItem('propertyData', JSON.stringify(defaultProperty));
     }
+  };
+
+  const history = createBrowserHistory();
+
+  const getHistoryState = () => {
+    return {
+      tab: activeTab,
+    };
+  };
+
+  /** mounted 세팅 */
+  useEffect(() => {
+    setLocalStorageData();
   }, []);
+
+  useEffect(() => {
+    const tab = (history?.location?.state as CalendarHistoryState)?.tab;
+    console.log(history?.location?.state, 'tab');
+
+    if (tab) {
+      switch (tab) {
+        case 'dayGridMonth':
+        case 'listDay':
+        case 'listMonth':
+        case 'listWeek':
+          setActiveTab(tab);
+          break;
+        default:
+          setActiveTab('dayGridMonth');
+          break;
+      }
+    } else {
+      setActiveTab('dayGridMonth');
+    }
+  }, [location]);
   // #endregion
 
   // #region summary
@@ -187,15 +236,13 @@ function Calendar() {
     const data = eventInfo.event?.extendedProps.data;
     if (!data || !data.length) return <span />;
 
-    return <AccountDetail data={data} />;
+    return <AccountDetail data={data} activeTab={activeTab} />;
   };
   // #endregion
 
   // #region tab 메뉴
   const calendarRef = useRef<FullCalendar>(null);
   const [isRender, setIsRender] = useState(false);
-
-  const [activeTab, setActiveTab] = useState<TabKeys>('dayGridMonth');
 
   const isActive = (key: TabKeys) => {
     return activeTab === key ? 'tab__menu active' : 'tab__menu';
@@ -386,22 +433,28 @@ function Calendar() {
           )}
         </div>
 
-        <Link to="/addAccount" className="calendar__plus ac__plus--yellow">
-          이벤트 추가하기
-        </Link>
+        <CustomLink
+          to="/addAccount"
+          from="/"
+          state={getHistoryState()}
+          className="calendar__plus ac__plus--yellow">
+          장부 추가하기
+        </CustomLink>
       </div>
 
       {/* 상세 모달 */}
       {modal.isShow && (
         <ModalComponent title={modal.title} onClose={handleCloseModal}>
           <div className="calendar__details">
-            <AccountDetail data={modal.data} />
+            <AccountDetail data={modal.data} activeTab={activeTab} />
             <nav className="details__nav">
-              <Link
+              <CustomLink
                 to={`/addAccount?date=${modal.title}`}
+                from="/"
+                state={getHistoryState()}
                 className="details__nav__plus ac__plus--yellow">
                 장부 추가하기
-              </Link>
+              </CustomLink>
             </nav>
           </div>
         </ModalComponent>

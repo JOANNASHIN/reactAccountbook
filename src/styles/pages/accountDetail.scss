@@ -22,8 +22,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
       padding: rem(8px 0);
       border-bottom: 1px solid $greye8;
+      text-align: left;
 
       &:first-of-type {
         padding-top: 0;
