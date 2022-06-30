@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { Link } from 'react-router-dom';
 import SummaryComponent, { Balance } from '../../components/Summary';
 import WalletComponent, { Wallet } from '../../components/Wallet';
