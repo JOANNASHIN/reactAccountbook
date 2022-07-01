@@ -394,22 +394,20 @@ function AddAccount() {
   /**
    * 자산 금액 반영
    */
-  const updatePropertyAmount = () => {
-    const multipleNumber = form.type === 'spending' ? -1 : 1;
+  const updatePropertyAmount = (
+    form: Form,
+    mode: 'write' | 'update' = 'write',
+  ) => {
+    // 현재 입력한 데이터
+    let multipleNumber = form.type === 'spending' ? -1 : 1;
+    if (mode === 'update') multipleNumber *= -1;
+
     const target = {
       data: propertyStorageJson.find((v) => v.name === form.method.name),
       index: propertyStorageJson.findIndex((v) => v.name === form.method.name),
     };
 
     const { data, index } = target;
-
-    // const targetData = propertyStorageJson.find(
-    //   (v) => v.name === form.method.name,
-    // );
-
-    // const targetIndex = propertyStorageJson.findIndex(
-    //   (v) => v.name === form.method.name,
-    // );
 
     if (data && index !== -1) {
       const calcAmount =
@@ -423,36 +421,15 @@ function AddAccount() {
       propertyStorageJson.splice(index, 1, customForm);
       localStorage.setItem('propertyData', JSON.stringify(propertyStorageJson));
     }
+  };
 
-    /** 이전 데이터 변경필요 */
-    if (isEdit && originForm) {
-      const multipleNumber = originForm.type === 'spending' ? 1 : -1;
-      const test2 = {
-        data: propertyStorageJson.find(
-          (v) => v.name === originForm.method.name,
-        ),
-        index: propertyStorageJson.findIndex(
-          (v) => v.name === originForm.method.name,
-        ),
-      };
+  /** 자산 데이터 업데이트 */
+  const updatePropertyData = () => {
+    /** 현재 입력한 자산 금액 업데이트 */
+    updatePropertyAmount(form);
 
-      const { data, index } = test2;
-
-      if (data && index !== -1) {
-        const calcAmount =
-          data.amount + getOnlyNumber(originForm.amount) * multipleNumber || 0;
-        const customForm = {
-          ...data,
-          amount: calcAmount,
-        };
-
-        propertyStorageJson.splice(index, 1, customForm);
-        localStorage.setItem(
-          'propertyData',
-          JSON.stringify(propertyStorageJson),
-        );
-      }
-    }
+    /** 수정모드인경우 기존 자산 금액 리셋 */
+    if (isEdit && originForm) updatePropertyAmount(originForm, 'update');
   };
 
   /**
@@ -460,11 +437,12 @@ function AddAccount() {
    */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!checkValidate()) return;
 
     nextTick(() => {
       updateAccountData();
-      updatePropertyAmount();
+      updatePropertyData();
 
       setTimeout(() => {
         alert(`${isEdit ? '수정' : '등록'}이 완료되었습니다.`);
