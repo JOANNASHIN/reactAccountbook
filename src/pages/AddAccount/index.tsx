@@ -96,6 +96,7 @@ function AddAccount() {
     type: 'spending',
     memo: '',
   });
+  const [originForm, setOriginForm] = useState<Form>();
 
   const [properties, setProperties] = useState<Property[]>([
     {
@@ -360,7 +361,7 @@ function AddAccount() {
   /**
    * 로컬스토리지 저장
    */
-  const saveLocalStorage = () => {
+  const updateAccountData = () => {
     let saveData = null;
     const customForm: ResponseForm = {
       ...form,
@@ -390,26 +391,67 @@ function AddAccount() {
     if (saveData) localStorage.setItem('accountData', JSON.stringify(saveData));
   };
 
-  const changePropertyValue = () => {
+  /**
+   * 자산 금액 반영
+   */
+  const updatePropertyAmount = () => {
     const multipleNumber = form.type === 'spending' ? -1 : 1;
-    const targetData = propertyStorageJson.find(
-      (v) => v.name === form.method.name,
-    );
-    const targetIndex = propertyStorageJson.findIndex(
-      (v) => v.name === form.method.name,
-    );
+    const target = {
+      data: propertyStorageJson.find((v) => v.name === form.method.name),
+      index: propertyStorageJson.findIndex((v) => v.name === form.method.name),
+    };
 
-    if (targetData && targetIndex !== -1) {
+    const { data, index } = target;
+
+    // const targetData = propertyStorageJson.find(
+    //   (v) => v.name === form.method.name,
+    // );
+
+    // const targetIndex = propertyStorageJson.findIndex(
+    //   (v) => v.name === form.method.name,
+    // );
+
+    if (data && index !== -1) {
       const calcAmount =
-        targetData.amount + getOnlyNumber(form.amount) * multipleNumber || 0;
+        data.amount + getOnlyNumber(form.amount) * multipleNumber || 0;
 
       const customForm = {
-        ...targetData,
+        ...data,
         amount: calcAmount,
       };
 
-      propertyStorageJson.splice(targetIndex, 1, customForm);
+      propertyStorageJson.splice(index, 1, customForm);
       localStorage.setItem('propertyData', JSON.stringify(propertyStorageJson));
+    }
+
+    /** 이전 데이터 변경필요 */
+    if (isEdit && originForm) {
+      const multipleNumber = originForm.type === 'spending' ? 1 : -1;
+      const test2 = {
+        data: propertyStorageJson.find(
+          (v) => v.name === originForm.method.name,
+        ),
+        index: propertyStorageJson.findIndex(
+          (v) => v.name === originForm.method.name,
+        ),
+      };
+
+      const { data, index } = test2;
+
+      if (data && index !== -1) {
+        const calcAmount =
+          data.amount + getOnlyNumber(originForm.amount) * multipleNumber || 0;
+        const customForm = {
+          ...data,
+          amount: calcAmount,
+        };
+
+        propertyStorageJson.splice(index, 1, customForm);
+        localStorage.setItem(
+          'propertyData',
+          JSON.stringify(propertyStorageJson),
+        );
+      }
     }
   };
 
@@ -418,12 +460,11 @@ function AddAccount() {
    */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!checkValidate()) return;
 
     nextTick(() => {
-      saveLocalStorage();
-      changePropertyValue();
+      updateAccountData();
+      updatePropertyAmount();
 
       setTimeout(() => {
         alert(`${isEdit ? '수정' : '등록'}이 완료되었습니다.`);
@@ -466,6 +507,12 @@ function AddAccount() {
 
       if (target) {
         setForm({
+          ...form,
+          ...target,
+          amount: Number(target.amount).toLocaleString('ko-kr'),
+        });
+
+        setOriginForm({
           ...form,
           ...target,
           amount: Number(target.amount).toLocaleString('ko-kr'),
