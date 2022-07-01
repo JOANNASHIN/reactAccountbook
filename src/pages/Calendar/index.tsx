@@ -435,7 +435,6 @@ function Calendar() {
 
         <CustomLink
           to="/addAccount"
-          from="/"
           state={getHistoryState()}
           className="calendar__plus ac__plus--yellow">
           장부 추가하기
@@ -450,7 +449,6 @@ function Calendar() {
             <nav className="details__nav">
               <CustomLink
                 to={`/addAccount?date=${modal.title}`}
-                from="/"
                 state={getHistoryState()}
                 className="details__nav__plus ac__plus--yellow">
                 장부 추가하기

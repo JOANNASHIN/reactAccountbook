@@ -14,7 +14,6 @@ function AccountDetail(props: any) {
               <CustomLink
                 key={event.id}
                 to={`/addAccount?mode=edit&id=${event.id}`}
-                from="/"
                 state={{
                   tab: activeTab,
                 }}
