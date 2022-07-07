@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "AccountApp",
+  "name": "React Accountbook App made by Joanna",
   "icons": [
     {
       "src": "favicon.ico",
