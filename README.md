@@ -10,13 +10,13 @@ An Acccount book project created using React. You can save, modify, and delete i
 *HTML5, SCSS, React, Typescript, Git, Firebase*
 
 ## Main Page
-<img src="https://user-images.githubusercontent.com/48752087/198868096-1a281ca4-7a41-49db-a16c-358f9eb6d381.png">
+<img src="https://user-images.githubusercontent.com/48752087/198868096-1a281ca4-7a41-49db-a16c-358f9eb6d381.png">  
 
 ## Add Popup
-<img src="https://user-images.githubusercontent.com/48752087/198868098-a15ab5c3-39ce-4746-bcd4-9a57eb37187b.png">
+<img src="https://user-images.githubusercontent.com/48752087/198868100-4daed8c0-2ece-47d3-ba64-9713fb579524.png">  
 
 ## Property Page
-<img src="https://user-images.githubusercontent.com/48752087/198868100-4daed8c0-2ece-47d3-ba64-9713fb579524.png">
+<img src="https://user-images.githubusercontent.com/48752087/198868098-a15ab5c3-39ce-4746-bcd4-9a57eb37187b.png">  
 
 ## Setting Page
 <img src="https://user-images.githubusercontent.com/48752087/198868095-6ed5d6a6-73e7-4d27-9da2-77cdb2f58ddc.png" width="280">
