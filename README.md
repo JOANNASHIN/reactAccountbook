@@ -1,13 +1,18 @@
-# React X AccountBook Project
-- **[About Project]**  
-React를 사용하여 만든 가계부 프로젝트입니다. 저장, 수정, 삭제가 가능하며 달력에서 일별, 주별, 월별로 확인이 가능합니다. 자산에서는 커스텀된 색상으로 자산등록이 가능합니다.  
-An Acccount book project created using React. You can save, modify, and delete it. You can check it by day, week, and month in the calendar. Assets can be registered in custom colors.  
+# React X Typescript X AccountBook
+**[Team or Personal]**  
+Personal  
 
-- **[Period]**  
+**[Period]**  
 2022/04 ~ 2022/06 (3months) 
 
-- **[Skill]**  
-*HTML5, SCSS, React, Typescript, Git, Firebase*
+**[Skill]**  
+*HTML5, SCSS, React, Typescript, Git, Firebase*  
+
+**[About Project]**  
+React를 사용하여 만든 가계부 프로젝트입니다. 저장, 수정, 삭제가 가능하며 달력에서 일별, 주별, 월별로 확인이 가능합니다. 자산에서는 커스텀된 색상으로 자산등록이 가능합니다.  
+
+An Acccount book project created using React. You can save, modify, and delete it. You can check it by day, week, and month in the calendar. Assets can be registered in custom colors.  
+
 
 ## Main Page
 <img src="https://user-images.githubusercontent.com/48752087/198868096-1a281ca4-7a41-49db-a16c-358f9eb6d381.png">  
